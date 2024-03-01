@@ -1,0 +1,1 @@
+Application for tracking the results of team competitions

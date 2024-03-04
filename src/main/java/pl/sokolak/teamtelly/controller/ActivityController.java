@@ -5,8 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.sokolak.backend.domain.Activity;
-import pl.sokolak.backend.repo.ActivityRepository;
+import pl.sokolak.teamtelly.domain.Activity;
+import pl.sokolak.teamtelly.repo.ActivityRepository;
+
 
 import java.util.List;
 

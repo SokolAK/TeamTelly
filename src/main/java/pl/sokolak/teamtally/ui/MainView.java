@@ -3,12 +3,14 @@ package pl.sokolak.teamtally.ui;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import pl.sokolak.teamtally.scoreboard.ScoreboardView;
 
 
 //@CssImport("./styles/views/main/main-view.css")
@@ -37,20 +39,17 @@ public class MainView extends AppLayout {
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("Team Tally");
-        appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        Header header = new Header(appName);
-
         Scroller scroller = new Scroller(createNavigation());
-
-        Image logo = new Image("assets/logo.png", "");
+        Image logo = new Image("assets/logo2.png", "");
+        logo.addClassName("logo");
         addToDrawer(logo, scroller, createFooter());
     }
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Hello World", ActivityView.class));
+        nav.addItem(new SideNavItem("Activities", ActivityView.class, VaadinIcon.STAR.create()));
+        nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
 
         return nav;
     }

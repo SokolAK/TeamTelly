@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.ui;
+package pl.sokolak.teamtally.scoreboard;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -14,19 +14,21 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.activity.ActivityDto;
 import pl.sokolak.teamtally.activity.ActivityService;
+import pl.sokolak.teamtally.ui.ActivityForm;
+import pl.sokolak.teamtally.ui.MainView;
 
 @SpringComponent
 @Scope("prototype")
 @PermitAll
-@Route(value = "/activities", layout = MainView.class)
-@PageTitle("Activities")
-public class ActivityView extends VerticalLayout {
+@Route(value = "/test", layout = MainView.class)
+@PageTitle("Scoreboard")
+public class ScoreboardView extends VerticalLayout {
     Grid<ActivityDto> grid = new Grid<>(ActivityDto.class);
     TextField filterText = new TextField();
     ActivityForm form;
     ActivityService service;
 
-    public ActivityView(ActivityService service) {
+    public ScoreboardView(ActivityService service) {
         this.service = service;
         addClassName("list-view");
         setSizeFull();
@@ -70,11 +72,9 @@ public class ActivityView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
-        grid.setColumns();
-        grid.addColumn("name").setHeader("Name");
-        grid.addColumn("personalPoints").setHeader("Personal points");
-        grid.addColumn("teamPoints").setHeader("Team points");
+        grid.setColumns("name", "personalPoints", "teamPoints");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
         grid.asSingleSelect().addValueChangeListener(event ->
                 editActivity(event.getValue()));
     }

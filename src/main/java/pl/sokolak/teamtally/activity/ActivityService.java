@@ -16,4 +16,15 @@ public class ActivityService {
                 .map(activityMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public ActivityDto save(ActivityDto activity) {
+        Activity entity = activityMapper.toEntity(activity);
+        Activity savedEntity = activityRepository.save(entity);
+        return activityMapper.toDto(savedEntity);
+    }
+
+    public void delete(ActivityDto activity) {
+        Activity entity = activityMapper.toEntity(activity);
+        activityRepository.delete(entity);
+    }
 }

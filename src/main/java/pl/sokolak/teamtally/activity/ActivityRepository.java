@@ -1,8 +1,8 @@
-package pl.sokolak.teamtelly.repo;
+package pl.sokolak.teamtally.activity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.sokolak.teamtelly.domain.Activity;
+import pl.sokolak.teamtally.activity.Activity;
 
 import java.util.Optional;
 import java.util.UUID;

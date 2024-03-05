@@ -1,0 +1,78 @@
+a[highlight] {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.header {
+    padding: 0 var(--lumo-space-m);
+}
+
+.header h1.logo {
+    font-size: 1em;
+    margin: var(--lumo-space-m);
+}
+
+.login-view h1 {
+    font-size: 3em;
+    margin: var(--lumo-space-m);
+}
+
+.list-view .content {
+    display: flex;
+}
+
+.list-view .book-grid {
+    flex: 2;
+}
+
+.list-view .contact-form {
+    flex: 1;
+    padding: var(--lumo-space-m);
+}
+
+@media all and (max-width: 1100px) {
+    .list-view.editing .toolbar,
+    .list-view.editing .book-grid {
+        display: none;
+    }
+}
+
+.dashboard-view .contact-stats {
+    font-size: 4em;
+    margin: 1em 0;
+}
+
+.book-details .section-header {
+    font-weight: bold;
+}
+
+
+html {
+    background-color: #eff0f3;
+}
+
+vaadin-app-layout::part(drawer) {
+    background-color: #1A6CAC;
+    /*background-color: #4e73df;*/
+}
+
+.card {
+    /*border: 1px solid #ccc;*/
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f7f8fb;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.card-content {
+    color: #666;
+}
+
+
+

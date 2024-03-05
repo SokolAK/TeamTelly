@@ -1,4 +1,4 @@
-package pl.sokolak.teamtelly.domain;
+package pl.sokolak.teamtally.activity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,6 +16,6 @@ public class Activity {
     @Id
     private UUID id;
     private String name;
-    private Integer individualPoints;
+    private Integer personalPoints;
     private Integer teamPoints;
 }

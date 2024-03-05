@@ -1,12 +1,10 @@
-package pl.sokolak.teamtelly.controller;
+package pl.sokolak.teamtally.activity;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.sokolak.teamtelly.domain.Activity;
-import pl.sokolak.teamtelly.repo.ActivityRepository;
 
 
 import java.util.List;

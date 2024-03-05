@@ -13,7 +13,7 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.activity.ActivityDto;
 
-public class ActivityForm extends FormLayout {
+public class TeamForm extends FormLayout {
     TextField name = new TextField("Name");
     TextField personalPoints = new TextField("Personal points");
     TextField teamPoints = new TextField("Team points");
@@ -24,8 +24,8 @@ public class ActivityForm extends FormLayout {
     // Other fields omitted
     Binder<ActivityDto> binder = new BeanValidationBinder<>(ActivityDto.class);
 
-    public ActivityForm() {
-        addClassName("activity-form");
+    public TeamForm() {
+        addClassName("team-form");
         binder.bindInstanceFields(this);
         add(name, personalPoints, teamPoints, createButtonsLayout());
     }
@@ -58,10 +58,10 @@ public class ActivityForm extends FormLayout {
     }
 
     // Events
-    public static abstract class ActivityFormEvent extends ComponentEvent<ActivityForm> {
+    public static abstract class ActivityFormEvent extends ComponentEvent<TeamForm> {
         private final ActivityDto activity;
 
-        protected ActivityFormEvent(ActivityForm source, ActivityDto activity) {
+        protected ActivityFormEvent(TeamForm source, ActivityDto activity) {
             super(source, false);
             this.activity = activity;
         }
@@ -72,20 +72,20 @@ public class ActivityForm extends FormLayout {
     }
 
     public static class SaveEvent extends ActivityFormEvent {
-        SaveEvent(ActivityForm source, ActivityDto activity) {
+        SaveEvent(TeamForm source, ActivityDto activity) {
             super(source, activity);
         }
     }
 
     public static class DeleteEvent extends ActivityFormEvent {
-        DeleteEvent(ActivityForm source, ActivityDto activity) {
+        DeleteEvent(TeamForm source, ActivityDto activity) {
             super(source, activity);
         }
 
     }
 
     public static class CloseEvent extends ActivityFormEvent {
-        CloseEvent(ActivityForm source) {
+        CloseEvent(TeamForm source) {
             super(source, null);
         }
     }

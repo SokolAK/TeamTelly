@@ -9,5 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
-    Optional<Activity> findById(UUID id);
 }

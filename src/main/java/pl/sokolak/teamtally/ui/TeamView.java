@@ -3,10 +3,11 @@ package pl.sokolak.teamtally.ui;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.LitRenderer;
+import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -15,22 +16,26 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.activity.ActivityDto;
 import pl.sokolak.teamtally.activity.ActivityService;
+import pl.sokolak.teamtally.team.Team;
+import pl.sokolak.teamtally.team.TeamDto;
+import pl.sokolak.teamtally.team.TeamService;
+import pl.sokolak.teamtally.ui.ActivityForm;
+import pl.sokolak.teamtally.ui.MainView;
 
 @SpringComponent
 @Scope("prototype")
 @PermitAll
-@Route(value = "/activities", layout = MainView.class)
-@PageTitle("Activities")
-public class ActivityView extends VerticalLayout {
+@Route(value = "/teams", layout = MainView.class)
+@PageTitle("Teams")
+public class TeamView extends VerticalLayout {
 
-    private final Grid<ActivityDto> grid = new Grid<>(ActivityDto.class);
-    private final TextField filterText = new TextField();
-    private final ActivityService service;
-    private ActivityForm form;
+    private final Grid<TeamDto> grid = new Grid<>(TeamDto.class);
+    private final TeamService service;
+    private TeamForm form;
 
-    public ActivityView(ActivityService service) {
+    public TeamView(TeamService service) {
         this.service = service;
-        addClassName("activity-view");
+        addClassName("team-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -50,48 +55,44 @@ public class ActivityView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new ActivityForm();
+        form = new TeamForm();
         form.setWidth("25em");
-        form.addSaveListener(this::saveContact);
-        form.addDeleteListener(this::deleteContact);
-        form.addCloseListener(e -> closeEditor());
+//        form.addSaveListener(this::saveContact);
+//        form.addDeleteListener(this::deleteContact);
+//        form.addCloseListener(e -> closeEditor());
     }
-
-    private void saveContact(ActivityForm.SaveEvent event) {
-        service.save(event.getActivity());
-        updateList();
-        closeEditor();
-    }
-
-    private void deleteContact(ActivityForm.DeleteEvent event) {
-        service.delete(event.getActivity());
-        updateList();
-        closeEditor();
-    }
+//
+//    private void saveContact(TeamForm.SaveEvent event) {
+//        service.save(event.getActivity());
+//        updateList();
+//        closeEditor();
+//    }
+//
+//    private void deleteContact(ActivityForm.DeleteEvent event) {
+//        service.delete(event.getActivity());
+//        updateList();
+//        closeEditor();
+//    }
 
     private void configureGrid() {
-        grid.addClassNames("activity-grid");
-        grid.setMaxWidth("1000px");
-        grid.setMinWidth("0");
+        grid.addClassNames("team-grid");
+//        grid.setMaxWidth("300px");
+//        grid.setMinWidth("0");
         grid.setColumns();
-        grid.addColumn("name").setHeader("Name");
-        grid.addColumn("personalPoints").setHeader("Personal points");
-        grid.addColumn("teamPoints").setHeader("Team points");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event ->
-                editActivity(event.getValue()));
+        grid.addColumn(createColorRenderer()).setHeader("Team");
+//        grid.addColumn("icon").setHeader("").setWidth("5em").setFlexGrow(0);
+//        grid.addColumn("name").setHeader("");
+
+//        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+//        grid.asSingleSelect().addValueChangeListener(event ->
+//                editActivity(event.getValue()));
     }
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
-
-        Button addActivityButton = new Button("Add activity");
+        Button addActivityButton = new Button("Add team");
         addActivityButton.addClickListener(click -> addActivity());
 
-        var toolbar = new HorizontalLayout(filterText, addActivityButton);
+        var toolbar = new HorizontalLayout(addActivityButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -119,5 +120,13 @@ public class ActivityView extends VerticalLayout {
 
     private void updateList() {
         grid.setItems(service.findAll());
+    }
+
+    private Renderer<TeamDto> createColorRenderer() {
+        return LitRenderer.<TeamDto> of(
+                        "<div style=\"color:#${item.color}\">${item.icon} <b>${item.name}</b></div>\n")
+                .withProperty("color", TeamDto::getColor)
+                .withProperty("icon", TeamDto::getIcon)
+                .withProperty("name", TeamDto::getName);
     }
 }

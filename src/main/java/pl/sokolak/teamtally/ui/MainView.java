@@ -5,6 +5,7 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
@@ -47,10 +48,15 @@ public class MainView extends AppLayout {
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
-
-        nav.addItem(new SideNavItem("Activities", ActivityView.class, VaadinIcon.STAR.create()));
+        nav.addItem(new SideNavItem("User area"));
         nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
-
+        nav.addItem(new SideNavItem(" "));
+        nav.addItem(new SideNavItem(" "));
+        nav.addItem(new SideNavItem("Admin area"));
+        nav.addItem(new SideNavItem("Activities", ActivityView.class, VaadinIcon.STAR.create()));
+        nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));
+//        nav.addItem(new SideNavItem("My profile", ScoreboardView.class, VaadinIcon.USER.create()));
+//        nav.addItem(new SideNavItem("Participants", ScoreboardView.class, VaadinIcon.USERS.create()));
         return nav;
     }
 

@@ -1,0 +1,11 @@
+vaadin-side-nav-item[current] {
+    background-color: var(--light-blue);
+}
+
+vaadin-side-nav-item::part(link) {
+    color: white;
+}
+
+vaadin-side-nav-item > vaadin-icon {
+    color: white;
+}

@@ -1,0 +1,7 @@
+vaadin-grid::part(row) {
+    --vaadin-grid-cell-background: white;
+}
+
+vaadin-grid::part(row):hover {
+    --vaadin-grid-cell-background: #DDE8F7;
+}

@@ -1,0 +1,8 @@
+.login-view {
+    /*background-color: var(--light-blue);*/
+}
+
+vaadin-login-form-wrapper::part(form-title) {
+    color: var(--dim-grey);
+    margin: auto;
+}

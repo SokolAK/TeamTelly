@@ -1,0 +1,9 @@
+vaadin-app-layout::part(drawer) {
+    background-color: var(--blue);
+}
+
+vaadin-app-layout::part(navbar) {
+    font-family: Arial;
+    color: dimgrey;
+    background-color: var(--very-light-grey);
+}

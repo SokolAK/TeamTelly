@@ -5,3 +5,7 @@ vaadin-grid::part(row) {
 vaadin-grid::part(row):hover {
     --vaadin-grid-cell-background: #DDE8F7;
 }
+
+vaadin-grid {
+    max-width: 1500px;
+}

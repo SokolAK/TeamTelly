@@ -2,24 +2,32 @@ package pl.sokolak.teamtally.frontend.admin.user;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextField;
 import pl.sokolak.teamtally.backend.user.UserDto;
+import pl.sokolak.teamtally.backend.user.role.UserRole;
 import pl.sokolak.teamtally.frontend.admin.activity.ThreeButtonsForm;
+
+import java.util.List;
 
 public class UserForm extends ThreeButtonsForm<UserDto> {
     private final TextField username = new TextField("Username");
-    private final TextField firstName = new TextField("First Name");
-    private final TextField lastName = new TextField("Last Name");
+    private final TextField firstName = new TextField("First name");
+    private final TextField lastName = new TextField("Last name");
     private final TextField email = new TextField("Email");
-    private final TextField role = new TextField("Role");
+//    private final TextField role = new TextField("Role");
     private final TextField password = new TextField("Password");
+    private final ComboBox<UserRole> role = new ComboBox<>("Role");
 
-    public UserForm() {
+    public UserForm(List<UserRole> roles) {
         addClassName("user-form");
         configure(UserDto.class);
         setSaveButtonListener(event -> validateAndSave());
         setDeleteButtonListener(event -> fireEvent(new DeleteEvent(this, binder.getBean())));
         setCloseButtonListener(event -> fireEvent(new CloseEvent(this)));
+        role.setItems(roles);
+        role.setItemLabelGenerator(UserRole::getName);
+        binder.bind(role, UserDto::getUserRole, UserDto::setUserRole);
         addFields(username, firstName, lastName, email, role, password);
     }
 

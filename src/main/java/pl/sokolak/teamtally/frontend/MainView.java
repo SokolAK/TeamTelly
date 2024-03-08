@@ -1,11 +1,11 @@
 package pl.sokolak.teamtally.frontend;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -55,14 +55,15 @@ public class MainView extends AppLayout {
     }
 
     private void addHeaderContent() {
-        Button logout = new Button("Log out " + user.getUsername(), e -> securityService.logout());
+
 
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         var headerLeft = new HorizontalLayout(new DrawerToggle(), viewTitle);
         headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        var headerRight = new HorizontalLayout(logout);
+        var headerRight = new HorizontalLayout(createUserNameField(), createLogoutButton());
         headerRight.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        headerRight.addClassName("header-right");
 
         var header = new HorizontalLayout(headerLeft, headerRight);
 
@@ -74,6 +75,14 @@ public class MainView extends AppLayout {
                 LumoUtility.Padding.Horizontal.MEDIUM);
 
         addToNavbar(true, header);
+    }
+
+    private Component createUserNameField() {
+        return new H5(user.getUsername());
+    }
+
+    private Button createLogoutButton() {
+        return new Button(new Icon(VaadinIcon.EXIT_O), e -> securityService.logout());
     }
 
     private void addDrawerContent() {

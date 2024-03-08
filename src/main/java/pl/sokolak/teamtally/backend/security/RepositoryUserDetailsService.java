@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.sokolak.teamtally.backend.user.UserDto;
-import pl.sokolak.teamtally.backend.user.UserRole;
+import pl.sokolak.teamtally.backend.user.role.UserRole;
 import pl.sokolak.teamtally.backend.user.UserService;
 
 import java.util.Optional;

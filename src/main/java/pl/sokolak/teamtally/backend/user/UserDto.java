@@ -3,6 +3,7 @@ package pl.sokolak.teamtally.backend.user;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import pl.sokolak.teamtally.backend.user.role.UserRole;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sokolak.teamtally.backend.user.role.UserRole;
 
 import java.util.UUID;
 

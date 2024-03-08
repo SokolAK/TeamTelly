@@ -13,6 +13,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
+import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
 
 @SpringComponent
@@ -24,11 +25,13 @@ public class UserView extends VerticalLayout {
 
     private final Grid<UserDto> grid = new Grid<>(UserDto.class);
     private final TextField filterText = new TextField();
-    private final UserService service;
+    private final UserService userService;
+    private final RoleService roleService;
     private UserForm form;
 
-    public UserView(UserService service) {
-        this.service = service;
+    public UserView(UserService userSer, RoleService roleService) {
+        this.userService = userSer;
+        this.roleService = roleService;
         addClassName("user-view");
         setSizeFull();
         configureGrid();
@@ -49,7 +52,7 @@ public class UserView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new UserForm();
+        form = new UserForm(roleService.findAll());
         form.setWidth("25em");
         form.addSaveListener(this::saveUser);
         form.addDeleteListener(this::deleteUser);
@@ -58,16 +61,16 @@ public class UserView extends VerticalLayout {
 
     private void saveUser(UserForm.SaveEvent event) {
         if(event.getUser().getPassword().isEmpty()) {
-            service.updateWithoutPassword(event.getUser());
+            userService.updateWithoutPassword(event.getUser());
         } else {
-            service.save(event.getUser());
+            userService.save(event.getUser());
         }
         updateList();
         closeEditor();
     }
 
     private void deleteUser(UserForm.DeleteEvent event) {
-        service.delete(event.getUser());
+        userService.delete(event.getUser());
         updateList();
         closeEditor();
     }
@@ -76,11 +79,11 @@ public class UserView extends VerticalLayout {
         grid.addClassNames("user-grid");
         grid.setColumns();
         grid.addColumn("username");
-        grid.addColumn("firstName");
-        grid.addColumn("lastName");
+        grid.addColumn("firstName").setHeader("First name");
+        grid.addColumn("lastName").setHeader("Last name");
         grid.addColumn("email");
         grid.addColumn(u -> u.getUserRole() != null ? u.getUserRole().getName() : "NONE").setHeader("Role");
-        grid.addColumn("password");
+//        grid.addColumn("password");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editUser(event.getValue()));
@@ -117,6 +120,6 @@ public class UserView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.findAll());
+        grid.setItems(userService.findAll());
     }
 }

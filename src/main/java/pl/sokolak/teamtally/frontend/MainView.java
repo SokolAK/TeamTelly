@@ -16,7 +16,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.user.UserDto;
-import pl.sokolak.teamtally.frontend.admin.activity.ActivityView;
+import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.admin.team.TeamView;
 import pl.sokolak.teamtally.frontend.admin.user.UserView;
 import pl.sokolak.teamtally.frontend.scoreboard.ScoreboardView;
@@ -26,7 +26,7 @@ public class MainView extends AppLayout {
 
     private final SecurityService securityService;
     private final UserDto user;
-    private H2 viewTitle = new H2();
+    private final H2 viewTitle = new H2();
 
     public MainView(SecurityService securityService) {
         this.securityService = securityService;
@@ -46,7 +46,7 @@ public class MainView extends AppLayout {
             nav.addItem(new SideNavItem(" "));
             nav.addItem(new SideNavItem("Admin area"));
             nav.addItem(new SideNavItem("Event", TeamView.class, VaadinIcon.USERS.create()));
-            nav.addItem(new SideNavItem("Activities", ActivityView.class, VaadinIcon.STAR.create()));
+            nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
             nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));
             nav.addItem(new SideNavItem("Users", UserView.class, VaadinIcon.USERS.create()));
         }

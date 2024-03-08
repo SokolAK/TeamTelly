@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.admin.activity;
+package pl.sokolak.teamtally.frontend.admin.challenge;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;

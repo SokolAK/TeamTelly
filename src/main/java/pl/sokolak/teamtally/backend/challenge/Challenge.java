@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend.activity;
+package pl.sokolak.teamtally.backend.challenge;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Activity {
+public class Challenge {
     @Id
     private UUID id;
     private String name;

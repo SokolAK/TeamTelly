@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS activity
+CREATE TABLE IF NOT EXISTS challenge
 (
     id              UUID PRIMARY KEY,
     "name"          VARCHAR(255),

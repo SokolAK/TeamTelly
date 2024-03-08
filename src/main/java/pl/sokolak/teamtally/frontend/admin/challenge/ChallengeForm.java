@@ -1,18 +1,18 @@
-package pl.sokolak.teamtally.frontend.admin.activity;
+package pl.sokolak.teamtally.frontend.admin.challenge;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.textfield.TextField;
-import pl.sokolak.teamtally.backend.activity.ActivityDto;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 
-public class ActivityForm extends ThreeButtonsForm<ActivityDto> {
+public class ChallengeForm extends ThreeButtonsForm<ChallengeDto> {
     private final TextField name = new TextField("Name");
     private final TextField personalPoints = new TextField("Personal points");
     private final TextField teamPoints = new TextField("Team points");
 
-    public ActivityForm() {
-        addClassName("activity-form");
-        configure(ActivityDto.class);
+    public ChallengeForm() {
+        addClassName("challenge-form");
+        configure(ChallengeDto.class);
         setSaveButtonListener(event -> validateAndSave());
         setDeleteButtonListener(event -> fireEvent(new DeleteEvent(this, binder.getBean())));
         setCloseButtonListener(event -> fireEvent(new CloseEvent(this)));
@@ -25,37 +25,37 @@ public class ActivityForm extends ThreeButtonsForm<ActivityDto> {
         }
     }
 
-    public void setActivity(ActivityDto activity) {
-        binder.setBean(activity);
+    public void setChallenge(ChallengeDto challenge) {
+        binder.setBean(challenge);
     }
 
-    public static abstract class ActivityFormEvent extends ComponentEvent<ActivityForm> {
-        private final ActivityDto activity;
+    public static abstract class ChallengeFormEvent extends ComponentEvent<ChallengeForm> {
+        private final ChallengeDto challenge;
 
-        protected ActivityFormEvent(ActivityForm source, ActivityDto activity) {
+        protected ChallengeFormEvent(ChallengeForm source, ChallengeDto challenge) {
             super(source, false);
-            this.activity = activity;
+            this.challenge = challenge;
         }
 
-        public ActivityDto getActivity() {
-            return activity;
-        }
-    }
-
-    public static class SaveEvent extends ActivityFormEvent {
-        SaveEvent(ActivityForm source, ActivityDto activity) {
-            super(source, activity);
+        public ChallengeDto getChallenge() {
+            return challenge;
         }
     }
 
-    public static class DeleteEvent extends ActivityFormEvent {
-        DeleteEvent(ActivityForm source, ActivityDto activity) {
-            super(source, activity);
+    public static class SaveEvent extends ChallengeFormEvent {
+        SaveEvent(ChallengeForm source, ChallengeDto challenge) {
+            super(source, challenge);
         }
     }
 
-    public static class CloseEvent extends ActivityFormEvent {
-        CloseEvent(ActivityForm source) {
+    public static class DeleteEvent extends ChallengeFormEvent {
+        DeleteEvent(ChallengeForm source, ChallengeDto challenge) {
+            super(source, challenge);
+        }
+    }
+
+    public static class CloseEvent extends ChallengeFormEvent {
+        CloseEvent(ChallengeForm source) {
             super(source, null);
         }
     }

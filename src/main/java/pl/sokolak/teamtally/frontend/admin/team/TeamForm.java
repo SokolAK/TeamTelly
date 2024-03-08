@@ -11,7 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import pl.sokolak.teamtally.backend.activity.ActivityDto;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 
 public class TeamForm extends FormLayout {
     TextField name = new TextField("Name");
@@ -22,7 +22,7 @@ public class TeamForm extends FormLayout {
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
     // Other fields omitted
-    Binder<ActivityDto> binder = new BeanValidationBinder<>(ActivityDto.class);
+    Binder<ChallengeDto> binder = new BeanValidationBinder<>(ChallengeDto.class);
 
     public TeamForm() {
         addClassName("team-form");
@@ -53,38 +53,38 @@ public class TeamForm extends FormLayout {
     }
 
 
-    public void setActivity(ActivityDto activity) {
-        binder.setBean(activity);
+    public void setChallenge(ChallengeDto challenge) {
+        binder.setBean(challenge);
     }
 
     // Events
-    public static abstract class ActivityFormEvent extends ComponentEvent<TeamForm> {
-        private final ActivityDto activity;
+    public static abstract class ChallengeFormEvent extends ComponentEvent<TeamForm> {
+        private final ChallengeDto challenge;
 
-        protected ActivityFormEvent(TeamForm source, ActivityDto activity) {
+        protected ChallengeFormEvent(TeamForm source, ChallengeDto challenge) {
             super(source, false);
-            this.activity = activity;
+            this.challenge = challenge;
         }
 
-        public ActivityDto getActivity() {
-            return activity;
-        }
-    }
-
-    public static class SaveEvent extends ActivityFormEvent {
-        SaveEvent(TeamForm source, ActivityDto activity) {
-            super(source, activity);
+        public ChallengeDto getChallenge() {
+            return challenge;
         }
     }
 
-    public static class DeleteEvent extends ActivityFormEvent {
-        DeleteEvent(TeamForm source, ActivityDto activity) {
-            super(source, activity);
+    public static class SaveEvent extends ChallengeFormEvent {
+        SaveEvent(TeamForm source, ChallengeDto challenge) {
+            super(source, challenge);
+        }
+    }
+
+    public static class DeleteEvent extends ChallengeFormEvent {
+        DeleteEvent(TeamForm source, ChallengeDto challenge) {
+            super(source, challenge);
         }
 
     }
 
-    public static class CloseEvent extends ActivityFormEvent {
+    public static class CloseEvent extends ChallengeFormEvent {
         CloseEvent(TeamForm source) {
             super(source, null);
         }

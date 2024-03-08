@@ -14,7 +14,7 @@
 }
 
 @media all and (max-width: 1500px) {
-    .activity-view.editing .activity-grid,
+    .challenge-view.editing .challenge-grid,
     .team-view.editing .team-grid,
     .user-view.editing .user-grid,
     .scoreboard-view.editing .scoreboard-grid

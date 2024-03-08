@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.admin.activity;
+package pl.sokolak.teamtally.frontend.admin.challenge;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -12,25 +12,25 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.context.annotation.Scope;
-import pl.sokolak.teamtally.backend.activity.ActivityDto;
-import pl.sokolak.teamtally.backend.activity.ActivityService;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
+import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.frontend.MainView;
 
 @SpringComponent
 @Scope("prototype")
 @RolesAllowed("ADMIN")
-@Route(value = "activities", layout = MainView.class)
-@PageTitle("Activities")
-public class ActivityView extends VerticalLayout {
+@Route(value = "challenges", layout = MainView.class)
+@PageTitle("Challenges")
+public class ChallengeView extends VerticalLayout {
 
-    private final Grid<ActivityDto> grid = new Grid<>(ActivityDto.class);
+    private final Grid<ChallengeDto> grid = new Grid<>(ChallengeDto.class);
     private final TextField filterText = new TextField();
-    private final ActivityService service;
-    private ActivityForm form;
+    private final ChallengeService service;
+    private ChallengeForm form;
 
-    public ActivityView(ActivityService service) {
+    public ChallengeView(ChallengeService service) {
         this.service = service;
-        addClassName("activity-view");
+        addClassName("challenge-view");
         setSizeFull();
         configureGrid();
         configureForm();
@@ -50,34 +50,34 @@ public class ActivityView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new ActivityForm();
+        form = new ChallengeForm();
         form.setWidth("25em");
-        form.addSaveListener(this::saveActivity);
-        form.addDeleteListener(this::deleteActivity);
+        form.addSaveListener(this::saveChallenge);
+        form.addDeleteListener(this::deleteChallenge);
         form.addCloseListener(e -> closeEditor());
     }
 
-    private void saveActivity(ActivityForm.SaveEvent event) {
-        service.save(event.getActivity());
+    private void saveChallenge(ChallengeForm.SaveEvent event) {
+        service.save(event.getChallenge());
         updateList();
         closeEditor();
     }
 
-    private void deleteActivity(ActivityForm.DeleteEvent event) {
-        service.delete(event.getActivity());
+    private void deleteChallenge(ChallengeForm.DeleteEvent event) {
+        service.delete(event.getChallenge());
         updateList();
         closeEditor();
     }
 
     private void configureGrid() {
-        grid.addClassNames("activity-grid");
+        grid.addClassNames("challenge-grid");
         grid.setColumns();
         grid.addColumn("name").setHeader("Name");
         grid.addColumn("personalPoints").setHeader("Personal points");
         grid.addColumn("teamPoints").setHeader("Team points");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
-                editActivity(event.getValue()));
+                editChallenge(event.getValue()));
     }
 
     private Component getToolbar() {
@@ -86,33 +86,33 @@ public class ActivityView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addActivityButton = new Button("Add activity");
-        addActivityButton.addClickListener(click -> addActivity());
+        Button addChallengeButton = new Button("Add challenge");
+        addChallengeButton.addClickListener(click -> addChallenge());
 
-        var toolbar = new HorizontalLayout(filterText, addActivityButton);
+        var toolbar = new HorizontalLayout(filterText, addChallengeButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
-    public void editActivity(ActivityDto activity) {
-        if (activity == null) {
+    public void editChallenge(ChallengeDto challenge) {
+        if (challenge == null) {
             closeEditor();
         } else {
-            form.setActivity(activity);
+            form.setChallenge(challenge);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setActivity(null);
+        form.setChallenge(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
-    private void addActivity() {
+    private void addChallenge() {
         grid.asSingleSelect().clear();
-        editActivity(ActivityDto.builder().build());
+        editChallenge(ChallengeDto.builder().build());
     }
 
     private void updateList() {

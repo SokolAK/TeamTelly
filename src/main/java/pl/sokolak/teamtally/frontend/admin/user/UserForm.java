@@ -6,7 +6,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextField;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.role.UserRole;
-import pl.sokolak.teamtally.frontend.admin.activity.ThreeButtonsForm;
+import pl.sokolak.teamtally.frontend.admin.challenge.ThreeButtonsForm;
 
 import java.util.List;
 

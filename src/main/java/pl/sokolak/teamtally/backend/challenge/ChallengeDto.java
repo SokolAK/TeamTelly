@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend.activity;
+package pl.sokolak.teamtally.backend.challenge;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ActivityDto {
+public class ChallengeDto {
     private UUID id;
     private String name;
     private Integer personalPoints;

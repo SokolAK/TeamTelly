@@ -1,10 +1,10 @@
-package pl.sokolak.teamtally.backend.activity;
+package pl.sokolak.teamtally.backend.challenge;
 
 import java.util.UUID;
 
-public class ActivityMapper {
-    public ActivityDto toDto(Activity entity) {
-        return ActivityDto.builder()
+public class ChallengeMapper {
+    public ChallengeDto toDto(Challenge entity) {
+        return ChallengeDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .personalPoints(entity.getPersonalPoints())
@@ -12,8 +12,8 @@ public class ActivityMapper {
                 .build();
     }
 
-    public Activity toEntity(ActivityDto dto) {
-        return Activity.builder()
+    public Challenge toEntity(ChallengeDto dto) {
+        return Challenge.builder()
                 .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
                 .name(dto.getName())
                 .personalPoints(dto.getPersonalPoints())

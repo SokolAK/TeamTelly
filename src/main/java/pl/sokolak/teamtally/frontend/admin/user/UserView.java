@@ -16,6 +16,8 @@ import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
 
+import static pl.sokolak.teamtally.frontend.localization.Translator.t;
+
 @SpringComponent
 @Scope("prototype")
 @RolesAllowed("ADMIN")
@@ -78,11 +80,11 @@ public class UserView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("user-grid");
         grid.setColumns();
-        grid.addColumn("username");
-        grid.addColumn("firstName").setHeader("First name");
-        grid.addColumn("lastName").setHeader("Last name");
-        grid.addColumn("email");
-        grid.addColumn(u -> u.getUserRole() != null ? u.getUserRole().getName() : "NONE").setHeader("Role");
+        grid.addColumn("username").setHeader(t("view.user.user.username"));;
+        grid.addColumn("firstName").setHeader(t("view.user.user.firstName"));
+        grid.addColumn("lastName").setHeader(t("view.user.user.lastName"));
+        grid.addColumn("email").setHeader(t("view.user.user.email"));
+        grid.addColumn(u -> u.getUserRole() != null ? u.getUserRole().getName() : "NONE").setHeader(t("view.user.user.role"));
 //        grid.addColumn("password");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->

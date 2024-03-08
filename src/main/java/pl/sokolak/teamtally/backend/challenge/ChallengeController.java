@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend.activity;
+package pl.sokolak.teamtally.backend.challenge;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,12 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
-public class ActivityController {
+public class ChallengeController {
 
-    private ActivityRepository activityRepository;
+    private ChallengeRepository challengeRepository;
 
-    @GetMapping("/activity")
-    public ResponseEntity<List<Activity>> getActivities() {
-        return ok(activityRepository.findAll());
+    @GetMapping("/challenge")
+    public ResponseEntity<List<Challenge>> getChallenges() {
+        return ok(challengeRepository.findAll());
     }
 }

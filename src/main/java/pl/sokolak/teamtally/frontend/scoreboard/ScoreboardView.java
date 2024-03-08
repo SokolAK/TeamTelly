@@ -14,10 +14,10 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.context.annotation.Scope;
-import pl.sokolak.teamtally.backend.activity.ActivityDto;
-import pl.sokolak.teamtally.backend.activity.ActivityService;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
+import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.admin.activity.ActivityForm;
+import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeForm;
 
 @SpringComponent
 @Scope("prototype")
@@ -28,7 +28,7 @@ import pl.sokolak.teamtally.frontend.admin.activity.ActivityForm;
 public class ScoreboardView extends VerticalLayout {
 
 
-    public ScoreboardView(ActivityService service) {
+    public ScoreboardView(ChallengeService service) {
         addClassName("scoreboard-view");
         add(new H1("HELLO!"));
     }

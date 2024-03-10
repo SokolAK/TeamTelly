@@ -30,3 +30,20 @@ CREATE TABLE IF NOT EXISTS user_role
     id     UUID PRIMARY KEY,
     "name" VARCHAR(15)
 );
+
+CREATE TABLE IF NOT EXISTS participant
+(
+    id  UUID PRIMARY KEY,
+    event_id UUID,
+    user_id UUID
+);
+
+CREATE TABLE IF NOT EXISTS event
+(
+    id       UUID PRIMARY KEY,
+    "name"   VARCHAR(255),
+    "date"   DATE,
+    owner_id UUID,
+
+);
+

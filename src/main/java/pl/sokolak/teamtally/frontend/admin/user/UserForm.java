@@ -15,7 +15,6 @@ public class UserForm extends ThreeButtonsForm<UserDto> {
     private final TextField firstName = new TextField("First name");
     private final TextField lastName = new TextField("Last name");
     private final TextField email = new TextField("Email");
-//    private final TextField role = new TextField("Role");
     private final TextField password = new TextField("Password");
     private final ComboBox<UserRole> role = new ComboBox<>("Role");
 

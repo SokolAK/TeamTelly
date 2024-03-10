@@ -85,7 +85,6 @@ public class UserView extends VerticalLayout {
         grid.addColumn("lastName").setHeader(t("view.user.user.lastName"));
         grid.addColumn("email").setHeader(t("view.user.user.email"));
         grid.addColumn(u -> u.getUserRole() != null ? u.getUserRole().getName() : "NONE").setHeader(t("view.user.user.role"));
-//        grid.addColumn("password");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editUser(event.getValue()));

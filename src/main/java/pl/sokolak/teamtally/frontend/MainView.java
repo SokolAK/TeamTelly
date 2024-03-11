@@ -55,8 +55,6 @@ public class MainView extends AppLayout {
     }
 
     private void addHeaderContent() {
-
-
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         var headerLeft = new HorizontalLayout(new DrawerToggle(), viewTitle);
         headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);

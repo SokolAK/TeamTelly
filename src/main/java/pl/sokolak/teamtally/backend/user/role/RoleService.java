@@ -15,7 +15,9 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public List<UserRole> findAll() {
-        return roleRepository.findAll();
+    public List<UserRoleDto> findAll() {
+        return roleRepository.findAll().stream()
+                .map(UserRoleDto::new)
+                .collect(Collectors.toList());
     }
 }

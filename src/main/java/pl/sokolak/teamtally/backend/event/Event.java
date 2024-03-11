@@ -1,26 +1,27 @@
-package pl.sokolak.teamtally.backend.user.role;
+package pl.sokolak.teamtally.backend.event;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sokolak.teamtally.backend.user.User;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_role", schema = "public")
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRole {
+public class Event {
     @Id
     private UUID id;
     private String name;
+    private LocalDate date;
+    @ManyToOne
+    private User ownerId;
 }

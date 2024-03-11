@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.role.UserRole;
 import pl.sokolak.teamtally.backend.user.UserService;
+import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class RepositoryUserDetailsService implements UserDetailsService {
     private String mapUserRole(UserDto user) {
         return Optional.ofNullable(user)
                 .map(UserDto::getUserRole)
-                .map(UserRole::getName)
+                .map(UserRoleDto::getName)
                 .map(String::toUpperCase)
                 .map(r -> "ROLE_" + r)
                 .orElse("none");

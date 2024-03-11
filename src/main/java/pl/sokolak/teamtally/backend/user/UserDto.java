@@ -3,7 +3,9 @@ package pl.sokolak.teamtally.backend.user;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.user.role.UserRole;
+import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -11,14 +13,14 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-public class UserDto {
+public class UserDto implements Data {
     private UUID id;
     private String username;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-    private UserRole userRole;
+    private UserRoleDto userRole;
 
     public UserDto withoutPassword() {
         return UserDto.builder()
@@ -33,7 +35,7 @@ public class UserDto {
 
     public boolean isAdmin() {
         return Optional.ofNullable(userRole)
-                .map(UserRole::getName)
+                .map(UserRoleDto::getName)
                 .filter(role -> role.equalsIgnoreCase("ADMIN"))
                 .isPresent();
     }

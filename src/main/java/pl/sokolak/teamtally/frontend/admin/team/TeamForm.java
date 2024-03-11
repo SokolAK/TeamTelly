@@ -21,7 +21,7 @@ public class TeamForm extends FormLayout {
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
-    // Other fields omitted
+
     Binder<ChallengeDto> binder = new BeanValidationBinder<>(ChallengeDto.class);
 
     public TeamForm() {
@@ -33,7 +33,6 @@ public class TeamForm extends FormLayout {
     private Component createButtonsLayout() {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-//        close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);

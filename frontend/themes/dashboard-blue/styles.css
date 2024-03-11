@@ -13,7 +13,7 @@
     --dim-grey: dimgrey;
 }
 
-@media all and (max-width: 1500px) {
+@media all and (max-width: 1100px) {
     .challenge-view.editing .challenge-grid,
     .team-view.editing .team-grid,
     .user-view.editing .user-grid,

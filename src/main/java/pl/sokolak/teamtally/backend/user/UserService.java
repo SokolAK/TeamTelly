@@ -1,17 +1,19 @@
 package pl.sokolak.teamtally.backend.user;
 
 import lombok.AllArgsConstructor;
+import pl.sokolak.teamtally.backend.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class UserService {
+public class UserService implements Service<UserDto> {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Override
     public List<UserDto> findAll() {
         return userRepository.findAll().stream()
                 .map(userMapper::toDto)
@@ -23,10 +25,11 @@ public class UserService {
                 .map(userMapper::toDto);
     }
 
-    public void save(UserDto user) {
+    @Override
+    public UserDto save(UserDto user) {
         User entity = userMapper.toEntity(user);
         User savedEntity = userRepository.save(entity);
-        userMapper.toDto(savedEntity);
+        return userMapper.toDto(savedEntity);
     }
 
     public void updateWithoutPassword(UserDto user) {
@@ -37,6 +40,7 @@ public class UserService {
                 .map(userMapper::toDto);
     }
 
+    @Override
     public void delete(UserDto user) {
         User entity = userMapper.toEntity(user);
         userRepository.delete(entity);

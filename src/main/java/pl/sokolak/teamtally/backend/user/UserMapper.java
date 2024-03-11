@@ -1,6 +1,8 @@
 package pl.sokolak.teamtally.backend.user;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pl.sokolak.teamtally.backend.user.role.UserRole;
+import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +16,7 @@ public class UserMapper {
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .userRole(entity.getUserRole())
+                .userRole(new UserRoleDto(entity.getUserRole()))
                 .build();
     }
 
@@ -26,7 +28,7 @@ public class UserMapper {
                 .lastName(dto.getLastName())
                 .email(dto.getEmail())
                 .password(encodePassword(dto.getPassword()))
-                .userRole(dto.getUserRole())
+                .userRole(new UserRole(dto.getUserRole().getId(), dto.getUserRole().getName()))
                 .build();
     }
 
@@ -37,7 +39,7 @@ public class UserMapper {
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .email(dto.getEmail())
-                .userRole(dto.getUserRole())
+                .userRole(new UserRole(dto.getUserRole().getId(), dto.getUserRole().getName()))
                 .password(password)
                 .build();
     }

@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS event
     id       UUID PRIMARY KEY,
     "name"   VARCHAR(255),
     "date"   DATE,
-    owner_id UUID,
-
+    owner_id UUID
 );
 

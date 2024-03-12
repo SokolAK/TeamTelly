@@ -8,7 +8,7 @@ public class EventMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .date(entity.getDate())
-                .ownerId(entity.getOwnerId())
+                .owner(entity.getOwner())
                 .build();
     }
 
@@ -17,7 +17,7 @@ public class EventMapper {
                 .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
                 .name(dto.getName())
                 .date(dto.getDate())
-                .ownerId(dto.getOwnerId())
+                .owner(dto.getOwner())
                 .build();
     }
 }

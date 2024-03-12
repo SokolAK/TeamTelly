@@ -19,7 +19,6 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
     protected Grid<T> grid;
     protected Service<T> service;
     protected AbstractForm form;
-    private Function<Data, Data> formDataExtractor = Function.identity();
 
     public AbstractView() {
     }
@@ -52,18 +51,18 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
         return toolbar;
     }
 
-    protected void setFormDataExtractor(Function<Data,Data> extractor) {
-        this.formDataExtractor = extractor;
-    }
-
     protected void editData(Data data) {
         if (data == null) {
             closeEditor();
         } else {
-            form.setData(formDataExtractor.apply(data));
+            form.setData(convertToFormData(data));
             form.setVisible(true);
             addClassName("editing");
         }
+    }
+
+    protected Data convertToFormData(Data data) {
+        return data;
     }
 
     protected void closeEditor() {
@@ -78,9 +77,13 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
     }
 
     protected void saveData(SaveEvent event) {
-        service.save((T) event.getData());
+        saveOrUpdateData(event);
         updateList();
         closeEditor();
+    }
+
+    protected void saveOrUpdateData(SaveEvent event) {
+        service.save((T) event.getData());
     }
 
     protected void deleteData(DeleteEvent event) {

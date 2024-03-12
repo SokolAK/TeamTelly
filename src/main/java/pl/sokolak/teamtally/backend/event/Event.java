@@ -23,5 +23,5 @@ public class Event {
     private String name;
     private LocalDate date;
     @ManyToOne
-    private User ownerId;
+    private User owner;
 }

@@ -19,5 +19,5 @@ public class EventDto implements Data {
     private String name;
     private LocalDate date;
     @ManyToOne
-    private User ownerId;
+    private User owner;
 }

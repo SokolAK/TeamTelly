@@ -12,6 +12,7 @@ import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
+import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
 import java.util.function.Function;
 
@@ -34,7 +35,6 @@ public class UserView extends AbstractView<UserDto> {
         configureGrid();
         configureView();
         updateList();
-        setFormDataExtractor(data -> ((UserDto) data).withoutPassword());
     }
 
     @Override
@@ -60,5 +60,28 @@ public class UserView extends AbstractView<UserDto> {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 editData(event.getValue()));
+    }
+
+    @Override
+    protected Data convertToFormData(Data data) {
+        return ((UserDto) data).withoutPassword();
+    }
+
+    @Override
+    protected void saveOrUpdateData(SaveEvent event) {
+        UserDto userDto = getUserDto(event);
+        if(userDto.getPassword().isEmpty()) {
+            updateData(userDto);
+        } else {
+            service.save(userDto);
+        }
+    }
+
+    private UserDto getUserDto(SaveEvent event){
+        return ((UserDto) event.getData());
+    }
+
+    private void updateData(UserDto userDto) {
+        ((UserService) service).updateWithoutPassword(userDto);
     }
 }

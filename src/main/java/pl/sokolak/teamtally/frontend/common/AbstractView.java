@@ -7,9 +7,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.Service;
-import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
-import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.admin.event.DeleteEvent;
+import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
 
 import java.util.List;
 

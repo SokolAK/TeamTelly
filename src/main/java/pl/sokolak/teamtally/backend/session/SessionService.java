@@ -25,38 +25,51 @@ public class SessionService {
         UserDto authenticatedUser = securityService.getAuthenticatedUser();
         List<ParticipantDto> participants = getParticipants(authenticatedUser);
         List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
-        EventDto event = getFirst(participantsOngoingEvents);
+
+        EventDto event = Optional.ofNullable(sessionContext.getEvent())
+                .orElseGet(() -> getLast(participantsOngoingEvents));
         ParticipantDto participant = getParticipant(participants, event);
 
         sessionContext.setEvent(event);
+        sessionContext.setEvents(participantsOngoingEvents);
         sessionContext.setParticipant(participant);
+    }
+
+    public void reinit(EventDto event) {
+        sessionContext.setEvent(event);
+        init();
     }
 
     public UserDto getUser() {
         return securityService.getAuthenticatedUser();
     }
 
+    public List<EventDto> getEvents() {
+        return sessionContext.getEvents();
+    }
+
     public EventDto getEvent() {
         return sessionContext.getEvent();
     }
 
+    public boolean hasEvent() {
+        return sessionContext.getEvent() != null;
+    }
+
     public String getEventName() {
-        return Optional.ofNullable(sessionContext)
-                .map(SessionContext::getEvent)
+        return Optional.ofNullable(sessionContext.getEvent())
                 .map(EventDto::getName)
                 .orElse(null);
     }
 
     public LocalDate getEventStartDate() {
-        return Optional.ofNullable(sessionContext)
-                .map(SessionContext::getEvent)
+        return Optional.ofNullable(sessionContext.getEvent())
                 .map(EventDto::getStartDate)
                 .orElse(null);
     }
 
     public LocalDate getEventEndDate() {
-        return Optional.ofNullable(sessionContext)
-                .map(SessionContext::getEvent)
+        return Optional.ofNullable(sessionContext.getEvent())
                 .map(EventDto::getEndDate)
                 .orElse(null);
     }
@@ -76,8 +89,8 @@ public class SessionService {
                 .collect(Collectors.toList());
     }
 
-    private EventDto getFirst(List<EventDto> events) {
-        return events.stream().min(Comparator.comparing(EventDto::getName)).orElse(null);
+    private EventDto getLast(List<EventDto> events) {
+        return events.stream().max(Comparator.comparing(EventDto::getName)).orElse(null);
     }
 
     private static ParticipantDto getParticipant(List<ParticipantDto> participants, EventDto event) {

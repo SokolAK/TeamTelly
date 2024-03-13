@@ -10,18 +10,6 @@ vaadin-side-nav-item > vaadin-icon {
     color: white;
 }
 
-.event-name {
-    font-family: Arial, serif;
-    font-size: x-large;
-    color: white;
-    margin: auto;
-    padding-top: 20px;
-}
-
-.event-date {
-    font-family: Arial, serif;
-    font-size: medium;
-    color: white;
-    margin: auto;
-    padding-bottom: 50px;
+.scroller {
+    padding-top: 30px;
 }

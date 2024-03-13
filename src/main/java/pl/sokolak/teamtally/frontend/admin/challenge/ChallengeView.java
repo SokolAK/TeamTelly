@@ -12,7 +12,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
-import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
 
 import java.util.List;
 

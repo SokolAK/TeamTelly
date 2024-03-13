@@ -1,0 +1,38 @@
+.event-name {
+    font-family: Arial, serif;
+    font-size: xx-large;
+    color: white;
+    margin: auto;
+    padding-top: 10px;
+}
+
+.event-date {
+    font-family: Arial, serif;
+    font-size: large;
+    color: white;
+    margin: auto;
+    /*padding-bottom: 10px;*/
+}
+
+.event-combo {
+    --vaadin-input-field-value-color: white;
+    --vaadin-input-field-background: var(--blue);
+    --vaadin-input-field-hover-highlight: var(--blue);
+    --vaadin-input-field-hover-highlight-opacity: 0.1;
+    /*--vaadin-input-field-value-font-size: x-large;*/
+    --vaadin-input-field-placeholder-color: white;
+    --vaadin-input-field-icon-color: white;
+    margin-right: auto;
+    margin-left: 40px;
+    text-align: center;
+}
+
+vaadin-combo-box > input {
+    text-align: center;
+    caret-color: transparent;
+    cursor: pointer;
+}
+
+vaadin-combo-box::part(toggle-button) {
+    visibility: hidden
+}

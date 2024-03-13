@@ -9,7 +9,11 @@ INSERT INTO "user" (id, username, first_name, last_name, email, user_role_id, "p
 VALUES (gen_random_uuid(), 'adi', 'Adam', 'Adamowski', 'admin@gmail.com', (SELECT id FROM user_role WHERE name = 'admin'),
         '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
        (gen_random_uuid(), 'ursza', 'Urszula', 'Urszulska', 'user@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
-        '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6');
+        '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
+       (gen_random_uuid(), 'barb', 'Barbara', 'Barbarska', 'barbara.barbarska@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
+        '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
+        (gen_random_uuid(), 'celin', 'Celina', 'Celińska', 'celina.celinska@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
+         '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6');
 
 
 INSERT INTO event (id, "name", start_date, end_date, owner_id)
@@ -25,4 +29,8 @@ VALUES (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'
 
 
 INSERT INTO participant (id, event_id, user_id)
-VALUES (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com'))
+VALUES (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
+       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
+       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
+       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
+       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'celina.celinska@gmail.com'));

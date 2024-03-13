@@ -10,9 +10,9 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.backend.Data;
-import pl.sokolak.teamtally.frontend.common.event.CloseEvent;
-import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
-import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.admin.event.CloseEvent;
+import pl.sokolak.teamtally.frontend.admin.event.DeleteEvent;
+import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
 
 public abstract class AbstractForm extends FormLayout {
 

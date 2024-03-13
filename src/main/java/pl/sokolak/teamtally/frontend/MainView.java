@@ -1,9 +1,11 @@
 package pl.sokolak.teamtally.frontend;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,8 +14,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.user.UserDto;
@@ -21,23 +26,37 @@ import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.admin.event.EventView;
 import pl.sokolak.teamtally.frontend.admin.team.TeamView;
 import pl.sokolak.teamtally.frontend.admin.user.UserView;
+import pl.sokolak.teamtally.frontend.other.NoEventsView;
 import pl.sokolak.teamtally.frontend.scoreboard.ScoreboardView;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 
-public class MainView extends AppLayout {
+public class MainView extends AppLayout implements BeforeEnterObserver {
 
     private final SecurityService securityService;
     private final SessionService sessionService;
-    private UserDto user;
     private final H2 viewTitle = new H2();
 
     public MainView(SecurityService securityService, SessionService sessionService) {
         this.securityService = securityService;
         this.sessionService = sessionService;
         init();
+    }
+
+    private void init() {
+        sessionService.init();
+        setPrimarySection(Section.DRAWER);
+        addDrawerContent();
+        addHeaderContent();
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (!sessionService.hasEvent()) {
+            event.rerouteTo(NoEventsView.class);
+        }
     }
 
     public void reload() {
@@ -47,16 +66,14 @@ public class MainView extends AppLayout {
         setContent(content);
     }
 
-    private void init() {
-        sessionService.init();
-        this.user = sessionService.getUser();
-        setPrimarySection(Section.DRAWER);
-        addDrawerContent();
-        addHeaderContent();
+    public void reload(EventDto event) {
+        sessionService.reinit(event);
+        UI.getCurrent().getPage().reload();
     }
 
     private void addDrawerContent() {
         Scroller scroller = new Scroller(createNavigation());
+        scroller.addClassName("scroller");
         Image logo = new Image("assets/logo.png", "Team Tally");
         logo.addClassName("logo-small");
 
@@ -71,16 +88,34 @@ public class MainView extends AppLayout {
             eventDate = new H2(eventStartDate + " - " + eventEndDate);
         }
         eventDate.addClassName("event-date");
+        ComboBox<EventDto> events = new ComboBox<>();
+        events.setItems(sessionService.getEvents());
 
-        addToDrawer(logo, eventName, eventDate, scroller, createFooter());
+        events.setPlaceholder("change event");
+        events.setItemLabelGenerator(EventDto::getName);
+        events.addValueChangeListener(selection -> reload(selection.getValue()));
+        events.addClassName("event-combo");
+        events.addClassName("disable-selection");
+        events.addClassName("disable-caret");
+
+
+        addToDrawer(logo);
+        if (sessionService.hasEvent()) {
+            addToDrawer(eventName, eventDate);
+        }
+        if (sessionService.getEvents().size() > 1) {
+            addToDrawer(events);
+        }
+        addToDrawer(scroller, createFooter());
     }
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
-        nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
+        if (sessionService.hasEvent()) {
+            nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
+        }
 
-        if (user.isAdmin()) {
-            nav.addItem(new SideNavItem(" "));
+        if (sessionService.getUser().isAdmin()) {
             nav.addItem(new SideNavItem(" "));
             nav.addItem(new SideNavItem("Admin area"));
             nav.addItem(new SideNavItem("Events", EventView.class, VaadinIcon.STAR.create()));
@@ -114,7 +149,7 @@ public class MainView extends AppLayout {
     }
 
     private Component createUserNameField() {
-        return new H5(user.getUsername());
+        return new H5(sessionService.getUser().getUsername());
     }
 
     private Button createLogoutButton() {
@@ -123,7 +158,9 @@ public class MainView extends AppLayout {
 
     private Footer createFooter() {
         Footer layout = new Footer();
-
+        H3 version = new H3("v. 0.1.0");
+        version.addClassName("version");
+        layout.add(version);
         return layout;
     }
 

@@ -3,7 +3,7 @@ vaadin-app-layout::part(drawer) {
 }
 
 vaadin-app-layout::part(navbar) {
-    font-family: Arial;
+    font-family: Arial, serif;
     color: dimgrey;
     background-color: var(--very-light-grey);
 }

@@ -13,7 +13,7 @@ import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
-import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
 
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 

@@ -4,6 +4,8 @@
 @import 'sidenav.css';
 @import 'applayout.css';
 @import 'header.css';
+@import 'footer.css';
+@import 'event-info.css';
 
 :root {
     /*--blue: #1a69a8;*/

@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.common.event;
+package pl.sokolak.teamtally.frontend.admin.event;
 
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
 

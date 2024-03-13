@@ -7,12 +7,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.Service;
-import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
-import pl.sokolak.teamtally.backend.user.UserDto;
+import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-import java.util.function.Function;
+import java.util.List;
 
 public abstract class AbstractView<T extends Data> extends VerticalLayout {
 
@@ -42,7 +41,7 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
         return content;
     }
 
-    private Component getToolbar() {
+    protected Component getToolbar() {
         Button addDataButton = new Button("Add");
         addDataButton.addClickListener(click -> addData());
 
@@ -71,19 +70,41 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
         removeClassName("editing");
     }
 
-    private void addData() {
+    protected void addData() {
         grid.asSingleSelect().clear();
-        editData(ChallengeDto.builder().build());
+        editData(emptyData());
+    }
+
+    protected abstract T emptyData();
+
+    protected void saveOrUpdateData(SaveEvent event) {
+        if (shouldUpdate(event)) {
+            updateData(event);
+        } else {
+            saveData(event);
+        }
+        updateList();
+        closeEditor();
+
+        if(shouldReloadAppLayoutOnSaveOrUpdate()) {
+            ReloadService.reloadAppLayout();
+        }
+    }
+
+    protected boolean shouldReloadAppLayoutOnSaveOrUpdate() {
+        return false;
+    }
+
+    protected boolean shouldUpdate(SaveEvent event) {
+        return false;
     }
 
     protected void saveData(SaveEvent event) {
-        saveOrUpdateData(event);
-        updateList();
-        closeEditor();
+        service.save((T) event.getData());
     }
 
-    protected void saveOrUpdateData(SaveEvent event) {
-        service.save((T) event.getData());
+    protected void updateData(SaveEvent event) {
+        saveData(event);
     }
 
     protected void deleteData(DeleteEvent event) {
@@ -93,6 +114,10 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
     }
 
     protected void updateList() {
-        grid.setItems(service.findAll());
+        grid.setItems(fetchData());
+    }
+
+    protected List<T> fetchData() {
+        return service.findAll();
     }
 }

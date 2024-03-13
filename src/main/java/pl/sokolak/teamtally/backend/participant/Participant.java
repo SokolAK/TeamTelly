@@ -1,15 +1,18 @@
-package pl.sokolak.teamtally.backend.event;
+package pl.sokolak.teamtally.backend.participant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.user.User;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,12 +20,11 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class Participant {
     @Id
     private UUID id;
-    private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
     @ManyToOne
-    private User owner;
+    private Event event;
+    @ManyToOne
+    private User user;
 }

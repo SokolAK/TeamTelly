@@ -2,6 +2,8 @@ package pl.sokolak.teamtally.backend.challenge;
 
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
+import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.event.EventMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,5 +32,11 @@ public class ChallengeService implements Service<ChallengeDto> {
     public void delete(ChallengeDto challenge) {
         Challenge entity = challengeMapper.toEntity(challenge);
         challengeRepository.delete(entity);
+    }
+
+    public List<ChallengeDto> findAllByEvent(EventDto event) {
+        return challengeRepository.findAllByEvent(new EventMapper().toEntity(event)).stream()
+                .map(challengeMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

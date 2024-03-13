@@ -1,19 +1,3 @@
-CREATE TABLE IF NOT EXISTS challenge
-(
-    id              UUID PRIMARY KEY,
-    "name"          VARCHAR(255),
-    personal_points INTEGER,
-    team_points     INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS team
-(
-    id     UUID PRIMARY KEY,
-    "name" VARCHAR(255) UNIQUE,
-    color  VARCHAR(6) UNIQUE,
-    icon   VARCHAR(4) UNIQUE
-);
-
 CREATE TABLE IF NOT EXISTS user_role
 (
     id     UUID PRIMARY KEY,
@@ -33,10 +17,28 @@ CREATE TABLE IF NOT EXISTS "user"
 
 CREATE TABLE IF NOT EXISTS event
 (
-    id       UUID PRIMARY KEY,
-    "name"   VARCHAR(255),
-    "date"   DATE,
-    owner_id UUID references "user" (id)
+    id         UUID PRIMARY KEY,
+    "name"     VARCHAR(255),
+    start_date DATE,
+    end_date   DATE,
+    owner_id   UUID references "user" (id)
+);
+
+CREATE TABLE IF NOT EXISTS challenge
+(
+    id              UUID PRIMARY KEY,
+    "name"          VARCHAR(255),
+    personal_points INTEGER,
+    team_points     INTEGER,
+    event_id        UUID references event (id)
+);
+
+CREATE TABLE IF NOT EXISTS team
+(
+    id     UUID PRIMARY KEY,
+    "name" VARCHAR(255) UNIQUE,
+    color  VARCHAR(6) UNIQUE,
+    icon   VARCHAR(4) UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS participant
@@ -45,4 +47,3 @@ CREATE TABLE IF NOT EXISTS participant
     event_id UUID references event (id),
     user_id  UUID references "user" (id)
 );
-

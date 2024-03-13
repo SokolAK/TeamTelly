@@ -1,5 +1,7 @@
 package pl.sokolak.teamtally.backend.challenge;
 
+import pl.sokolak.teamtally.backend.event.EventMapper;
+
 import java.util.UUID;
 
 public class ChallengeMapper {
@@ -9,6 +11,7 @@ public class ChallengeMapper {
                 .name(entity.getName())
                 .personalPoints(entity.getPersonalPoints())
                 .teamPoints(entity.getTeamPoints())
+                .event(new EventMapper().toDto(entity.getEvent()))
                 .build();
     }
 
@@ -18,6 +21,7 @@ public class ChallengeMapper {
                 .name(dto.getName())
                 .personalPoints(dto.getPersonalPoints())
                 .teamPoints(dto.getTeamPoints())
+                .event(new EventMapper().toEntity(dto.getEvent()))
                 .build();
     }
 }

@@ -11,6 +11,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.team.TeamDto;
@@ -18,7 +19,7 @@ import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.frontend.MainView;
 
 @SpringComponent
-@Scope("prototype")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RolesAllowed("ADMIN")
 @Route(value = "teams", layout = MainView.class)
 @PageTitle("Teams")

@@ -5,6 +5,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.user.UserDto;
@@ -14,12 +15,10 @@ import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-import java.util.function.Function;
-
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
 @SpringComponent
-@Scope("prototype")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RolesAllowed("ADMIN")
 @Route(value = "users", layout = MainView.class)
 @PageTitle("Users")
@@ -41,7 +40,7 @@ public class UserView extends AbstractView<UserDto> {
     protected void configureForm() {
         form = new UserForm(roleService.findAll());
         form.setWidth("25em");
-        form.addSaveListener(this::saveData);
+        form.addSaveListener(this::saveOrUpdateData);
         form.addDeleteListener(this::deleteData);
         form.addCloseListener(e -> closeEditor());
     }
@@ -52,7 +51,6 @@ public class UserView extends AbstractView<UserDto> {
         grid.addClassNames("user-grid");
         grid.setColumns();
         grid.addColumn("username").setHeader(t("view.user.user.username"));
-        ;
         grid.addColumn("firstName").setHeader(t("view.user.user.firstName"));
         grid.addColumn("lastName").setHeader(t("view.user.user.lastName"));
         grid.addColumn("email").setHeader(t("view.user.user.email"));
@@ -68,20 +66,23 @@ public class UserView extends AbstractView<UserDto> {
     }
 
     @Override
-    protected void saveOrUpdateData(SaveEvent event) {
-        UserDto userDto = getUserDto(event);
-        if(userDto.getPassword().isEmpty()) {
-            updateData(userDto);
-        } else {
-            service.save(userDto);
-        }
+    protected UserDto emptyData() {
+        return UserDto.builder().build();
     }
 
-    private UserDto getUserDto(SaveEvent event){
-        return ((UserDto) event.getData());
+    @Override
+    protected boolean shouldUpdate(SaveEvent event) {
+        return ((UserDto) event.getData()).getPassword().isEmpty();
     }
 
-    private void updateData(UserDto userDto) {
+    @Override
+    protected void updateData(SaveEvent event) {
+        UserDto userDto = (UserDto) event.getData();
         ((UserService) service).updateWithoutPassword(userDto);
+    }
+
+    @Override
+    protected boolean shouldReloadAppLayoutOnSaveOrUpdate() {
+        return true;
     }
 }

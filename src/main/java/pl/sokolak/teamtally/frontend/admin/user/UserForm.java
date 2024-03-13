@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.frontend.admin.user;
 
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -14,7 +15,7 @@ public class UserForm extends AbstractForm {
     private final TextField username = new TextField("Username");
     private final TextField firstName = new TextField("First name");
     private final TextField lastName = new TextField("Last name");
-    private final TextField email = new TextField("Email");
+    private final EmailField email = new EmailField("Email");
     private final TextField password = new TextField("Password");
     private final ComboBox<UserRoleDto> role = new ComboBox<>("Role");
 

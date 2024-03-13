@@ -1,5 +1,7 @@
 package pl.sokolak.teamtally.backend.event;
 
+import pl.sokolak.teamtally.backend.user.UserMapper;
+
 import java.util.UUID;
 
 public class EventMapper {
@@ -7,8 +9,9 @@ public class EventMapper {
         return EventDto.builder()
                 .id(entity.getId())
                 .name(entity.getName())
-                .date(entity.getDate())
-                .owner(entity.getOwner())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .owner(new UserMapper().toDto(entity.getOwner()))
                 .build();
     }
 
@@ -16,8 +19,9 @@ public class EventMapper {
         return Event.builder()
                 .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
                 .name(dto.getName())
-                .date(dto.getDate())
-                .owner(dto.getOwner())
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .owner(new UserMapper().toEntity(dto.getOwner()))
                 .build();
     }
 }

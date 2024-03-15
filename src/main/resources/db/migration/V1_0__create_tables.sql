@@ -24,13 +24,26 @@ CREATE TABLE IF NOT EXISTS event
     owner_id   UUID references "user" (id)
 );
 
+CREATE TABLE IF NOT EXISTS tag
+(
+    id     UUID PRIMARY KEY,
+    "name" VARCHAR(63)
+);
+
 CREATE TABLE IF NOT EXISTS challenge
 (
-    id              UUID PRIMARY KEY,
-    "name"          VARCHAR(255),
-    personal_points INTEGER,
-    team_points     INTEGER,
-    event_id        UUID references event (id)
+    id                    UUID PRIMARY KEY,
+    "name"                VARCHAR(255),
+    personal_points       INTEGER,
+    team_points           INTEGER,
+    event_id              UUID references event (id)
+);
+
+CREATE TABLE IF NOT EXISTS challenge_tag
+(
+    id           UUID PRIMARY KEY,
+    challenge_id UUID references challenge (id),
+    tag_id       UUID references tag (id)
 );
 
 CREATE TABLE IF NOT EXISTS team

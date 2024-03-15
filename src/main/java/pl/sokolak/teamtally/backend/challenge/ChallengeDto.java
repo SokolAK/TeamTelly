@@ -1,11 +1,11 @@
 package pl.sokolak.teamtally.backend.challenge;
 
-import jakarta.persistence.ManyToOne;
 import lombok.*;
 import pl.sokolak.teamtally.backend.Data;
-import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.tag.TagDto;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,6 +17,6 @@ public class ChallengeDto implements Data {
     private String name;
     private Integer personalPoints;
     private Integer teamPoints;
-    @ManyToOne
     private EventDto event;
+    private List<TagDto> tags;
 }

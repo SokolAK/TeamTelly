@@ -12,7 +12,7 @@ import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.common.AbstractView;
+import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
 import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
 
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
@@ -22,7 +22,7 @@ import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 @RolesAllowed("ADMIN")
 @Route(value = "users", layout = MainView.class)
 @PageTitle("Users")
-public class UserView extends AbstractView<UserDto> {
+public class UserView extends AbstractViewWithForm<UserDto> {
 
     private final RoleService roleService;
 

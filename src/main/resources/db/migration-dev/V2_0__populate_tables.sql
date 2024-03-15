@@ -21,11 +21,25 @@ VALUES (gen_random_uuid(), 'Ziflow Meeting', '2024-03-12', '2024-06-13', (SELECT
        (gen_random_uuid(), 'BMS Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));
 
 
-INSERT INTO challenge (id, "event_id", "name", personal_points, team_points)
-VALUES (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), 'joga', 10, 0),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), 'basketball', 15, 30),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'BMS Meeting'), 'beer', 5, 5),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'BMS Meeting'), 'vodka', 40, 40);
+INSERT INTO tag (id, "name")
+VALUES (gen_random_uuid(), 'sport'),
+       (gen_random_uuid(), 'openair'),
+       (gen_random_uuid(), 'bob');
+
+
+INSERT INTO challenge (id, "name", personal_points, team_points, event_id)
+VALUES (gen_random_uuid(), 'joga', 10, 0,           (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'basketball', 15, 30,    (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'add bob photo', 15, 30, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'beer', 5, 5,            (SELECT id FROM "event" WHERE name = 'BMS Meeting')),
+       (gen_random_uuid(), 'vodka', 40, 40,         (SELECT id FROM "event" WHERE name = 'BMS Meeting'));
+
+
+INSERT INTO challenge_tag (id, challenge_id, tag_id)
+VALUES (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'joga'), (SELECT id FROM tag WHERE name = 'sport')),
+       (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'basketball'), (SELECT id FROM tag WHERE name = 'sport')),
+       (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'basketball'), (SELECT id FROM tag WHERE name = 'openair')),
+       (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'add bob photo'), (SELECT id FROM tag WHERE name = 'bob'));
 
 
 INSERT INTO participant (id, event_id, user_id)

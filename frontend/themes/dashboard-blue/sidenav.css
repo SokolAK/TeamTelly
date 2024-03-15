@@ -13,3 +13,7 @@ vaadin-side-nav-item > vaadin-icon {
 .scroller {
     padding-top: 30px;
 }
+
+.side-nav-label {
+    font-size: x-large;
+}

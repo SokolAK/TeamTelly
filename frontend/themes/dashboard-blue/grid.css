@@ -1,11 +1,21 @@
 vaadin-grid::part(row) {
     --vaadin-grid-cell-background: white;
+    border: 1px solid var(--very-light-grey);
 }
 
 vaadin-grid::part(row):hover {
     --vaadin-grid-cell-background: #DDE8F7;
 }
 
-/*vaadin-grid {*/
-/*    max-width: 1500px;*/
-/*}*/
+vaadin-grid::part(selected-row) {
+    --vaadin-grid-cell-background: white;
+}
+
+.challenge-grid::part(header-cell) {
+    display: none;
+}
+
+vaadin-grid-cell-content {
+    margin: 0;
+    padding: 0;
+}

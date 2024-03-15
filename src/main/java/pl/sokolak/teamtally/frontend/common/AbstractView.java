@@ -14,103 +14,47 @@ import java.util.List;
 
 public abstract class AbstractView<T extends Data> extends VerticalLayout {
 
+    protected HorizontalLayout toolbar;
     protected Grid<T> grid;
     protected Service<T> service;
-    protected AbstractForm form;
 
     public AbstractView() {
     }
 
-    protected abstract void configureForm();
+    protected void init() {
+        configureToolbar();
+        configureGrid();
+        configureView();
+        updateList();
+    }
+
+    protected abstract void configureToolbar();
 
     protected abstract void configureGrid();
 
     protected void configureView() {
         setSizeFull();
         add(getToolbar(), getContent());
-        closeEditor();
     }
 
-    private HorizontalLayout getContent() {
-        HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(5, grid);
-        content.setFlexGrow(1, form);
+    private VerticalLayout getContent() {
+        VerticalLayout content = new VerticalLayout();
+        if (toolbar != null) {
+            content.add(toolbar);
+        }
+        content.add(grid);
         content.addClassNames("content");
         content.setSizeFull();
         return content;
     }
 
     protected Component getToolbar() {
-        Button addDataButton = new Button("Add");
-        addDataButton.addClickListener(click -> addData());
 
-        var toolbar = new HorizontalLayout(addDataButton);
+        var toolbar = new HorizontalLayout();
         toolbar.addClassName("toolbar");
         return toolbar;
     }
 
-    protected void editData(Data data) {
-        if (data == null) {
-            closeEditor();
-        } else {
-            form.setData(convertToFormData(data));
-            form.setVisible(true);
-            addClassName("editing");
-        }
-    }
-
-    protected Data convertToFormData(Data data) {
-        return data;
-    }
-
-    protected void closeEditor() {
-        form.setData(null);
-        form.setVisible(false);
-        removeClassName("editing");
-    }
-
-    protected void addData() {
-        grid.asSingleSelect().clear();
-        editData(emptyData());
-    }
-
-    protected abstract T emptyData();
-
-    protected void saveOrUpdateData(SaveEvent event) {
-        if (shouldUpdate(event)) {
-            updateData(event);
-        } else {
-            saveData(event);
-        }
-        updateList();
-        closeEditor();
-
-        if(shouldReloadAppLayoutOnSaveOrUpdate()) {
-            ReloadService.reloadAppLayout();
-        }
-    }
-
-    protected boolean shouldReloadAppLayoutOnSaveOrUpdate() {
-        return false;
-    }
-
-    protected boolean shouldUpdate(SaveEvent event) {
-        return false;
-    }
-
-    protected void saveData(SaveEvent event) {
-        service.save((T) event.getData());
-    }
-
-    protected void updateData(SaveEvent event) {
-        saveData(event);
-    }
-
-    protected void deleteData(DeleteEvent event) {
-        service.delete((T) event.getData());
-        updateList();
-        closeEditor();
-    }
 
     protected void updateList() {
         grid.setItems(fetchData());

@@ -21,7 +21,6 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
-import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.admin.event.EventView;
 import pl.sokolak.teamtally.frontend.admin.team.TeamView;
@@ -113,11 +112,15 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         SideNav nav = new SideNav();
         if (sessionService.hasEvent()) {
             nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
+            nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
+//            nav.addItem(new SideNavItem("Teams", ChallengeView.class, VaadinIcon.USERS.create()));
         }
 
         if (sessionService.getUser().isAdmin()) {
             nav.addItem(new SideNavItem(" "));
-            nav.addItem(new SideNavItem("Admin area"));
+            SideNavItem adminAreaLabel = new SideNavItem("Admin area");
+            adminAreaLabel.addClassName("side-nav-label");
+            nav.addItem(adminAreaLabel);
             nav.addItem(new SideNavItem("Events", EventView.class, VaadinIcon.STAR.create()));
             nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
             nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));

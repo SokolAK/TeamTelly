@@ -5,22 +5,23 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.common.AbstractView;
+import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
 
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@PermitAll
+@RolesAllowed("ADMIN")
 @Route(value = "/event", layout = MainView.class)
 @PageTitle("Event")
-public class EventView extends AbstractView<EventDto> {
+public class EventView extends AbstractViewWithForm<EventDto> {
 
     private final SecurityService securityService;
 

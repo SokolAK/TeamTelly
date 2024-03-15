@@ -6,6 +6,7 @@
 @import 'header.css';
 @import 'footer.css';
 @import 'event-info.css';
+@import 'challenge.css';
 
 :root {
     /*--blue: #1a69a8;*/
@@ -30,10 +31,10 @@ html {
     --vaadin-button-text-color: var(--dim-grey);
 }
 
-.team-grid {
-    max-width: 200px;
-    min-width: 0;
-}
+/*.challenge-grid {*/
+/*    max-width: 350px;*/
+/*    min-width: 0;*/
+/*}*/
 
 
 

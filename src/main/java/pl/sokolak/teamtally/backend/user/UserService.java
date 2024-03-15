@@ -1,5 +1,6 @@
 package pl.sokolak.teamtally.backend.user;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
 
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Transactional
 public class UserService implements Service<UserDto> {
 
     private final UserRepository userRepository;

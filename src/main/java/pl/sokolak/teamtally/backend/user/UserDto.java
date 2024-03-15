@@ -4,10 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.sokolak.teamtally.backend.Data;
-import pl.sokolak.teamtally.backend.user.role.UserRole;
+import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -21,6 +22,7 @@ public class UserDto implements Data {
     private String email;
     private String password;
     private UserRoleDto userRole;
+    private Set<ParticipantDto> participants;
 
     public UserDto withoutPassword() {
         return UserDto.builder()

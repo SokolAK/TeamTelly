@@ -1,12 +1,15 @@
 package pl.sokolak.teamtally.backend.user;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pl.sokolak.teamtally.backend.participant.ParticipantMapper;
 import pl.sokolak.teamtally.backend.user.role.UserRole;
 import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Transactional
 public class UserMapper {
     public UserDto toDto(User entity) {
         return UserDto.builder()
@@ -17,10 +20,12 @@ public class UserMapper {
                 .email(entity.getEmail())
                 .password(entity.getPassword())
                 .userRole(new UserRoleDto(entity.getUserRole()))
+                .participants(new ParticipantMapper().toDtosWithoutUser(entity.getParticipants()))
                 .build();
     }
 
     public User toEntity(UserDto dto) {
+        if(dto == null) return null;
         return User.builder()
                 .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
                 .username(dto.getUsername())
@@ -29,6 +34,7 @@ public class UserMapper {
                 .email(dto.getEmail())
                 .password(encodePassword(dto.getPassword()))
                 .userRole(new UserRole(dto.getUserRole().getId(), dto.getUserRole().getName()))
+                .participants(new ParticipantMapper().toEntitiesWithoutUser(dto.getParticipants()))
                 .build();
     }
 

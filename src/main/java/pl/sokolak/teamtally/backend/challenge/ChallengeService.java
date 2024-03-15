@@ -1,5 +1,6 @@
 package pl.sokolak.teamtally.backend.challenge;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
 import pl.sokolak.teamtally.backend.event.EventDto;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Transactional
 public class ChallengeService implements Service<ChallengeDto> {
 
     private final ChallengeRepository challengeRepository;

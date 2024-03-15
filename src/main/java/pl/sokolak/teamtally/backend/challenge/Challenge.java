@@ -24,7 +24,7 @@ public class Challenge {
     private Integer teamPoints;
     @ManyToOne
     private Event event;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "challenge_tag",
             joinColumns = @JoinColumn(name = "challenge_id"),

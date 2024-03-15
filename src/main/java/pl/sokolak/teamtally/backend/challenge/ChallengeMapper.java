@@ -1,10 +1,12 @@
 package pl.sokolak.teamtally.backend.challenge;
 
+import jakarta.transaction.Transactional;
 import pl.sokolak.teamtally.backend.event.EventMapper;
 import pl.sokolak.teamtally.backend.tag.TagMapper;
 
 import java.util.UUID;
 
+@Transactional
 public class ChallengeMapper {
     public ChallengeDto toDto(Challenge entity) {
         return ChallengeDto.builder()

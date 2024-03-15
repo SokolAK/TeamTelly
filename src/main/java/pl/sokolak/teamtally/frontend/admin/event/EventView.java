@@ -4,7 +4,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -38,7 +37,6 @@ public class EventView extends AbstractViewWithForm<EventDto> {
     @Override
     protected void configureForm() {
         form = new EventForm();
-        form.setWidth("25em");
         form.addSaveListener(this::saveOrUpdateData);
         form.addDeleteListener(this::deleteData);
         form.addCloseListener(e -> closeEditor());

@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.user.role.UserRole;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,4 +27,6 @@ public class User {
     private String password;
     @ManyToOne
     private UserRole userRole;
+    @OneToMany(mappedBy = "user")
+    private Set<Participant> participants;
 }

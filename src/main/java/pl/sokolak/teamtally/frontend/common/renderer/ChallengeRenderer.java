@@ -37,7 +37,7 @@ public class ChallengeRenderer {
     public static Renderer<ChallengeDto> create(List<UUID> completedPersonal, List<UUID> completedTeam) {
         return LitRenderer.<ChallengeDto>of(
                         "<vaadin-horizontal-layout style='align-items:center;'>"
-                                + "<vaadin-vertical-layout style='padding: 10px'>"
+                                + "<vaadin-vertical-layout>"
                                 + "<h3>${item.name}</h3>"
                                 + "<vaadin-horizontal-layout style='align-items:start' theme='spacing'>"
                                 + "  <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>"
@@ -49,7 +49,7 @@ public class ChallengeRenderer {
                                 + "${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}"
                                 + "</vaadin-horizontal-layout>"
                                 + "</vaadin-vertical-layout>"
-                                + "<div style='margin-left:auto; margin-right:10px; visibility:${item.visibility}'>"
+                                + "<div style='margin-left:auto; visibility:${item.visibility}'>"
                                 + "<vaadin-icon icon='vaadin:check-circle' style='color:#5DAD26; width:40px; height:40px'></vaadin-icon>"
                                 + "</div>"
                                 + "</vaadin-horizontal-layout>")

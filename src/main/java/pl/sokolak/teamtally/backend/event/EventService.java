@@ -1,13 +1,14 @@
 package pl.sokolak.teamtally.backend.event;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Transactional
 public class EventService implements Service<EventDto> {
 
     private final EventRepository eventRepository;
@@ -31,11 +32,5 @@ public class EventService implements Service<EventDto> {
     public void delete(EventDto event) {
         Event entity = eventMapper.toEntity(event);
         eventRepository.delete(entity);
-    }
-
-    public List<EventDto> findAllOngoing(LocalDate date) {
-        return eventRepository.findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date).stream()
-                .map(eventMapper::toDto)
-                .collect(Collectors.toList());
     }
 }

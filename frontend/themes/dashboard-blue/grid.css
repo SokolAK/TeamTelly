@@ -14,8 +14,3 @@ vaadin-grid::part(selected-row) {
 .challenge-grid::part(header-cell) {
     display: none;
 }
-
-vaadin-grid-cell-content {
-    margin: 0;
-    padding: 0;
-}

@@ -1,15 +1,16 @@
 package pl.sokolak.teamtally.backend.participant;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserMapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Transactional
 public class ParticipantService implements Service<ParticipantDto> {
 
     private final ParticipantRepository participantRepository;

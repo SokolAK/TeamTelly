@@ -1,11 +1,13 @@
 package pl.sokolak.teamtally.backend.team;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Transactional
 public class TeamService {
 
     private final TeamRepository teamRepository;

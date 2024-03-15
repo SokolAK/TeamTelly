@@ -43,7 +43,6 @@ public class ChallengeView extends AbstractViewWithForm<ChallengeDto> {
     @Override
     protected void configureForm() {
         form = new ChallengeForm();
-        form.setWidth("25em");
         form.addSaveListener(this::saveOrUpdateData);
         form.addDeleteListener(this::deleteData);
         form.addCloseListener(e -> closeEditor());

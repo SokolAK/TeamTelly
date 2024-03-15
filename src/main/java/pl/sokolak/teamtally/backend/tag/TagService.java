@@ -1,14 +1,14 @@
 package pl.sokolak.teamtally.backend.tag;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
-import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.event.EventMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Transactional
 public class TagService implements Service<TagDto> {
 
     private final TagRepository tagRepository;

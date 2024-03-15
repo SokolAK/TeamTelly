@@ -27,12 +27,12 @@
     text-align: center;
 }
 
-vaadin-combo-box > input {
+.event-combo > input {
     text-align: center;
     caret-color: transparent;
     cursor: pointer;
 }
 
-vaadin-combo-box::part(toggle-button) {
+.event-combo::part(toggle-button) {
     visibility: hidden
 }

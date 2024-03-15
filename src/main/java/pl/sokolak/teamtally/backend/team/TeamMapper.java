@@ -1,7 +1,10 @@
 package pl.sokolak.teamtally.backend.team;
 
+import jakarta.transaction.Transactional;
+
 import java.util.UUID;
 
+@Transactional
 public class TeamMapper {
     public TeamDto toDto(Team entity) {
         return TeamDto.builder()

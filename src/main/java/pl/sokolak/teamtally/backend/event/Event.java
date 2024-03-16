@@ -1,15 +1,15 @@
 package pl.sokolak.teamtally.backend.event;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sokolak.teamtally.backend.challenge.Challenge;
 import pl.sokolak.teamtally.backend.user.User;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,4 +25,6 @@ public class Event {
     private LocalDate endDate;
     @ManyToOne
     private User owner;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Challenge> challenges;
 }

@@ -27,6 +27,7 @@ public class SessionService {
         List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
 
         EventDto event = Optional.ofNullable(sessionContext.getEvent())
+                .filter(participantsOngoingEvents::contains)
                 .orElseGet(() -> getLast(participantsOngoingEvents));
         ParticipantDto participant = getParticipant(participants, event);
 

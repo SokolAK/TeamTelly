@@ -22,9 +22,9 @@ public class Challenge {
     private String name;
     private Integer personalPoints;
     private Integer teamPoints;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Event event;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "challenge_tag",
             joinColumns = @JoinColumn(name = "challenge_id"),

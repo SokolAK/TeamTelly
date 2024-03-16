@@ -1,9 +1,6 @@
 package pl.sokolak.teamtally.backend.tag;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +20,6 @@ public class Tag {
     @Id
     private UUID id;
     private String name;
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
     private List<Challenge> challenges;
 }

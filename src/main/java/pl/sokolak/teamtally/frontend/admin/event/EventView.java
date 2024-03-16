@@ -12,6 +12,7 @@ import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
+import pl.sokolak.teamtally.frontend.common.ReloadService;
 
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
@@ -71,5 +72,13 @@ public class EventView extends AbstractViewWithForm<EventDto> {
     @Override
     protected boolean shouldReloadAppLayoutOnSaveOrUpdate() {
         return true;
+    }
+
+    @Override
+    protected void deleteData(DeleteEvent event) {
+        service.delete((EventDto) event.getData());
+        updateList();
+        closeEditor();
+        ReloadService.reloadAppLayout();
     }
 }

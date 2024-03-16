@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "user"
     last_name    VARCHAR(63),
     email        VARCHAR(255) UNIQUE,
     "password"   VARCHAR(255),
-    user_role_id UUID references user_role (id)
+    user_role_id UUID references user_role (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS event
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS event
     "name"     VARCHAR(255),
     start_date DATE,
     end_date   DATE,
-    owner_id   UUID references "user" (id)
+    owner_id   UUID references "user" (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS tag
@@ -36,14 +36,14 @@ CREATE TABLE IF NOT EXISTS challenge
     "name"                VARCHAR(255),
     personal_points       INTEGER,
     team_points           INTEGER,
-    event_id              UUID references event (id)
+    event_id              UUID references event (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS challenge_tag
 (
     id           UUID PRIMARY KEY,
-    challenge_id UUID references challenge (id),
-    tag_id       UUID references tag (id)
+    challenge_id UUID references challenge (id) ON DELETE CASCADE,
+    tag_id       UUID references tag (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS team
@@ -57,6 +57,6 @@ CREATE TABLE IF NOT EXISTS team
 CREATE TABLE IF NOT EXISTS participant
 (
     id       UUID PRIMARY KEY,
-    event_id UUID references event (id),
-    user_id  UUID references "user" (id)
+    event_id UUID references event (id) ON DELETE CASCADE,
+    user_id  UUID references "user" (id)  ON DELETE CASCADE
 );

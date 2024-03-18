@@ -5,20 +5,31 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import lombok.NoArgsConstructor;
 import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.Service;
-import pl.sokolak.teamtally.frontend.admin.event.DeleteEvent;
-import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
+import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
+import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.service.ReloadService;
 
 import java.util.List;
 
+@NoArgsConstructor
 public abstract class AbstractViewWithForm<T extends Data> extends VerticalLayout {
 
     protected Grid<T> grid;
     protected Service<T> service;
     protected AbstractForm form;
+    protected SessionService sessionService;
 
-    public AbstractViewWithForm() {
+    protected void init() {
+        configureForm();
+        configureGrid();
+        configureView();
+        updateList();
+        grid.setAllRowsVisible(true);
+        grid.setWidthFull();
     }
 
     protected abstract void configureForm();
@@ -113,7 +124,9 @@ public abstract class AbstractViewWithForm<T extends Data> extends VerticalLayou
     }
 
     protected void updateList() {
-        grid.setItems(fetchData());
+        List<T> items = fetchData();
+        grid.setItems(items);
+        grid.setVisible(items.size() > 0);
     }
 
     protected List<T> fetchData() {

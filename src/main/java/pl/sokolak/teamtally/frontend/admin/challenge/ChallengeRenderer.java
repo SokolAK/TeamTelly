@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.common.renderer;
+package pl.sokolak.teamtally.frontend.admin.challenge;
 
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;

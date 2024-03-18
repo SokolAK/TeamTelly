@@ -10,7 +10,3 @@ vaadin-grid::part(row):hover {
 vaadin-grid::part(selected-row) {
     --vaadin-grid-cell-background: white;
 }
-
-.challenge-grid::part(header-cell) {
-    display: none;
-}

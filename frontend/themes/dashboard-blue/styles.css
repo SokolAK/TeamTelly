@@ -1,12 +1,14 @@
 @import 'login.css';
 @import 'grid.css';
-@import 'logo.css';
-@import 'sidenav.css';
-@import 'applayout.css';
-@import 'header.css';
-@import 'footer.css';
+@import 'layout/logo.css';
+@import 'layout/sidenav.css';
+@import 'layout/applayout.css';
+@import 'layout/header.css';
+@import 'layout/footer.css';
 @import 'event-info.css';
-@import 'challenge.css';
+@import 'view/challenge.css';
+@import 'view/event.css';
+@import 'view/participant.css';
 
 :root {
     /*--blue: #1a69a8;*/

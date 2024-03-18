@@ -1,5 +1,6 @@
-package pl.sokolak.teamtally.frontend.admin.event;
+package pl.sokolak.teamtally.frontend.common.event;
 
+import pl.sokolak.teamtally.frontend.admin.event.DataFormEvent;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
 
 public class CloseEvent extends DataFormEvent {

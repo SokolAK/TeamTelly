@@ -13,7 +13,7 @@ import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
-import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
@@ -30,10 +30,7 @@ public class UserView extends AbstractViewWithForm<UserDto> {
         this.service = userSer;
         this.roleService = roleService;
         addClassName("user-view");
-        configureForm();
-        configureGrid();
-        configureView();
-        updateList();
+        init();
     }
 
     @Override

@@ -1,0 +1,7 @@
+.participant-grid::part(header-cell) {
+    display: none;
+}
+
+.delete-button {
+    padding: 0;
+}

@@ -23,10 +23,11 @@ import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.admin.event.EventView;
+import pl.sokolak.teamtally.frontend.admin.participant.ParticipantView;
 import pl.sokolak.teamtally.frontend.admin.team.TeamView;
 import pl.sokolak.teamtally.frontend.admin.user.UserView;
-import pl.sokolak.teamtally.frontend.other.NoEventsView;
-import pl.sokolak.teamtally.frontend.scoreboard.ScoreboardView;
+import pl.sokolak.teamtally.frontend.exception.NoEventsView;
+import pl.sokolak.teamtally.frontend.user.scoreboard.ScoreboardView;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -34,6 +35,7 @@ import java.util.Optional;
 
 public class MainView extends AppLayout implements BeforeEnterObserver {
 
+    private final String appVersion = "0.1.0";
     private final SecurityService securityService;
     private final SessionService sessionService;
     private final H2 viewTitle = new H2();
@@ -110,24 +112,39 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
+        createNavigationUser(nav);
+        if (sessionService.getUser().isAdmin()) {
+            createNavigationEventAdmin(nav);
+            createNavigationApplicationAdmin(nav);
+        }
+        return nav;
+    }
+
+    private void createNavigationUser(SideNav nav) {
         if (sessionService.hasEvent()) {
             nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
-            nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
+            nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.user.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
 //            nav.addItem(new SideNavItem("Teams", ChallengeView.class, VaadinIcon.USERS.create()));
         }
+    }
 
-        if (sessionService.getUser().isAdmin()) {
-            nav.addItem(new SideNavItem(" "));
-            SideNavItem adminAreaLabel = new SideNavItem("Admin area");
-            adminAreaLabel.addClassName("side-nav-label");
-            nav.addItem(adminAreaLabel);
+    private void createNavigationEventAdmin(SideNav nav) {
+        if (sessionService.hasEvent()) {
+            SideNavItem label = new SideNavItem("Event administration");
+            label.addClassName("side-nav-label");
+            nav.addItem(label);
             nav.addItem(new SideNavItem("Events", EventView.class, VaadinIcon.STAR.create()));
             nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
+            nav.addItem(new SideNavItem("Participants", ParticipantView.class, VaadinIcon.USER.create()));
             nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));
-            nav.addItem(new SideNavItem("Users", UserView.class, VaadinIcon.USERS.create()));
         }
+    }
 
-        return nav;
+    private void createNavigationApplicationAdmin(SideNav nav) {
+        SideNavItem label = new SideNavItem("Application administration");
+        label.addClassName("side-nav-label");
+        nav.addItem(label);
+        nav.addItem(new SideNavItem("Users", UserView.class, VaadinIcon.GROUP.create()));
     }
 
     private void addHeaderContent() {
@@ -161,7 +178,7 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
     private Footer createFooter() {
         Footer layout = new Footer();
-        H3 version = new H3("v. 0.1.0");
+        H3 version = new H3("v. " + appVersion);
         version.addClassName("version");
         layout.add(version);
         return layout;

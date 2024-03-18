@@ -15,5 +15,6 @@ vaadin-side-nav-item > vaadin-icon {
 }
 
 .side-nav-label {
-    font-size: x-large;
+    font-size: large;
+    padding-top: 30px;
 }

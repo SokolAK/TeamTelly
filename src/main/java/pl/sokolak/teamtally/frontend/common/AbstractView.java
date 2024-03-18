@@ -1,14 +1,11 @@
 package pl.sokolak.teamtally.frontend.common;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.Service;
-import pl.sokolak.teamtally.frontend.admin.event.DeleteEvent;
-import pl.sokolak.teamtally.frontend.admin.event.SaveEvent;
 
 import java.util.List;
 

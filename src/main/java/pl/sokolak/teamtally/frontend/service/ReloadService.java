@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.common;
+package pl.sokolak.teamtally.frontend.service;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;

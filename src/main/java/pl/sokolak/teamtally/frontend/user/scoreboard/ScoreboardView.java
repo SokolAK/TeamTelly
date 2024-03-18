@@ -1,9 +1,8 @@
-package pl.sokolak.teamtally.frontend.other;
+package pl.sokolak.teamtally.frontend.user.scoreboard;
 
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -13,12 +12,14 @@ import pl.sokolak.teamtally.frontend.MainView;
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @PermitAll
-@Route(value = "no-events", layout = MainView.class)
-@PageTitle("")
-public class NoEventsView extends VerticalLayout {
+@Route(value = "", layout = MainView.class)
+@RouteAlias(value = "scoreboard")
+@PageTitle("Scoreboard")
+public class ScoreboardView extends VerticalLayout {
 
-    public NoEventsView() {
-        addClassName("no-events-view");
-        add(new H1("It seems that you are not participating in any event :c"));
+
+    public ScoreboardView() {
+        addClassName("scoreboard-view");
+        add(new H1("Scores"));
     }
 }

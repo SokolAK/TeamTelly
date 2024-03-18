@@ -11,16 +11,19 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.frontend.MainView;
+import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeRenderer;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
-import pl.sokolak.teamtally.frontend.common.ReloadService;
+import pl.sokolak.teamtally.frontend.service.ReloadService;
+import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
+import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
 import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RolesAllowed("ADMIN")
-@Route(value = "/event", layout = MainView.class)
-@PageTitle("Event")
+@Route(value = "/admin/event", layout = MainView.class)
+@PageTitle("Events")
 public class EventView extends AbstractViewWithForm<EventDto> {
 
     private final SecurityService securityService;
@@ -29,10 +32,7 @@ public class EventView extends AbstractViewWithForm<EventDto> {
         this.service = service;
         this.securityService = securityService;
         addClassName("event-view");
-        configureForm();
-        configureGrid();
-        configureView();
-        updateList();
+        init();
     }
 
     @Override
@@ -47,12 +47,8 @@ public class EventView extends AbstractViewWithForm<EventDto> {
     protected void configureGrid() {
         grid = new Grid<>(EventDto.class);
         grid.addClassNames("event-grid");
-        grid.setSizeFull();
         grid.setColumns();
-        grid.addColumn("name");
-        grid.addColumn("startDate");
-        grid.addColumn("endDate");
-        grid.addColumn(u -> u.getOwner().getEmail()).setHeader(t("view.event.owner"));
+        grid.addColumn(EventRenderer.create());
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editData(event.getValue()));
     }

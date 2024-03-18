@@ -24,22 +24,11 @@ import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 @PageTitle("Users")
 public class UserView extends AbstractViewWithForm<UserDto> {
 
-    private final RoleService roleService;
-
     public UserView(UserService userSer, RoleService roleService) {
         this.service = userSer;
-        this.roleService = roleService;
+        this.form = new UserForm(roleService.findAll());
         addClassName("user-view");
         init();
-    }
-
-    @Override
-    protected void configureForm() {
-        form = new UserForm(roleService.findAll());
-        form.setWidth("25em");
-        form.addSaveListener(this::saveOrUpdateData);
-        form.addDeleteListener(this::deleteData);
-        form.addCloseListener(e -> closeEditor());
     }
 
     @Override

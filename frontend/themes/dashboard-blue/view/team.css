@@ -1,0 +1,7 @@
+.team-grid {
+    max-width: 1000px;
+}
+
+.team-grid::part(header-cell) {
+    display: none;
+}

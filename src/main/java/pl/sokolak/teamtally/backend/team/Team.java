@@ -1,22 +1,18 @@
 package pl.sokolak.teamtally.backend.team;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
+import lombok.experimental.SuperBuilder;
+import pl.sokolak.teamtally.backend.EntityWithEvent;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
-public class Team {
-    @Id
-    private UUID id;
+public class Team extends EntityWithEvent {
     private String name;
     private String color;
     private String icon;

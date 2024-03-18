@@ -55,9 +55,9 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        if (!sessionService.hasEvent()) {
-            event.rerouteTo(NoEventsView.class);
-        }
+//        if (!sessionService.hasEvent() && !sessionService.getUser().isAdmin()) {
+//            event.rerouteTo(NoEventsView.class);
+//        }
     }
 
     public void reload() {

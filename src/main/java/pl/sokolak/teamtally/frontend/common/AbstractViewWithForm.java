@@ -25,16 +25,29 @@ public abstract class AbstractViewWithForm<T extends Data> extends VerticalLayou
 
     protected void init() {
         configureForm();
+        configureFormCommon();
         configureGrid();
+        configureGridCommon();
         configureView();
         updateList();
-        grid.setAllRowsVisible(true);
-        grid.setWidthFull();
+
     }
 
-    protected abstract void configureForm();
+    protected void configureForm() {};
 
     protected abstract void configureGrid();
+
+    protected void configureFormCommon() {
+        form.addSaveListener(this::saveOrUpdateData);
+        form.addDeleteListener(this::deleteData);
+        form.addCloseListener(e -> closeEditor());
+    }
+
+    protected void configureGridCommon() {
+        grid.setAllRowsVisible(true);
+//        grid.setMaxWidth("1000px");
+        grid.setWidthFull();
+    }
 
     protected void configureView() {
         setSizeFull();

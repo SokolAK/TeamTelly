@@ -26,16 +26,9 @@ public class ChallengeView extends AbstractViewWithForm<ChallengeDto> {
     public ChallengeView(ChallengeService service, SessionService sessionService) {
         this.sessionService = sessionService;
         this.service = service;
+        this.form = new ChallengeForm();
         addClassNames("challenge-view");
         init();
-    }
-
-    @Override
-    protected void configureForm() {
-        form = new ChallengeForm();
-        form.addSaveListener(this::saveOrUpdateData);
-        form.addDeleteListener(this::deleteData);
-        form.addCloseListener(e -> closeEditor());
     }
 
     @Override

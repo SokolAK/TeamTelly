@@ -9,6 +9,7 @@
 @import 'view/challenge.css';
 @import 'view/event.css';
 @import 'view/participant.css';
+@import 'view/team.css';
 
 :root {
     /*--blue: #1a69a8;*/
@@ -20,6 +21,7 @@
 
 @media all and (max-width: 1100px) {
     .challenge-view.editing .challenge-grid,
+    .participant-view.editing .participant-grid,
     .event-view.editing .event-grid,
     .team-view.editing .team-grid,
     .user-view.editing .user-grid,

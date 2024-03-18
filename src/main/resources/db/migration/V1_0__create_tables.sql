@@ -32,11 +32,11 @@ CREATE TABLE IF NOT EXISTS tag
 
 CREATE TABLE IF NOT EXISTS challenge
 (
-    id                    UUID PRIMARY KEY,
-    "name"                VARCHAR(255),
-    personal_points       INTEGER,
-    team_points           INTEGER,
-    event_id              UUID references event (id) ON DELETE CASCADE
+    id              UUID PRIMARY KEY,
+    "name"          VARCHAR(255),
+    personal_points INTEGER,
+    team_points     INTEGER,
+    event_id        UUID references event (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS challenge_tag
@@ -48,15 +48,16 @@ CREATE TABLE IF NOT EXISTS challenge_tag
 
 CREATE TABLE IF NOT EXISTS team
 (
-    id     UUID PRIMARY KEY,
-    "name" VARCHAR(255) UNIQUE,
-    color  VARCHAR(6) UNIQUE,
-    icon   VARCHAR(4) UNIQUE
+    id       UUID PRIMARY KEY,
+    "name"   VARCHAR(255) UNIQUE,
+    color    VARCHAR(6) UNIQUE,
+    icon     VARCHAR(4) UNIQUE,
+    event_id UUID references event (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS participant
 (
     id       UUID PRIMARY KEY,
     event_id UUID references event (id) ON DELETE CASCADE,
-    user_id  UUID references "user" (id)  ON DELETE CASCADE
+    user_id  UUID references "user" (id) ON DELETE CASCADE
 );

@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend.team;
 
 import jakarta.transaction.Transactional;
+import pl.sokolak.teamtally.backend.event.EventMapper;
 
 import java.util.UUID;
 
@@ -12,15 +13,17 @@ public class TeamMapper {
                 .name(entity.getName())
                 .color(entity.getColor())
                 .icon(entity.getIcon())
+                .event(new EventMapper().toDto(entity.getEvent()))
                 .build();
     }
 
     public Team toEntity(TeamDto dto) {
         return Team.builder()
-                .id(dto.id() != null ? dto.id() : UUID.randomUUID())
-                .name(dto.name())
-                .color(dto.color())
-                .icon(dto.icon())
+                .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
+                .name(dto.getName())
+                .color(dto.getColor())
+                .icon(dto.getIcon())
+                .event(new EventMapper().toEntity(dto.getEvent()))
                 .build();
     }
 }

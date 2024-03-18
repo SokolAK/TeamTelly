@@ -1,6 +1,5 @@
 package pl.sokolak.teamtally.backend;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface Service<T extends Data> {

@@ -1,10 +1,3 @@
-INSERT INTO team (id, "name", color, icon)
-VALUES (gen_random_uuid(), 'Squirrels', 'e69138', '🐿️'),
-       (gen_random_uuid(), 'Boxers', 'c90076', '🥊'),
-       (gen_random_uuid(), 'Beauties', '6aa84f', '🌷'),
-       (gen_random_uuid(), 'Fishermen', '2986cc', '🐟');
-
-
 INSERT INTO "user" (id, username, first_name, last_name, email, user_role_id, "password")
 VALUES (gen_random_uuid(), 'adi', 'Adam', 'Adamowski', 'admin@gmail.com', (SELECT id FROM user_role WHERE name = 'admin'),
         '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
@@ -19,6 +12,13 @@ VALUES (gen_random_uuid(), 'adi', 'Adam', 'Adamowski', 'admin@gmail.com', (SELEC
 INSERT INTO event (id, "name", start_date, end_date, owner_id)
 VALUES (gen_random_uuid(), 'Ziflow Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
        (gen_random_uuid(), 'BMS Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));
+
+
+INSERT INTO team (id, "name", color, icon, event_id)
+VALUES (gen_random_uuid(), 'Squirrels', 'e69138', '🐿️', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'Boxers', 'c90076', '🥊', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'Beauties', '6aa84f', '🌷', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'Fishermen', '2986cc', '🐟', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'));
 
 
 INSERT INTO tag (id, "name")

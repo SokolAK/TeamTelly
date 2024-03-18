@@ -1,7 +1,12 @@
+.participant-grid {
+    max-width: 1000px;
+}
+
 .participant-grid::part(header-cell) {
     display: none;
 }
 
 .delete-button {
     padding: 0;
+    margin: 0;
 }

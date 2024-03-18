@@ -11,6 +11,7 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.frontend.MainView;
+import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeForm;
 import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeRenderer;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
 import pl.sokolak.teamtally.frontend.service.ReloadService;
@@ -31,16 +32,9 @@ public class EventView extends AbstractViewWithForm<EventDto> {
     public EventView(EventService service, SecurityService securityService) {
         this.service = service;
         this.securityService = securityService;
+        this.form = new EventForm();
         addClassName("event-view");
         init();
-    }
-
-    @Override
-    protected void configureForm() {
-        form = new EventForm();
-        form.addSaveListener(this::saveOrUpdateData);
-        form.addDeleteListener(this::deleteData);
-        form.addCloseListener(e -> closeEditor());
     }
 
     @Override

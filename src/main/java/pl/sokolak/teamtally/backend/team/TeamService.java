@@ -3,6 +3,7 @@ package pl.sokolak.teamtally.backend.team;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
+import pl.sokolak.teamtally.backend.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventMapper;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Transactional
-public class TeamService implements Service<TeamDto> {
+public class TeamService implements ServiceWithEvent<TeamDto> {
 
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
@@ -33,6 +34,7 @@ public class TeamService implements Service<TeamDto> {
         teamRepository.delete(entity);
     }
 
+    @Override
     public List<TeamDto> findAllByEvent(EventDto event) {
         return teamRepository.findAllByEvent(new EventMapper().toEntity(event)).stream()
                 .map(teamMapper::toDto)

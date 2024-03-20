@@ -13,4 +13,5 @@ import java.util.UUID;
 public interface ParticipantRepository extends JpaRepository<Participant, UUID> {
     List<Participant> findAllByUser(User user);
     List<Participant> findAllByEvent(Event event);
+    void deleteAllByUser(User user);
 }

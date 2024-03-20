@@ -7,7 +7,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
 
-public class ChallengeForm extends AbstractForm {
+class ChallengeForm extends AbstractForm {
 
     private final TextField name = new TextField("Name");
     private final TextField personalPoints = new TextField("Personal points");

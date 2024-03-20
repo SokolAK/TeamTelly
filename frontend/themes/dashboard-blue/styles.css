@@ -10,6 +10,7 @@
 @import 'view/event.css';
 @import 'view/participant.css';
 @import 'view/team.css';
+@import 'view/user.css';
 
 :root {
     /*--blue: #1a69a8;*/

@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.backend.participant;
 
 import jakarta.transaction.Transactional;
 import pl.sokolak.teamtally.backend.event.EventMapper;
+import pl.sokolak.teamtally.backend.team.TeamMapper;
 import pl.sokolak.teamtally.backend.user.UserMapper;
 
 import java.util.Collection;
@@ -14,6 +15,8 @@ public class ParticipantMapper {
     public ParticipantDto toDto(Participant entity) {
         return ParticipantDto.builder()
                 .id(entity.getId())
+                .active(entity.getActive())
+                .team(new TeamMapper().toDto(entity.getTeam()))
                 .user(new UserMapper().toDto(entity.getUser()))
                 .event(new EventMapper().toDto(entity.getEvent()))
                 .build();
@@ -22,6 +25,8 @@ public class ParticipantMapper {
     public Participant toEntity(ParticipantDto dto) {
         return Participant.builder()
                 .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
+                .active(dto.isActive())
+                .team(new TeamMapper().toEntity(dto.getTeam()))
                 .user(new UserMapper().toEntity(dto.getUser()))
                 .event(new EventMapper().toEntity(dto.getEvent()))
                 .build();
@@ -44,6 +49,8 @@ public class ParticipantMapper {
     public ParticipantDto toDtoWithoutUser(Participant entity) {
         return ParticipantDto.builder()
                 .id(entity.getId())
+                .active(entity.getActive())
+                .team(new TeamMapper().toDtoWithoutEvent(entity.getTeam()))
                 .event(new EventMapper().toDtoWithoutOwner(entity.getEvent()))
                 .build();
     }
@@ -51,6 +58,8 @@ public class ParticipantMapper {
     public Participant toEntityWithoutUser(ParticipantDto dto) {
         return Participant.builder()
                 .id(dto.getId() != null ? dto.getId() : UUID.randomUUID())
+                .active(dto.isActive())
+                .team(new TeamMapper().toEntityWithoutEvent(dto.getTeam()))
                 .event(new EventMapper().toEntityWithoutOwner(dto.getEvent()))
                 .build();
     }

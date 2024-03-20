@@ -16,7 +16,7 @@ import pl.sokolak.teamtally.frontend.service.ReloadService;
 import java.util.List;
 
 @NoArgsConstructor
-public abstract class AbstractViewWithForm<T extends Data> extends VerticalLayout {
+public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalLayout {
 
     protected Grid<T> grid;
     protected Service<T> service;
@@ -30,7 +30,6 @@ public abstract class AbstractViewWithForm<T extends Data> extends VerticalLayou
         configureGridCommon();
         configureView();
         updateList();
-
     }
 
     protected void configureForm() {};

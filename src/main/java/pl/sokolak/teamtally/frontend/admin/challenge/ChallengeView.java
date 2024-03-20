@@ -11,7 +11,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
+import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 @RolesAllowed("ADMIN")
 @Route(value = "/admin/challenge", layout = MainView.class)
 @PageTitle("Challenges")
-public class ChallengeView extends AbstractViewWithForm<ChallengeDto> {
+public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
     public ChallengeView(ChallengeService service, SessionService sessionService) {
         this.sessionService = sessionService;

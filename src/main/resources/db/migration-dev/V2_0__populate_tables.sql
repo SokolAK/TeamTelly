@@ -15,10 +15,10 @@ VALUES (gen_random_uuid(), 'Ziflow Meeting', '2024-03-12', '2024-06-13', (SELECT
 
 
 INSERT INTO team (id, "name", color, icon, event_id)
-VALUES (gen_random_uuid(), 'Squirrels', 'e69138', '🐿️', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'Boxers', 'c90076', '🥊', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'Beauties', '6aa84f', '🌷', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'Fishermen', '2986cc', '🐟', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'));
+VALUES (gen_random_uuid(), 'Squirrels', '#e69138', '🐿️', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'Boxers', '#c90076', '🥊', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'Beauties', '#6aa84f', '🌷', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       (gen_random_uuid(), 'Fishermen', '#2986cc', '🐟', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'));
 
 
 INSERT INTO tag (id, "name")
@@ -42,9 +42,9 @@ VALUES (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'joga'), (SELE
        (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'add bob photo'), (SELECT id FROM tag WHERE name = 'bob'));
 
 
-INSERT INTO participant (id, event_id, user_id)
-VALUES (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
-       (gen_random_uuid(), (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'celina.celinska@gmail.com'));
+INSERT INTO participant (id, active, event_id, user_id)
+VALUES (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
+       (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
+       (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
+       (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
+       (gen_random_uuid(), false, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'celina.celinska@gmail.com'));

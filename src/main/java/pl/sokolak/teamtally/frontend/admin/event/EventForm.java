@@ -7,7 +7,7 @@ import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
 
-public class EventForm extends AbstractForm {
+class EventForm extends AbstractForm {
 
     private final TextField name = new TextField("Name");
     private final DatePicker startDate = new DatePicker("Start");

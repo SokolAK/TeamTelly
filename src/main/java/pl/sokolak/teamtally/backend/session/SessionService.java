@@ -27,7 +27,8 @@ public class SessionService {
         List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
 
         EventDto event = Optional.ofNullable(sessionContext.getEvent())
-                .filter(participantsOngoingEvents::contains)
+                .filter(e -> participantsOngoingEvents.stream()
+                        .anyMatch(e::equals))
                 .orElseGet(() -> getLast(participantsOngoingEvents));
         ParticipantDto participant = getParticipant(participants, event);
 
@@ -96,7 +97,7 @@ public class SessionService {
 
     private static ParticipantDto getParticipant(List<ParticipantDto> participants, EventDto event) {
         return event == null ? null : participants.stream()
-                .filter(p -> p.getEvent().getId().equals(event.getId()))
+                .filter(p -> p.getEvent().equals(event))
                 .findFirst().orElse(null);
     }
 }

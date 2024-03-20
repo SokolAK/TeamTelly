@@ -1,21 +1,20 @@
 package pl.sokolak.teamtally.backend.user;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.backend.Data;
+import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
-@Builder
+@SuperBuilder
 @Getter
 @Setter
-public class UserDto implements Data {
-    private UUID id;
+public class UserDto extends Data {
     private String username;
     private String firstName;
     private String lastName;
@@ -40,5 +39,12 @@ public class UserDto implements Data {
                 .map(UserRoleDto::getName)
                 .filter(role -> role.equalsIgnoreCase("ADMIN"))
                 .isPresent();
+    }
+
+    public Optional<ParticipantDto> getParticipantForEvent(EventDto event) {
+        return Optional.of(participants).orElse(Set.of())
+                .stream()
+                .filter(participant -> event.getId().equals(participant.getEvent().getId()))
+                .findFirst();
     }
 }

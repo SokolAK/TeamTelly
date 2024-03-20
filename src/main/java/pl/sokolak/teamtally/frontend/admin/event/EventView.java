@@ -11,21 +11,17 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeForm;
-import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeRenderer;
-import pl.sokolak.teamtally.frontend.common.AbstractViewWithForm;
+import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.service.ReloadService;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
-
-import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RolesAllowed("ADMIN")
 @Route(value = "/admin/event", layout = MainView.class)
 @PageTitle("Events")
-public class EventView extends AbstractViewWithForm<EventDto> {
+public class EventView extends AbstractViewWithSideForm<EventDto> {
 
     private final SecurityService securityService;
 

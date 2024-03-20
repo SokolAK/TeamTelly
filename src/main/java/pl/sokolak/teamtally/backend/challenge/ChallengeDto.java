@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend.challenge;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.backend.Data;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
@@ -8,12 +9,10 @@ import pl.sokolak.teamtally.backend.tag.TagDto;
 import java.util.List;
 import java.util.UUID;
 
+@SuperBuilder
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ChallengeDto implements Data {
-    private UUID id;
+public class ChallengeDto extends Data {
     private String name;
     private Integer personalPoints;
     private Integer teamPoints;

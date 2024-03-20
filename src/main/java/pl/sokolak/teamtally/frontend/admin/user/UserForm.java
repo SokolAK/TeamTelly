@@ -11,7 +11,7 @@ import pl.sokolak.teamtally.frontend.common.AbstractForm;
 
 import java.util.List;
 
-public class UserForm extends AbstractForm {
+class UserForm extends AbstractForm {
     private final TextField username = new TextField("Username");
     private final TextField firstName = new TextField("First name");
     private final TextField lastName = new TextField("Last name");
@@ -20,7 +20,7 @@ public class UserForm extends AbstractForm {
     private final ComboBox<UserRoleDto> role = new ComboBox<>("Role");
 
     public UserForm(List<UserRoleDto> roles) {
-        addClassName("challenge-form");
+        addClassName("user-form");
         configureBinder();
         role.setItems(roles);
         role.setItemLabelGenerator(UserRoleDto::getName);

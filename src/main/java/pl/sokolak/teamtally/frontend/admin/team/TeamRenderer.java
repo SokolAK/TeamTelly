@@ -7,7 +7,7 @@ import pl.sokolak.teamtally.backend.team.TeamDto;
 public class TeamRenderer {
     public static Renderer<TeamDto> create() {
         return LitRenderer.<TeamDto>of("<vaadin-horizontal-layout>"
-                        + "<h5 style='color: ${item.color}'>${item.icon} ${item.name}</h4>"
+                        + "<h4 style='color: ${item.color}'><b>${item.icon} ${item.name}</b></h4>"
                         + "</vaadin-horizontal-layout>")
                 .withProperty("name", TeamDto::getName)
                 .withProperty("color", TeamDto::getColor)

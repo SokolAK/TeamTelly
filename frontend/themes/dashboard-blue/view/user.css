@@ -1,0 +1,7 @@
+.user-grid {
+    max-width: 1000px;
+}
+
+.user-grid::part(header-cell) {
+    display: none;
+}

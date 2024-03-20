@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS team
 (
     id       UUID PRIMARY KEY,
     "name"   VARCHAR(255) UNIQUE,
-    color    VARCHAR(6) UNIQUE,
+    color    VARCHAR(7) UNIQUE,
     icon     VARCHAR(4) UNIQUE,
     event_id UUID references event (id) ON DELETE CASCADE
 );
@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS team
 CREATE TABLE IF NOT EXISTS participant
 (
     id       UUID PRIMARY KEY,
+    active   BOOL,
+    team_id  UUID references team (id) ON DELETE CASCADE,
     event_id UUID references event (id) ON DELETE CASCADE,
     user_id  UUID references "user" (id) ON DELETE CASCADE
 );

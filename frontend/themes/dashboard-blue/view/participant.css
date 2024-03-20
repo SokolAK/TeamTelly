@@ -6,7 +6,25 @@
     display: none;
 }
 
-.delete-button {
+.participant-grid::part(cell) {
     padding: 0;
     margin: 0;
+}
+
+.participant-checkbox {
+    padding: 0;
+    margin: 0;
+}
+
+.participants-grid-row {
+    padding: 0;
+    padding-top: 5px;
+    margin: 0;
+    line-height: 10px;
+}
+
+.participant-combobox {
+    --vaadin-input-field-background: white;
+    --vaadin-input-field-border-color: var(--dim-grey);
+    --vaadin-input-field-border-width: 1px;
 }

@@ -69,7 +69,7 @@ public class ParticipantView extends VerticalLayout {
         grid.setColumns();
         grid.addColumn(createCheckboxRenderer(participants)).setAutoWidth(true).setFlexGrow(0);
 //        grid.addColumn(ParticipantRenderer.create()).setAutoWidth(true);
-        grid.addColumn(createTeamRenderer(teams)).setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(createTeamRenderer(teams)).setAutoWidth(true);
         grid.setAllRowsVisible(true);
         grid.setItems(users);
     }
@@ -217,7 +217,6 @@ public class ParticipantView extends VerticalLayout {
             this.addValueChangeListener(changeValueListener);
             this.addClassName("participant-combobox");
             this.setPlaceholder("Select team");
-            this.
         }
     }
 }

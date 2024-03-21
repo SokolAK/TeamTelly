@@ -9,11 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.backend.EntityWithEvent;
+import pl.sokolak.teamtally.backend.challenge.Challenge;
 import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.team.Team;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.User;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity

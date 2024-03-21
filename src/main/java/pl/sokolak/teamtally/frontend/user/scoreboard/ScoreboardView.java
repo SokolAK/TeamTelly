@@ -1,7 +1,10 @@
 package pl.sokolak.teamtally.frontend.user.scoreboard;
 
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
@@ -15,29 +18,16 @@ import pl.sokolak.teamtally.frontend.exception.NoEventsView;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @PermitAll
 @Route(value = "", layout = MainView.class)
-@RouteAlias(value = "scoreboard")
-@PageTitle("Scoreboard")
-public class ScoreboardView extends VerticalLayout implements BeforeEnterObserver {
+@RouteAlias(value = "ranking")
+@PageTitle("Ranking")
+public class ScoreboardView extends Div {
 
-    private final SessionService sessionService;
-
-    public ScoreboardView(SessionService sessionService) {
-        this.sessionService = sessionService;
-        addClassName("scoreboard-view");
-
-        if (!sessionService.hasEvent()) {
-            return;
-        }
-
-        add(new H1("Scores"));
-
-
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        if (!sessionService.hasEvent()) {
-            event.rerouteTo(NoEventsView.class);
-        }
+    public ScoreboardView() {
+        TabSheet tabSheet = new TabSheet();
+        tabSheet.add("Individual",
+                new Div(new Text("This is the Dashboard tab content")));
+        tabSheet.add("Team",
+                new Div(new Text("This is the Payment tab content")));
+        add(tabSheet);
     }
 }

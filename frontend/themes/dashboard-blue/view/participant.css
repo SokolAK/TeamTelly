@@ -1,5 +1,5 @@
 .participant-grid {
-    max-width: 1000px;
+    max-width: 600px;
 }
 
 .participant-grid::part(header-cell) {

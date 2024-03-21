@@ -3,37 +3,21 @@ package pl.sokolak.teamtally.frontend;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Footer;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.Scroller;
-import com.vaadin.flow.component.sidenav.SideNav;
-import com.vaadin.flow.component.sidenav.SideNavItem;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
-import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeView;
-import pl.sokolak.teamtally.frontend.admin.event.EventView;
-import pl.sokolak.teamtally.frontend.admin.participant.ParticipantView;
-import pl.sokolak.teamtally.frontend.admin.team.TeamView;
-import pl.sokolak.teamtally.frontend.admin.user.UserView;
-import pl.sokolak.teamtally.frontend.exception.NoEventsView;
-import pl.sokolak.teamtally.frontend.user.scoreboard.ScoreboardView;
-
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
+import pl.sokolak.teamtally.frontend.mainlayout.DrawerFactory;
+import pl.sokolak.teamtally.frontend.mainlayout.HeaderFactory;
 
 
-public class MainView extends AppLayout implements BeforeEnterObserver {
+public class MainView extends AppLayout {
 
     private final String appVersion = "0.1.0";
     private final SecurityService securityService;
@@ -53,13 +37,6 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         addHeaderContent();
     }
 
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-//        if (!sessionService.hasEvent() && !sessionService.getUser().isAdmin()) {
-//            event.rerouteTo(NoEventsView.class);
-//        }
-    }
-
     public void reload() {
         Component content = getContent();
         remove(getChildren().toArray(Component[]::new));
@@ -73,32 +50,13 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
     }
 
     private void addDrawerContent() {
-        Scroller scroller = new Scroller(createNavigation());
-        scroller.addClassName("scroller");
-        Image logo = new Image("assets/logo.png", "Team Tally");
-        logo.addClassName("logo-small");
-
-        H1 eventName = new H1(sessionService.getEventName());
-        eventName.addClassName("event-name");
-        String eventStartDate = Optional.ofNullable(sessionService.getEventStartDate()).map(d -> d.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).orElse("");
-        String eventEndDate = Optional.ofNullable(sessionService.getEventEndDate()).map(d -> d.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))).orElse("");
-        H2 eventDate;
-        if (eventStartDate.isEmpty() && eventEndDate.isEmpty()) {
-            eventDate = new H2();
-        } else {
-            eventDate = new H2(eventStartDate + " - " + eventEndDate);
-        }
-        eventDate.addClassName("event-date");
-        ComboBox<EventDto> events = new ComboBox<>();
-        events.setItems(sessionService.getEvents());
-
-        events.setPlaceholder("change event");
-        events.setItemLabelGenerator(EventDto::getName);
-        events.addValueChangeListener(selection -> reload(selection.getValue()));
-        events.addClassName("event-combo");
-        events.addClassName("disable-selection");
-        events.addClassName("disable-caret");
-
+        DrawerFactory drawerFactory = new DrawerFactory(sessionService);
+        Component logo = drawerFactory.createLogo();
+        Component scroller = drawerFactory.createScroller();
+        Component eventName = drawerFactory.createEventBanner();
+        Component eventDate = drawerFactory.createEventDate();
+        Component events = drawerFactory.createEvents(selection -> reload(selection.getValue()));
+        Footer footer = drawerFactory.createFooter(appVersion);
 
         addToDrawer(logo);
         if (sessionService.hasEvent()) {
@@ -107,81 +65,12 @@ public class MainView extends AppLayout implements BeforeEnterObserver {
         if (sessionService.getEvents().size() > 1) {
             addToDrawer(events);
         }
-        addToDrawer(scroller, createFooter());
-    }
-
-    private SideNav createNavigation() {
-        SideNav nav = new SideNav();
-        createNavigationUser(nav);
-        if (sessionService.getUser().isAdmin()) {
-            createNavigationEventAdmin(nav);
-            createNavigationApplicationAdmin(nav);
-        }
-        return nav;
-    }
-
-    private void createNavigationUser(SideNav nav) {
-        if (sessionService.hasEvent()) {
-            nav.addItem(new SideNavItem("Scoreboard", ScoreboardView.class, VaadinIcon.TROPHY.create()));
-            nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.user.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
-//            nav.addItem(new SideNavItem("Teams", ChallengeView.class, VaadinIcon.USERS.create()));
-        }
-    }
-
-    private void createNavigationEventAdmin(SideNav nav) {
-        if (sessionService.hasEvent()) {
-            SideNavItem label = new SideNavItem("Event administration");
-            label.addClassName("side-nav-label");
-            nav.addItem(label);
-            nav.addItem(new SideNavItem("Events", EventView.class, VaadinIcon.STAR.create()));
-            nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
-            nav.addItem(new SideNavItem("Participants", ParticipantView.class, VaadinIcon.USER.create()));
-            nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));
-        }
-    }
-
-    private void createNavigationApplicationAdmin(SideNav nav) {
-        SideNavItem label = new SideNavItem("Application administration");
-        label.addClassName("side-nav-label");
-        nav.addItem(label);
-        nav.addItem(new SideNavItem("Users", UserView.class, VaadinIcon.GROUP.create()));
+        addToDrawer(scroller, footer);
     }
 
     private void addHeaderContent() {
-        viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        var headerLeft = new HorizontalLayout(new DrawerToggle(), viewTitle);
-        headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-
-        var headerRight = new HorizontalLayout(createUserNameField(), createLogoutButton());
-        headerRight.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        headerRight.addClassName("header-right");
-
-        var header = new HorizontalLayout(headerLeft, headerRight);
-
-        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-        header.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        header.setWidthFull();
-        header.addClassNames(
-                LumoUtility.Padding.Vertical.NONE,
-                LumoUtility.Padding.Horizontal.MEDIUM);
-
-        addToNavbar(true, header);
-    }
-
-    private Component createUserNameField() {
-        return new H5(sessionService.getUser().getUsername());
-    }
-
-    private Button createLogoutButton() {
-        return new Button(new Icon(VaadinIcon.EXIT_O), e -> securityService.logout());
-    }
-
-    private Footer createFooter() {
-        Footer layout = new Footer();
-        H3 version = new H3("v. " + appVersion);
-        version.addClassName("version");
-        layout.add(version);
-        return layout;
+        HeaderFactory headerFactory = new HeaderFactory(sessionService, securityService);
+        addToNavbar(true, headerFactory.create(viewTitle));
     }
 
     @Override

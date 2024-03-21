@@ -1,8 +1,7 @@
-package pl.sokolak.teamtally.frontend.admin.user;
+package pl.sokolak.teamtally.frontend.admin_section.user;
 
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
-import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
 public class UserRenderer {

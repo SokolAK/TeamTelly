@@ -1,6 +1,7 @@
 vaadin-grid::part(row) {
     --vaadin-grid-cell-background: white;
-    border: 1px solid var(--very-light-grey);
+    /*border: 1px solid var(--very-light-grey);*/
+    border-radius: 15px;
 }
 
 vaadin-grid::part(row):hover {

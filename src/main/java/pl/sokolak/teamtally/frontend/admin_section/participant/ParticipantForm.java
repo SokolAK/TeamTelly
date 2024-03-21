@@ -1,19 +1,13 @@
-package pl.sokolak.teamtally.frontend.admin.participant;
+package pl.sokolak.teamtally.frontend.admin_section.participant;
 
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.listbox.ListBox;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.function.ValueProvider;
-import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
-import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
 
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 class ParticipantForm extends AbstractForm {

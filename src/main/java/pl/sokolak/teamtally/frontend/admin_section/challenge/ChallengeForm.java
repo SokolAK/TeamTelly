@@ -1,10 +1,9 @@
-package pl.sokolak.teamtally.frontend.admin.challenge;
+package pl.sokolak.teamtally.frontend.admin_section.challenge;
 
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
-import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
 
 class ChallengeForm extends AbstractForm {

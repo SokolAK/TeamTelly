@@ -1,0 +1,11 @@
+.ranking-individual-grid {
+    max-width: 600px;
+}
+
+.ranking-team-grid {
+    max-width: 600px;
+}
+
+.ranking-individual-grid::part(header-cell) {
+    display: none;
+}

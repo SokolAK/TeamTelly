@@ -12,12 +12,12 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
-import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeView;
-import pl.sokolak.teamtally.frontend.admin.event.EventView;
-import pl.sokolak.teamtally.frontend.admin.participant.ParticipantView;
-import pl.sokolak.teamtally.frontend.admin.team.TeamView;
-import pl.sokolak.teamtally.frontend.admin.user.UserView;
-import pl.sokolak.teamtally.frontend.user.scoreboard.ScoreboardView;
+import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeView;
+import pl.sokolak.teamtally.frontend.admin_section.event.EventView;
+import pl.sokolak.teamtally.frontend.admin_section.participant.ParticipantView;
+import pl.sokolak.teamtally.frontend.admin_section.team.TeamView;
+import pl.sokolak.teamtally.frontend.admin_section.user.UserView;
+import pl.sokolak.teamtally.frontend.user_section.ranking.RankingView;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -91,8 +91,8 @@ public class DrawerFactory {
 
     private void createNavigationUser(SideNav nav) {
         if (sessionService.hasEvent()) {
-            nav.addItem(new SideNavItem("Ranking", ScoreboardView.class, VaadinIcon.TROPHY.create()));
-            nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.user.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
+            nav.addItem(new SideNavItem("Ranking", RankingView.class, VaadinIcon.TROPHY.create()));
+            nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.user_section.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
         }
     }
 

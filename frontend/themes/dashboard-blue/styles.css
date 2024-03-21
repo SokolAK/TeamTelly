@@ -11,6 +11,7 @@
 @import 'view/participant.css';
 @import 'view/team.css';
 @import 'view/user.css';
+@import 'view/ranking.css';
 
 :root {
     /*--blue: #1a69a8;*/

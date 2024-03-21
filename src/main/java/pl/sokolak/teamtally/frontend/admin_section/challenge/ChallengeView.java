@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.admin.challenge;
+package pl.sokolak.teamtally.frontend.admin_section.challenge;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.PageTitle;

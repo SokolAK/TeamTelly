@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.admin.user;
+package pl.sokolak.teamtally.frontend.admin_section.user;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.PageTitle;

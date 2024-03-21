@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.admin.event;
+package pl.sokolak.teamtally.frontend.admin_section.event;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.textfield.TextField;

@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.admin.team;
+package pl.sokolak.teamtally.frontend.admin_section.team;
 
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;

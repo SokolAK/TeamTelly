@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.user.challenge;
+package pl.sokolak.teamtally.frontend.user_section.challenge;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,7 +19,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
-import pl.sokolak.teamtally.frontend.admin.challenge.ChallengeRenderer;
+import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeRenderer;
 
 import java.util.List;
 import java.util.UUID;

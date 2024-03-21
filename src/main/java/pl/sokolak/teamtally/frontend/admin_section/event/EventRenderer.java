@@ -1,15 +1,8 @@
-package pl.sokolak.teamtally.frontend.admin.event;
+package pl.sokolak.teamtally.frontend.admin_section.event;
 
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
-import com.vaadin.flow.function.ValueProvider;
-import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.tag.TagDto;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class EventRenderer {
     public static Renderer<EventDto> create() {

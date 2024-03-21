@@ -44,7 +44,6 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected void configureGridCommon() {
         grid.setAllRowsVisible(true);
-//        grid.setMaxWidth("1000px");
         grid.setWidthFull();
     }
 

@@ -64,4 +64,10 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .map(participantMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public List<ParticipantDto> findAllActiveByEvent(EventDto event) {
+        return participantRepository.findAllByEventAndActive(new EventMapper().toEntity(event), true).stream()
+                .map(participantMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

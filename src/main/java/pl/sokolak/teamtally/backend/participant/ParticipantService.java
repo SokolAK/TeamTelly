@@ -10,6 +10,7 @@ import pl.sokolak.teamtally.backend.user.User;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserMapper;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,6 +67,9 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
     }
 
     public List<ParticipantDto> findAllActiveByEvent(EventDto event) {
+        if(event == null) {
+            return Collections.emptyList();
+        }
         return participantRepository.findAllByEventAndActive(new EventMapper().toEntity(event), true).stream()
                 .map(participantMapper::toDto)
                 .collect(Collectors.toList());

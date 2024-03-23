@@ -97,14 +97,14 @@ public class DrawerFactory {
     }
 
     private void createNavigationEventAdmin(SideNav nav) {
+        SideNavItem label = new SideNavItem("Event administration");
+        label.addClassName("side-nav-label");
+        nav.addItem(label);
+        nav.addItem(new SideNavItem("Events", EventView.class, VaadinIcon.STAR.create()));
         if (sessionService.hasEvent()) {
-            SideNavItem label = new SideNavItem("Event administration");
-            label.addClassName("side-nav-label");
-            nav.addItem(label);
-            nav.addItem(new SideNavItem("Events", EventView.class, VaadinIcon.STAR.create()));
-            nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
-            nav.addItem(new SideNavItem("Participants", ParticipantView.class, VaadinIcon.USER.create()));
             nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));
+            nav.addItem(new SideNavItem("Participants", ParticipantView.class, VaadinIcon.USER.create()));
+            nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
         }
     }
 

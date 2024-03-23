@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.backend.EntityWithEvent;
+import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.tag.Tag;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,5 +24,7 @@ public class Challenge extends EntityWithEvent {
             name = "challenge_tag",
             joinColumns = @JoinColumn(name = "challenge_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    private Set<Tag> tags;
+    @ManyToMany(mappedBy = "challenges", cascade = CascadeType.ALL)
+    private Set<Participant> participants;
 }

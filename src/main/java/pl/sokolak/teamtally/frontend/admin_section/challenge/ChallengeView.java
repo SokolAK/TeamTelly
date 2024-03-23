@@ -10,11 +10,15 @@ import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.tag.TagDto;
+import pl.sokolak.teamtally.backend.tag.TagService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringComponent(value = "challenge-view-admin")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -23,10 +27,10 @@ import java.util.List;
 @PageTitle("Challenges")
 public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
-    public ChallengeView(ChallengeService service, SessionService sessionService) {
+    public ChallengeView(ChallengeService service, SessionService sessionService, TagService tagService) {
         this.sessionService = sessionService;
         this.service = service;
-        this.form = new ChallengeForm();
+        this.form = new ChallengeForm(new HashSet<>(tagService.findAll()));
         addClassNames("challenge-view");
         init();
     }

@@ -3,6 +3,10 @@ package pl.sokolak.teamtally.backend.tag;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.Service;
+import pl.sokolak.teamtally.backend.ServiceWithEvent;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
+import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.event.EventMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -19,11 +19,13 @@ import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRankingRenderer;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.PlaceRenderer;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -56,9 +58,9 @@ public class RankingView extends Div {
                         p.getUser().getUsername(),
                         p.getUser().getFirstName(),
                         p.getUser().getLastName(),
-                        p.getTeam().getIcon(),
-                        p.getTeam().getName(),
-                        p.getTeam().getColor(),
+                        Optional.ofNullable(p.getTeam()).map(TeamDto::getIcon).orElse(null),
+                        Optional.ofNullable(p.getTeam()).map(TeamDto::getName).orElse(null),
+                        Optional.ofNullable(p.getTeam()).map(TeamDto::getColor).orElse(null),
                         pointsCalculator.calculate(p)
                 )).toList();
 

@@ -30,6 +30,15 @@ CREATE TABLE IF NOT EXISTS tag
     "name" VARCHAR(63)
 );
 
+CREATE TABLE IF NOT EXISTS team
+(
+    id       UUID PRIMARY KEY,
+    "name"   VARCHAR(255),
+    color    VARCHAR(7),
+    icon     VARCHAR(4),
+    event_id UUID references event (id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS challenge
 (
     id              UUID PRIMARY KEY,
@@ -39,22 +48,6 @@ CREATE TABLE IF NOT EXISTS challenge
     event_id        UUID references event (id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS challenge_tag
-(
-    id           UUID PRIMARY KEY,
-    challenge_id UUID references challenge (id) ON DELETE CASCADE,
-    tag_id       UUID references tag (id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS team
-(
-    id       UUID PRIMARY KEY,
-    "name"   VARCHAR(255) UNIQUE,
-    color    VARCHAR(7) UNIQUE,
-    icon     VARCHAR(4) UNIQUE,
-    event_id UUID references event (id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS participant
 (
     id       UUID PRIMARY KEY,
@@ -62,4 +55,27 @@ CREATE TABLE IF NOT EXISTS participant
     team_id  UUID references team (id) ON DELETE CASCADE,
     event_id UUID references event (id) ON DELETE CASCADE,
     user_id  UUID references "user" (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS challenge_tag
+(
+    id           SERIAL PRIMARY KEY,
+    challenge_id UUID references challenge (id) ON DELETE CASCADE,
+    tag_id       UUID references tag (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS participant_challenge
+(
+    id             SERIAL PRIMARY KEY,
+    participant_id UUID references participant (id) ON DELETE CASCADE,
+    challenge_id   UUID references challenge (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS code
+(
+    id           UUID PRIMARY KEY,
+    code         VARCHAR(15),
+    active       BOOLEAN,
+    event_id     UUID references event (id) ON DELETE CASCADE,
+    challenge_id UUID references challenge (id) ON DELETE CASCADE
 );

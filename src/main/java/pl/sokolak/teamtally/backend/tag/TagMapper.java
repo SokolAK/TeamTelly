@@ -3,7 +3,7 @@ package pl.sokolak.teamtally.backend.tag;
 import jakarta.transaction.Transactional;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,15 +23,15 @@ public class TagMapper {
                 .build();
     }
 
-    public List<TagDto> toDtos(Collection<Tag> entities) {
+    public Set<TagDto> toDtos(Collection<Tag> entities) {
         return entities.stream()
                 .map(this::toDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
-    public List<Tag> toEntities(Collection<TagDto> dtos) {
+    public Set<Tag> toEntities(Collection<TagDto> dtos) {
         return dtos.stream()
                 .map(this::toEntity)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }

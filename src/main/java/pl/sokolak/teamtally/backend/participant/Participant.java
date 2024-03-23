@@ -1,22 +1,15 @@
 package pl.sokolak.teamtally.backend.participant;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.backend.EntityWithEvent;
 import pl.sokolak.teamtally.backend.challenge.Challenge;
-import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.team.Team;
-import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.User;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -28,4 +21,10 @@ public class Participant extends EntityWithEvent {
     private Team team;
     @ManyToOne
     private User user;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "participant_challenge",
+            joinColumns = @JoinColumn(name = "participant_id"),
+            inverseJoinColumns = @JoinColumn(name = "challenge_id"))
+    private Set<Challenge> challenges;
 }

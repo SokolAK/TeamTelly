@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend.participant;
 
 import jakarta.transaction.Transactional;
+import pl.sokolak.teamtally.backend.challenge.ChallengeMapper;
 import pl.sokolak.teamtally.backend.event.EventMapper;
 import pl.sokolak.teamtally.backend.team.TeamMapper;
 import pl.sokolak.teamtally.backend.user.UserMapper;
@@ -19,6 +20,7 @@ public class ParticipantMapper {
                 .team(new TeamMapper().toDto(entity.getTeam()))
                 .user(new UserMapper().toDto(entity.getUser()))
                 .event(new EventMapper().toDto(entity.getEvent()))
+                .completedChallenges(new ChallengeMapper().toDtos(entity.getChallenges()))
                 .build();
     }
 
@@ -29,6 +31,7 @@ public class ParticipantMapper {
                 .team(new TeamMapper().toEntity(dto.getTeam()))
                 .user(new UserMapper().toEntity(dto.getUser()))
                 .event(new EventMapper().toEntity(dto.getEvent()))
+                .challenges(new ChallengeMapper().toEntities(dto.getCompletedChallenges()))
                 .build();
     }
 

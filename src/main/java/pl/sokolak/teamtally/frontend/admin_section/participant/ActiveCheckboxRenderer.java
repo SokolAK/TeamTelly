@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-class CheckboxRenderer {
+class ActiveCheckboxRenderer {
 
     private final List<ParticipantDto> participants;
     private final Consumer<UserDto> checkListener;

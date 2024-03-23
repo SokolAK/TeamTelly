@@ -1,10 +1,14 @@
 package pl.sokolak.teamtally.frontend.user_section.challenge;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.SortDirection;
@@ -16,10 +20,14 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
+import pl.sokolak.teamtally.backend.code.CodeDto;
+import pl.sokolak.teamtally.backend.code.CodeService;
+import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.common.AbstractView;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeRenderer;
+import pl.sokolak.teamtally.frontend.common.AbstractView;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,9 +40,17 @@ import java.util.UUID;
 public class ChallengeView extends AbstractView<ChallengeDto> {
 
     private final SessionService sessionService;
+    private final ParticipantService participantService;
+    private final CodeService codeService;
+    private final TextField codeField = new TextField();
 
-    public ChallengeView(ChallengeService service, SessionService sessionService) {
+    public ChallengeView(ChallengeService service,
+                         CodeService codeService,
+                         ParticipantService participantService,
+                         SessionService sessionService) {
         this.service = service;
+        this.codeService = codeService;
+        this.participantService = participantService;
         this.sessionService = sessionService;
         addClassName("challenge-view");
         init();
@@ -43,9 +59,9 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     @Override
     protected void configureToolbar() {
         toolbar = new HorizontalLayout();
-        TextField codeField = new TextField();
         codeField.setPlaceholder("Insert code");
         Button confirmButton = new Button(new Icon(VaadinIcon.STAR));
+        confirmButton.addClickListener(confirmButtonListener());
         toolbar.setFlexGrow(1, codeField);
         toolbar.setWidthFull();
         toolbar.add(codeField, confirmButton);
@@ -70,5 +86,48 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     @Override
     protected List<ChallengeDto> fetchData() {
         return ((ChallengeService) service).findAllByEvent(sessionService.getEvent());
+    }
+
+    private ComponentEventListener<ClickEvent<Button>> confirmButtonListener() {
+        return buttonClickEvent -> {
+            String insertedCode = codeField.getValue();
+            if (isEmpty(insertedCode)) {
+                showNotification("EMPTY", NotificationVariant.LUMO_WARNING);
+                return;
+            }
+            List<CodeDto> codes = codeService.findAllByEvent(sessionService.getEvent());
+            codes.stream()
+                    .filter(c -> c.getCode().equals(insertedCode))
+                    .findFirst()
+                    .ifPresentOrElse(
+                            this::tryCompleteChallenge,
+                            () -> showNotification("NO", NotificationVariant.LUMO_WARNING)
+                    );
+        };
+    }
+
+    private void tryCompleteChallenge(CodeDto code) {
+        if(!code.isActive()) {
+            showNotification("Code already used", NotificationVariant.LUMO_WARNING);
+            return;
+        }
+
+        ParticipantDto participant = sessionService.getParticipant();
+        participant.addCompletedChallenge(code.getChallenge());
+        participantService.save(participant);
+        code.setEvent(sessionService.getEvent());
+        code.setActive(false);
+        codeService.save(code);
+        showNotification("YES", NotificationVariant.LUMO_SUCCESS);
+    }
+
+    private boolean isEmpty(String code) {
+        return code == null || code.isEmpty();
+    }
+
+    private void showNotification(String text, NotificationVariant variant) {
+        Notification notification = Notification.show(text);
+        notification.addThemeVariants(variant);
+        notification.setPosition(Notification.Position.TOP_CENTER);
     }
 }

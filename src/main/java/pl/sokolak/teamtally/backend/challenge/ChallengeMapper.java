@@ -4,7 +4,10 @@ import jakarta.transaction.Transactional;
 import pl.sokolak.teamtally.backend.event.EventMapper;
 import pl.sokolak.teamtally.backend.tag.TagMapper;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Transactional
 public class ChallengeMapper {
@@ -28,5 +31,17 @@ public class ChallengeMapper {
                 .event(new EventMapper().toEntity(dto.getEvent()))
                 .tags(new TagMapper().toEntities(dto.getTags()))
                 .build();
+    }
+
+    public Set<ChallengeDto> toDtos(Set<Challenge> entities) {
+        return entities.stream()
+                .map(this::toDto)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Challenge> toEntities(Set<ChallengeDto> dtos) {
+        return dtos.stream()
+                .map(this::toEntity)
+                .collect(Collectors.toSet());
     }
 }

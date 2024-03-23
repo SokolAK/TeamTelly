@@ -9,6 +9,7 @@ import pl.sokolak.teamtally.backend.challenge.Challenge;
 import pl.sokolak.teamtally.backend.event.Event;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,5 +22,5 @@ public class Tag {
     private UUID id;
     private String name;
     @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
-    private List<Challenge> challenges;
+    private Set<Challenge> challenges;
 }

@@ -24,16 +24,17 @@ public class SessionService {
     public void init() {
         UserDto authenticatedUser = securityService.getAuthenticatedUser();
         List<ParticipantDto> participants = getParticipants(authenticatedUser);
-        List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
+//        List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
+        List<EventDto> participantsEvents = getAllEvents(participants);
 
         EventDto event = Optional.ofNullable(sessionContext.getEvent())
-                .filter(e -> participantsOngoingEvents.stream()
+                .filter(e -> participantsEvents.stream()
                         .anyMatch(e::equals))
-                .orElseGet(() -> getLast(participantsOngoingEvents));
+                .orElseGet(() -> getLast(participantsEvents));
         ParticipantDto participant = getParticipant(participants, event);
 
         sessionContext.setEvent(event);
-        sessionContext.setEvents(participantsOngoingEvents);
+        sessionContext.setEvents(participantsEvents);
         sessionContext.setParticipant(participant);
     }
 
@@ -58,6 +59,10 @@ public class SessionService {
         return sessionContext.getEvent() != null;
     }
 
+    public ParticipantDto getParticipant() {
+        return sessionContext.getParticipant();
+    }
+
     public String getEventName() {
         return Optional.ofNullable(sessionContext.getEvent())
                 .map(EventDto::getName)
@@ -80,6 +85,12 @@ public class SessionService {
         return Optional.ofNullable(authenticatedUser)
                 .map(participantService::findByUser)
                 .orElse(Collections.emptyList());
+    }
+
+    private List<EventDto> getAllEvents(List<ParticipantDto> participants) {
+        return participants.stream()
+                .map(ParticipantDto::getEvent)
+                .collect(Collectors.toList());
     }
 
     private List<EventDto> getOngoingEvents(List<ParticipantDto> participants) {

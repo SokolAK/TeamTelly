@@ -48,17 +48,17 @@ public class ParticipantView extends VerticalLayout {
 
     private void configureGrid() {
         List<UserDto> users = userService.findAll();
-        List<ParticipantDto> participants = participantService.findAllByEvent(sessionService.getEvent());
         List<TeamDto> teams = teamService.findAllByEvent(sessionService.getEvent());
+        List<ParticipantDto> participants = participantService.findAllByEvent(sessionService.getEvent());
 
         grid = new Grid<>(UserDto.class);
         grid.addClassNames("participant-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns();
-        grid.addColumn(new CheckboxRenderer(
+        grid.addColumn(new ActiveCheckboxRenderer(
                 participants, this::activateParticipant, this::deactivateParticipant
         ).create()).setAutoWidth(true).setFlexGrow(0);
-        grid.addColumn(new ComboBoxRenderer(
+        grid.addColumn(new ParticipantRenderer(
                 teams, participantService, sessionService
         ).create()).setAutoWidth(true);
         grid.setItems(users);
@@ -68,7 +68,10 @@ public class ParticipantView extends VerticalLayout {
         user.getParticipantForEvent(sessionService.getEvent())
                 .ifPresentOrElse(
                         p -> changeActiveStatusOfExistingParticipant(p, true),
-                        () -> participantService.save(createNewParticipant(user))
+                        () -> {
+                            ParticipantDto saved = participantService.save(createNewParticipant(user));
+                            user.getParticipants().add(saved);
+                        }
                 );
     }
 

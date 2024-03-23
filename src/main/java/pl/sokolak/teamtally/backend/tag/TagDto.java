@@ -9,6 +9,7 @@ import java.util.UUID;
 @SuperBuilder
 @Getter
 @Setter
+@EqualsAndHashCode
 public class TagDto extends Data {
     private UUID id;
     private String name;

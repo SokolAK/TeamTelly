@@ -92,7 +92,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         return buttonClickEvent -> {
             String insertedCode = codeField.getValue();
             if (isEmpty(insertedCode)) {
-                showNotification("EMPTY", NotificationVariant.LUMO_WARNING);
+                showNotification("Please insert code", NotificationVariant.LUMO_WARNING);
                 return;
             }
             List<CodeDto> codes = codeService.findAllByEvent(sessionService.getEvent());
@@ -101,7 +101,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
                     .findFirst()
                     .ifPresentOrElse(
                             this::tryCompleteChallenge,
-                            () -> showNotification("NO", NotificationVariant.LUMO_WARNING)
+                            () -> showNotification("Wrong code", NotificationVariant.LUMO_WARNING)
                     );
         };
     }
@@ -118,7 +118,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         code.setEvent(sessionService.getEvent());
         code.setActive(false);
         codeService.save(code);
-        showNotification("YES", NotificationVariant.LUMO_SUCCESS);
+        showNotification("Hurray! You got " + code.getChallenge().getPersonalPoints(), NotificationVariant.LUMO_SUCCESS);
     }
 
     private boolean isEmpty(String code) {

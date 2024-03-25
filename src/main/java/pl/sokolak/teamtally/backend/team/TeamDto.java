@@ -12,12 +12,12 @@ import java.util.Set;
 @SuperBuilder
 @Getter
 @Setter
+@NoArgsConstructor
 public class TeamDto extends Data {
     private String name;
     private String color;
     private String icon;
     private EventDto event;
-    @OneToMany
     private Set<ParticipantDto> participants;
 
     @Override

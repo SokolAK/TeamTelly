@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.backend.team;
 
 import jakarta.transaction.Transactional;
 import pl.sokolak.teamtally.backend.event.EventMapper;
+import pl.sokolak.teamtally.backend.participant.ParticipantMapper;
 
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public class TeamMapper {
                 .color(entity.getColor())
                 .icon(entity.getIcon())
                 .event(new EventMapper().toDto(entity.getEvent()))
+                .participants(new ParticipantMapper().toDtosWithoutUser(entity.getParticipants()))
                 .build();
     }
 
@@ -26,6 +28,7 @@ public class TeamMapper {
                 .color(dto.getColor())
                 .icon(dto.getIcon())
                 .event(new EventMapper().toEntity(dto.getEvent()))
+                .participants(new ParticipantMapper().toEntitiesWithoutUser(dto.getParticipants()))
                 .build();
     }
 
@@ -36,6 +39,7 @@ public class TeamMapper {
                 .name(entity.getName())
                 .color(entity.getColor())
                 .icon(entity.getIcon())
+                .participants(new ParticipantMapper().toDtosWithoutUser(entity.getParticipants()))
                 .build();
     }
 
@@ -46,6 +50,7 @@ public class TeamMapper {
                 .name(dto.getName())
                 .color(dto.getColor())
                 .icon(dto.getIcon())
+                .participants(new ParticipantMapper().toEntitiesWithoutUser(dto.getParticipants()))
                 .build();
     }
 }

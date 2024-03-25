@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.backend.user;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import pl.sokolak.teamtally.backend.Mapper;
 import pl.sokolak.teamtally.backend.Service;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 public class UserService implements Service<UserDto> {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final Mapper userMapper;
 
     @Override
     public List<UserDto> findAll() {
@@ -35,11 +36,11 @@ public class UserService implements Service<UserDto> {
     }
 
     public void updateWithoutPassword(UserDto user) {
-        userRepository.findById(user.getId())
-                .map(entity -> userMapper.toEntityWithPassword(user, entity.getPassword()))
-                .ifPresent(userRepository::save);
-        userRepository.findById(user.getId())
-                .map(userMapper::toDto);
+//        userRepository.findById(user.getId())
+//                .map(entity -> userMapper.toEntityWithPassword(user, entity.getPassword()))
+//                .ifPresent(userRepository::save);
+//        userRepository.findById(user.getId())
+//                .map(userMapper::toDto);
     }
 
     @Override

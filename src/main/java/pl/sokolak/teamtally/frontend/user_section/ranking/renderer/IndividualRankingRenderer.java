@@ -5,6 +5,16 @@ import com.vaadin.flow.data.renderer.Renderer;
 import pl.sokolak.teamtally.frontend.user_section.ranking.ParticipantWithPoints;
 
 public class IndividualRankingRenderer {
+    public static Renderer<ParticipantWithPoints> createPlaces() {
+        return LitRenderer.<ParticipantWithPoints>of("<h5 style='text-align: center'>" +
+                                "${index == 0 ? '\uD83E\uDD47' : " +
+                                "index == 1 ? '\uD83E\uDD48' : " +
+                                "index == 2 ? '\uD83E\uDD49' : " +
+                                "index + 1}" +
+                                "</h5>")
+                .withProperty("points", ParticipantWithPoints::points);
+    }
+
     public static Renderer<ParticipantWithPoints> createParticipants() {
         return LitRenderer.<ParticipantWithPoints>of(
                 "<vaadin-vertical-layout>"

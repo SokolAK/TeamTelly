@@ -25,6 +25,6 @@ public class Challenge extends EntityWithEvent {
             joinColumns = @JoinColumn(name = "challenge_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
-    @ManyToMany(mappedBy = "challenges", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "completedChallenges", cascade = CascadeType.ALL)
     private Set<Participant> participants;
 }

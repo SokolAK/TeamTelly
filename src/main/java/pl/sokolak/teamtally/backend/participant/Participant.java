@@ -1,5 +1,6 @@
 package pl.sokolak.teamtally.backend.participant;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,5 @@ public class Participant extends EntityWithEvent {
             name = "participant_challenge",
             joinColumns = @JoinColumn(name = "participant_id"),
             inverseJoinColumns = @JoinColumn(name = "challenge_id"))
-    private Set<Challenge> challenges;
+    private Set<Challenge> completedChallenges;
 }

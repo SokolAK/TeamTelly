@@ -2,7 +2,7 @@ package pl.sokolak.teamtally.backend.team;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import pl.sokolak.teamtally.backend.Service;
+import pl.sokolak.teamtally.backend.Mapper;
 import pl.sokolak.teamtally.backend.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventMapper;
@@ -16,6 +16,7 @@ public class TeamService implements ServiceWithEvent<TeamDto> {
 
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
+    private final Mapper mapper;
 
     public List<TeamDto> findAll() {
         return teamRepository.findAll().stream()
@@ -36,8 +37,8 @@ public class TeamService implements ServiceWithEvent<TeamDto> {
 
     @Override
     public List<TeamDto> findAllByEvent(EventDto event) {
-        return teamRepository.findAllByEvent(new EventMapper().toEntity(event)).stream()
-                .map(teamMapper::toDto)
+        return teamRepository.findAllByEvent(mapper.toEntity(event)).stream()
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 }

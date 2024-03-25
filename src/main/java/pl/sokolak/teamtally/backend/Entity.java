@@ -1,12 +1,10 @@
 package pl.sokolak.teamtally.backend;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import pl.sokolak.teamtally.backend.event.Event;
 
 import java.util.UUID;
 
@@ -14,7 +12,7 @@ import java.util.UUID;
 @SuperBuilder
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class EntityWithEvent extends Entity {
-    @ManyToOne
-    private Event event;
+public class Entity {
+    @Id
+    private UUID id;
 }

@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
@@ -8,6 +9,7 @@ import java.util.UUID;
 
 @SuperBuilder
 @Getter
+@NoArgsConstructor
 public abstract class Data {
 
     protected UUID id;

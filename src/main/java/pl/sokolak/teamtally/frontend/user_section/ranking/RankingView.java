@@ -1,7 +1,6 @@
 package pl.sokolak.teamtally.frontend.user_section.ranking;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
@@ -20,9 +19,10 @@ import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.team.TeamDto;
+import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRankingRenderer;
-import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.PlaceRenderer;
+import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.TeamRankingRenderer;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,15 +36,18 @@ import java.util.Optional;
 public class RankingView extends Div {
 
     private final ParticipantService participantService;
-    private final SessionService sessionService;
+    private final TeamService teamService;
     private final PointsCalculator pointsCalculator;
+    private final SessionService sessionService;
 
     public RankingView(ParticipantService participantService,
-                       SessionService sessionService,
-                       PointsCalculator pointsCalculator) {
+                       TeamService teamService,
+                       PointsCalculator pointsCalculator,
+                       SessionService sessionService) {
         this.participantService = participantService;
-        this.sessionService = sessionService;
+        this.teamService = teamService;
         this.pointsCalculator = pointsCalculator;
+        this.sessionService = sessionService;
         TabSheet tabSheet = new TabSheet();
         tabSheet.add("Individual", createIndividualRanking());
         tabSheet.add("Team", createTeamRanking());
@@ -68,7 +71,7 @@ public class RankingView extends Div {
         grid.addClassNames("ranking-individual-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns();
-        grid.addColumn(PlaceRenderer.create()).setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(IndividualRankingRenderer.createPlaces()).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(IndividualRankingRenderer.createParticipants()).setAutoWidth(true);
         grid.addColumn(IndividualRankingRenderer.createPoints()).setTextAlign(ColumnTextAlign.END).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(ParticipantWithPoints::points).setVisible(false);
@@ -79,6 +82,26 @@ public class RankingView extends Div {
     }
 
     private Component createTeamRanking() {
-        return new Div(new Text("Team"));
+        List<TeamDto> teams = teamService.findAllByEvent(sessionService.getEvent());
+        List<TeamWithPoints> teamWithPoints = teams.stream()
+                .map(t -> new TeamWithPoints(
+                        t.getName(),
+                        t.getIcon(),
+                        t.getColor(),
+                        pointsCalculator.calculate(t)
+                )).toList();
+
+        Grid<TeamWithPoints> grid = new Grid<>(TeamWithPoints.class);
+        grid.addClassNames("ranking-team-grid");
+        grid.setAllRowsVisible(true);
+        grid.setColumns();
+        grid.addColumn(TeamRankingRenderer.createPlaces()).setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(TeamRankingRenderer.createParticipants()).setAutoWidth(true);
+        grid.addColumn(TeamRankingRenderer.createPoints()).setTextAlign(ColumnTextAlign.END).setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(TeamWithPoints::points).setVisible(false);
+        grid.sort(List.of(new GridSortOrder<>(grid.getColumns().get(3), SortDirection.DESCENDING)));
+        grid.setItems(teamWithPoints);
+
+        return new Div(grid);
     }
 }

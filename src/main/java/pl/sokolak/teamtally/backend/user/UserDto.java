@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend.user;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.backend.Data;
@@ -14,6 +15,7 @@ import java.util.Set;
 @SuperBuilder
 @Getter
 @Setter
+@NoArgsConstructor
 public class UserDto extends Data {
     private String username;
     private String firstName;

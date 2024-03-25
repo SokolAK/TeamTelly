@@ -21,18 +21,22 @@ public class PointsCalculator {
     }
 
     private int sumIndividualPoints(TeamDto team) {
+        if(team.getParticipants() == null) {
+            return 0;
+        }
         return team.getParticipants().stream()
                 .map(this::calculate)
                 .reduce(0, Integer::sum);
     }
 
     private int sumBonusPoints(TeamDto team) {
-
+        if(team.getParticipants() == null) {
+            return 0;
+        }
         Set<ChallengeDto> challenges = team.getParticipants().stream()
                 .map(ParticipantDto::getCompletedChallenges)
                 .min(Comparator.comparingInt(Set::size))
                 .orElse(Collections.emptySet());
-
         return challenges.stream()
                 .filter(c -> team.getParticipants().stream()
                         .map(ParticipantDto::getCompletedChallenges)

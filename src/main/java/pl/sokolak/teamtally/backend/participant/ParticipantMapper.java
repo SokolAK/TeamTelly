@@ -20,7 +20,7 @@ public class ParticipantMapper {
                 .team(new TeamMapper().toDto(entity.getTeam()))
                 .user(new UserMapper().toDto(entity.getUser()))
                 .event(new EventMapper().toDto(entity.getEvent()))
-                .completedChallenges(new ChallengeMapper().toDtos(entity.getChallenges()))
+                .completedChallenges(new ChallengeMapper().toDtos(entity.getCompletedChallenges()))
                 .build();
     }
 
@@ -31,7 +31,7 @@ public class ParticipantMapper {
                 .team(new TeamMapper().toEntity(dto.getTeam()))
                 .user(new UserMapper().toEntity(dto.getUser()))
                 .event(new EventMapper().toEntity(dto.getEvent()))
-                .challenges(new ChallengeMapper().toEntities(dto.getCompletedChallenges()))
+                .completedChallenges(new ChallengeMapper().toEntities(dto.getCompletedChallenges()))
                 .build();
     }
 

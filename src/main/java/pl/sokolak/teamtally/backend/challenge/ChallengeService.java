@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.backend.challenge;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import pl.sokolak.teamtally.backend.Mapper;
 import pl.sokolak.teamtally.backend.Service;
 import pl.sokolak.teamtally.backend.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
@@ -15,32 +16,32 @@ import java.util.stream.Collectors;
 public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
 
     private final ChallengeRepository challengeRepository;
-    private final ChallengeMapper challengeMapper;
+    private final Mapper mapper;
 
     @Override
     public ChallengeDto save(ChallengeDto challenge) {
-        Challenge entity = challengeMapper.toEntity(challenge);
+        Challenge entity = mapper.toEntity(challenge);
         Challenge savedEntity = challengeRepository.save(entity);
-        return challengeMapper.toDto(savedEntity);
+        return mapper.toDto(savedEntity);
     }
 
     @Override
     public List<ChallengeDto> findAll() {
         return challengeRepository.findAll().stream()
-                .map(challengeMapper::toDto)
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public void delete(ChallengeDto challenge) {
-        Challenge entity = challengeMapper.toEntity(challenge);
+        Challenge entity = mapper.toEntity(challenge);
         challengeRepository.delete(entity);
     }
 
     @Override
     public List<ChallengeDto> findAllByEvent(EventDto event) {
-        return challengeRepository.findAllByEvent(new EventMapper().toEntity(event)).stream()
-                .map(challengeMapper::toDto)
+        return challengeRepository.findAllByEvent(mapper.toEntity(event)).stream()
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 }

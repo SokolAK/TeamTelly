@@ -4,18 +4,17 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import pl.sokolak.teamtally.backend.EntityWithEvent;
+import pl.sokolak.teamtally.abstracts.AbstractEntityWithEvent;
 import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.tag.Tag;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-public class Challenge extends EntityWithEvent {
+public class Challenge extends AbstractEntityWithEvent {
     private String name;
     private Integer personalPoints;
     private Integer teamPoints;

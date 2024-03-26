@@ -9,7 +9,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
-import pl.sokolak.teamtally.backend.Data;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.frontend.common.event.CloseEvent;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;

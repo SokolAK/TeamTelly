@@ -6,8 +6,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import lombok.NoArgsConstructor;
-import pl.sokolak.teamtally.backend.Data;
-import pl.sokolak.teamtally.backend.Service;
+import pl.sokolak.teamtally.abstracts.Data;
+import pl.sokolak.teamtally.abstracts.Service;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
@@ -122,6 +122,7 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected void saveData(SaveEvent event) {
         service.save((T) event.getData());
+
     }
 
     protected void updateData(SaveEvent event) {

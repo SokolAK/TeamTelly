@@ -28,9 +28,9 @@ import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeRenderer;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
+import pl.sokolak.teamtally.frontend.common.NotificationService;
 
 import java.util.List;
-import java.util.UUID;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -73,13 +73,13 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         grid.addClassNames("challenge-grid");
         grid.setSizeFull();
         grid.setColumns();
-//        grid.addColumn(ChallengeRenderer.create())
-        grid.addColumn(ChallengeRenderer.create(
-                        List.of(UUID.fromString("afb75070-8176-4ccc-81ed-b0ea786335e2"),
-                                UUID.fromString("3b7b5558-7319-4a7d-8882-8e5825bba707")),
-                        List.of(UUID.fromString("3b7b5558-7319-4a7d-8882-8e5825bba707"))))
-                .setHeader("Name")
-                .setComparator(ChallengeDto::getName);
+        grid.addColumn(ChallengeRenderer.create());
+//        grid.addColumn(ChallengeRenderer.create(
+//                        List.of(UUID.fromString("afb75070-8176-4ccc-81ed-b0ea786335e2"),
+//                                UUID.fromString("3b7b5558-7319-4a7d-8882-8e5825bba707")),
+//                        List.of(UUID.fromString("3b7b5558-7319-4a7d-8882-8e5825bba707"))))
+//                .setHeader("Name")
+//                .setComparator(ChallengeDto::getName);
         grid.sort(List.of(new GridSortOrder<>(grid.getColumns().get(0), SortDirection.ASCENDING)));
     }
 
@@ -92,7 +92,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         return buttonClickEvent -> {
             String insertedCode = codeField.getValue();
             if (isEmpty(insertedCode)) {
-                showNotification("Please insert code", NotificationVariant.LUMO_WARNING);
+                NotificationService.showWarning("Please insert code");
                 return;
             }
             List<CodeDto> codes = codeService.findAllByEvent(sessionService.getEvent());
@@ -101,14 +101,14 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
                     .findFirst()
                     .ifPresentOrElse(
                             this::tryCompleteChallenge,
-                            () -> showNotification("Wrong code", NotificationVariant.LUMO_WARNING)
+                            () -> NotificationService.showWarning("Wrong code")
                     );
         };
     }
 
     private void tryCompleteChallenge(CodeDto code) {
         if(!code.isActive()) {
-            showNotification("Code already used", NotificationVariant.LUMO_WARNING);
+            NotificationService.showWarning("Code already used");
             return;
         }
 
@@ -118,16 +118,10 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         code.setEvent(sessionService.getEvent());
         code.setActive(false);
         codeService.save(code);
-        showNotification("Hurray! You got " + code.getChallenge().getPersonalPoints(), NotificationVariant.LUMO_SUCCESS);
+        NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getPersonalPoints());
     }
 
     private boolean isEmpty(String code) {
         return code == null || code.isEmpty();
-    }
-
-    private void showNotification(String text, NotificationVariant variant) {
-        Notification notification = Notification.show(text);
-        notification.addThemeVariants(variant);
-        notification.setPosition(Notification.Position.TOP_CENTER);
     }
 }

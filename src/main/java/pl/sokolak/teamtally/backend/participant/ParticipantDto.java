@@ -2,7 +2,7 @@ package pl.sokolak.teamtally.backend.participant;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import pl.sokolak.teamtally.backend.Data;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.team.TeamDto;

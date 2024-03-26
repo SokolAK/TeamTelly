@@ -6,10 +6,9 @@ import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.user.User;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
-public interface ParticipantRepository extends JpaRepository<Participant, UUID> {
+public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
     List<Participant> findAllByUser(User user);
     List<Participant> findAllByEvent(Event event);
     List<Participant> findAllByEventAndActive(Event event, boolean active);

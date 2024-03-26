@@ -1,25 +1,26 @@
 package pl.sokolak.teamtally.backend.event;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import pl.sokolak.teamtally.abstracts.AbstractEntity;
 import pl.sokolak.teamtally.backend.challenge.Challenge;
 import pl.sokolak.teamtally.backend.user.User;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
-    @Id
-    private UUID id;
+public class Event extends AbstractEntity {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;

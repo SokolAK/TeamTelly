@@ -5,7 +5,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import pl.sokolak.teamtally.backend.EntityWithEvent;
+import pl.sokolak.teamtally.abstracts.AbstractEntityWithEvent;
 import pl.sokolak.teamtally.backend.participant.Participant;
 
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-public class Team extends EntityWithEvent {
+public class Team extends AbstractEntityWithEvent {
     private String name;
     private String color;
     private String icon;

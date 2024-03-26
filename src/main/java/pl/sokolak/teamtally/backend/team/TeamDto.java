@@ -1,9 +1,8 @@
 package pl.sokolak.teamtally.backend.team;
 
-import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import pl.sokolak.teamtally.backend.Data;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 

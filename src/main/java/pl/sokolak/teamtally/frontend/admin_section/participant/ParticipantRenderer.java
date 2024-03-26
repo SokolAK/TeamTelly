@@ -9,7 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import pl.sokolak.teamtally.backend.Data;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;

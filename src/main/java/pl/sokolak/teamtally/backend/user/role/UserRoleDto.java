@@ -4,15 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
+import pl.sokolak.teamtally.abstracts.Data;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRoleDto {
-    private UUID id;
+public class UserRoleDto extends Data {
     private String name;
 
     public UserRoleDto(UserRole role) {

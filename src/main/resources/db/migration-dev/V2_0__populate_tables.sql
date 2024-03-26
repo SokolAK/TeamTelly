@@ -1,38 +1,38 @@
-INSERT INTO "user" (id, username, first_name, last_name, email, user_role_id, "password")
-VALUES (gen_random_uuid(), 'adi', 'Adam', 'Adamowski', 'admin@gmail.com', (SELECT id FROM user_role WHERE name = 'admin'),
+INSERT INTO "user" (username, first_name, last_name, email, user_role_id, "password")
+VALUES ('adi', 'Adam', 'Adamowski', 'admin@gmail.com', (SELECT id FROM user_role WHERE name = 'admin'),
         '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
-       (gen_random_uuid(), 'ursza', 'Urszula', 'Urszulska', 'user@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
+       ('ursza', 'Urszula', 'Urszulska', 'user@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
         '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
-       (gen_random_uuid(), 'barb', 'Barbara', 'Barbarska', 'barbara.barbarska@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
+       ('barb', 'Barbara', 'Barbarska', 'barbara.barbarska@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
         '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
-        (gen_random_uuid(), 'celin', 'Celina', 'Celińska', 'celina.celinska@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
+        ('celin', 'Celina', 'Celińska', 'celina.celinska@gmail.com', (SELECT id FROM user_role WHERE name = 'user'),
          '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6');
 
 
-INSERT INTO event (id, "name", start_date, end_date, owner_id)
-VALUES ('3b7cc977-92b6-48be-8623-80dec030323b', 'Ziflow Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
-       (gen_random_uuid(), 'BMS Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));
+INSERT INTO event ("name", start_date, end_date, owner_id)
+VALUES ('Ziflow Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
+       ('BMS Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));
 
 
-INSERT INTO team (id, "name", color, icon, event_id)
-VALUES (gen_random_uuid(), 'Squirrels', '#e69138', '🐿️', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'Boxers', '#c90076', '🥊', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'Beauties', '#6aa84f', '🌷', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'Fishermen', '#2986cc', '🐟', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'));
+INSERT INTO team ("name", color, icon, event_id)
+VALUES ('Squirrels', '#e69138', '🐿️', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       ('Boxers', '#c90076', '🥊', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       ('Beauties', '#6aa84f', '🌷', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       ('Fishermen', '#2986cc', '🐟', (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'));
 
 
-INSERT INTO tag (id, "name")
-VALUES (gen_random_uuid(), 'sport'),
-       (gen_random_uuid(), 'openair'),
-       (gen_random_uuid(), 'bob');
+INSERT INTO tag ("name")
+VALUES ('sport'),
+       ('openair'),
+       ('bob');
 
 
-INSERT INTO challenge (id, "name", personal_points, team_points, event_id)
-VALUES (gen_random_uuid(), 'joga', 10, 0,           (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'basketball', 15, 30,    (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'add bob photo', 15, 30, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
-       (gen_random_uuid(), 'beer', 5, 5,            (SELECT id FROM "event" WHERE name = 'BMS Meeting')),
-       (gen_random_uuid(), 'vodka', 40, 40,         (SELECT id FROM "event" WHERE name = 'BMS Meeting'));
+INSERT INTO challenge ("name", personal_points, team_points, event_id)
+VALUES ('joga', 10, 0,           (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       ('basketball', 15, 30,    (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       ('add bob photo', 15, 30, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
+       ('beer', 5, 5,            (SELECT id FROM "event" WHERE name = 'BMS Meeting')),
+       ('vodka', 40, 40,         (SELECT id FROM "event" WHERE name = 'BMS Meeting'));
 
 
 -- INSERT INTO challenge_tag (id, challenge_id, tag_id)
@@ -42,15 +42,15 @@ VALUES (gen_random_uuid(), 'joga', 10, 0,           (SELECT id FROM "event" WHER
 --        (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'add bob photo'), (SELECT id FROM tag WHERE name = 'bob'));
 
 
-INSERT INTO participant (id, active, event_id, user_id)
-VALUES (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));
+INSERT INTO participant (active, event_id, user_id)
+VALUES (true, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));
 --        (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'admin@gmail.com')),
 --        (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
 --        (gen_random_uuid(), true, (SELECT id FROM "event" WHERE name = 'BMS Meeting'), (SELECT id FROM "user" WHERE email = 'barbara.barbarska@gmail.com')),
 --        (gen_random_uuid(), false, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id FROM "user" WHERE email = 'celina.celinska@gmail.com'));
 
 
-INSERT INTO code (id, active, code, event_id, challenge_id)
-VALUES (gen_random_uuid(), true, '111', '3b7cc977-92b6-48be-8623-80dec030323b', (SELECT id FROM challenge WHERE name = 'joga')),
-       (gen_random_uuid(), true, '222', '3b7cc977-92b6-48be-8623-80dec030323b', (SELECT id FROM challenge WHERE name = 'basketball')),
-       (gen_random_uuid(), true, '333', '3b7cc977-92b6-48be-8623-80dec030323b', (SELECT id FROM challenge WHERE name = 'add bob photo'))
+INSERT INTO code (active, code, event_id, challenge_id)
+VALUES (true, '111', 1, (SELECT id FROM challenge WHERE name = 'joga')),
+       (true, '222', 1, (SELECT id FROM challenge WHERE name = 'basketball')),
+       (true, '333', 1, (SELECT id FROM challenge WHERE name = 'add bob photo'))

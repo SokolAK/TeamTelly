@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend;
+package pl.sokolak.teamtally.abstracts;
 
 import java.util.List;
 

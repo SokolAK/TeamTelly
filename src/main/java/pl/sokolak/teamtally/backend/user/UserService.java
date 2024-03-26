@@ -2,8 +2,9 @@ package pl.sokolak.teamtally.backend.user;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import pl.sokolak.teamtally.backend.Mapper;
-import pl.sokolak.teamtally.backend.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pl.sokolak.teamtally.abstracts.Service;
+import pl.sokolak.teamtally.backend.mapper.Mapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,38 +15,43 @@ import java.util.stream.Collectors;
 public class UserService implements Service<UserDto> {
 
     private final UserRepository userRepository;
-    private final Mapper userMapper;
+    private final Mapper mapper;
 
     @Override
     public List<UserDto> findAll() {
         return userRepository.findAll().stream()
-                .map(userMapper::toDto)
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public Optional<UserDto> findFirstByEmail(String email) {
         return userRepository.findFirstByEmail(email)
-                .map(userMapper::toDto);
+                .map(mapper::toDto);
     }
 
     @Override
     public UserDto save(UserDto user) {
-        User entity = userMapper.toEntity(user);
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            userRepository.findById(user.getId())
+                    .map(User::getPassword)
+                    .ifPresent(user::setPassword);
+        } else {
+            user.setPassword(encodePassword(user.getPassword()));
+        }
+        User entity = mapper.toEntity(user);
         User savedEntity = userRepository.save(entity);
-        return userMapper.toDto(savedEntity);
-    }
-
-    public void updateWithoutPassword(UserDto user) {
-//        userRepository.findById(user.getId())
-//                .map(entity -> userMapper.toEntityWithPassword(user, entity.getPassword()))
-//                .ifPresent(userRepository::save);
-//        userRepository.findById(user.getId())
-//                .map(userMapper::toDto);
+        return mapper.toDto(savedEntity);
     }
 
     @Override
     public void delete(UserDto user) {
-        User entity = userMapper.toEntity(user);
+        User entity = mapper.toEntity(user);
         userRepository.delete(entity);
+    }
+
+    private String encodePassword(String password) {
+        return Optional.ofNullable(password)
+                .map(p -> new BCryptPasswordEncoder().encode(p))
+                .orElse(null);
     }
 }

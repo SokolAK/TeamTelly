@@ -2,18 +2,14 @@ package pl.sokolak.teamtally.backend.participant;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import pl.sokolak.teamtally.backend.Mapper;
-import pl.sokolak.teamtally.backend.ServiceWithEvent;
+import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.event.EventMapper;
-import pl.sokolak.teamtally.backend.user.User;
+import pl.sokolak.teamtally.backend.mapper.Mapper;
 import pl.sokolak.teamtally.backend.user.UserDto;
-import pl.sokolak.teamtally.backend.user.UserMapper;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -43,15 +39,15 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
         participantRepository.delete(entity);
     }
 
-    public Optional<ParticipantDto> findById(UUID uuid) {
-        return participantRepository.findById(uuid)
+    public Optional<ParticipantDto> findById(Integer id) {
+        return participantRepository.findById(id)
                 .map(mapper::toDto);
     }
 
-    public void deleteByUserId(UserDto userDto) {
-        User user = new UserMapper().toEntity(userDto);
-        participantRepository.deleteAllByUser(user);
-    }
+//    public void deleteByUserId(UserDto userDto) {
+//        User user = new UserMapper().toEntity(userDto);
+//        participantRepository.deleteAllByUser(user);
+//    }
 
     public List<ParticipantDto> findByUser(UserDto userDto) {
         return participantRepository.findAllByUser(mapper.toEntity(userDto)).stream()
@@ -67,7 +63,7 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
     }
 
     public List<ParticipantDto> findAllActiveByEvent(EventDto event) {
-        if(event == null) {
+        if (event == null) {
             return Collections.emptyList();
         }
         return participantRepository.findAllByEventAndActive(mapper.toEntity(event), true).stream()

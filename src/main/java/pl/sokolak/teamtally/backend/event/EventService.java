@@ -2,7 +2,8 @@ package pl.sokolak.teamtally.backend.event;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import pl.sokolak.teamtally.backend.Service;
+import pl.sokolak.teamtally.abstracts.Service;
+import pl.sokolak.teamtally.backend.mapper.Mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,25 +13,25 @@ import java.util.stream.Collectors;
 public class EventService implements Service<EventDto> {
 
     private final EventRepository eventRepository;
-    private final EventMapper eventMapper;
+    private final Mapper mapper;
 
     @Override
     public EventDto save(EventDto event) {
-        Event entity = eventMapper.toEntity(event);
+        Event entity = mapper.toEntity(event);
         Event savedEntity = eventRepository.save(entity);
-        return eventMapper.toDto(savedEntity);
+        return mapper.toDto(savedEntity);
     }
 
     @Override
     public List<EventDto> findAll() {
         return eventRepository.findAll().stream()
-                .map(eventMapper::toDto)
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public void delete(EventDto event) {
-        Event entity = eventMapper.toEntity(event);
+        Event entity = mapper.toEntity(event);
         eventRepository.delete(entity);
     }
 }

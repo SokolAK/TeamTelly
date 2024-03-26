@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend;
+package pl.sokolak.teamtally.backend.mapper;
 
 import org.mapstruct.Qualifier;
 

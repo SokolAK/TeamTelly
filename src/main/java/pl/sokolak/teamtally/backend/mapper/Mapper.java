@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend;
+package pl.sokolak.teamtally.backend.mapper;
 
 import org.mapstruct.Context;
 import pl.sokolak.teamtally.backend.challenge.Challenge;
@@ -9,6 +9,8 @@ import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.tag.Tag;
+import pl.sokolak.teamtally.backend.tag.TagDto;
 import pl.sokolak.teamtally.backend.team.Team;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.User;
@@ -55,6 +57,17 @@ public interface Mapper {
     }
     CodeDto toDto(Code entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
+    @DoIgnore
+    default TagDto toDto(Tag entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    TagDto toDto(Tag entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default UserRoleDto toDto(UserRole entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    UserRoleDto toDto(UserRole entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
 
 
@@ -93,4 +106,16 @@ public interface Mapper {
         return toEntity(dto, new CycleAvoidingMappingContext());
     }
     Code toEntity(CodeDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default Tag toEntity(TagDto dto) {
+        return toEntity(dto, new CycleAvoidingMappingContext());
+    }
+    Tag toEntity(TagDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default UserRole toEntity(UserRoleDto dto) {
+        return toEntity(dto, new CycleAvoidingMappingContext());
+    }
+    UserRole toEntity(UserRoleDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

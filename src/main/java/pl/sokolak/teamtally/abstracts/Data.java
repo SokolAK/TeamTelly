@@ -1,18 +1,17 @@
-package pl.sokolak.teamtally.backend;
+package pl.sokolak.teamtally.abstracts;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @SuperBuilder
 @Getter
 @NoArgsConstructor
 public abstract class Data {
 
-    protected UUID id;
+    protected Integer id;
 
     @Override
     public boolean equals(Object o) {

@@ -7,7 +7,6 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ChallengeRenderer {
@@ -34,7 +33,7 @@ public class ChallengeRenderer {
                 );
     }
 
-    public static Renderer<ChallengeDto> create(List<UUID> completedPersonal, List<UUID> completedTeam) {
+    public static Renderer<ChallengeDto> create(List<Integer> completedPersonal, List<Integer> completedTeam) {
         return LitRenderer.<ChallengeDto>of(
                         "<vaadin-horizontal-layout style='align-items:center;'>"
                                 + "<vaadin-vertical-layout>"
@@ -66,7 +65,7 @@ public class ChallengeRenderer {
                 .withProperty("visibility", getVisible(completedPersonal));
     }
 
-    private static ValueProvider<ChallengeDto, String> getVisible(List<UUID> completed) {
+    private static ValueProvider<ChallengeDto, String> getVisible(List<Integer> completed) {
         return challenge -> completed.stream()
                 .filter(id -> id.equals(challenge.getId()))
                 .findAny()
@@ -74,7 +73,7 @@ public class ChallengeRenderer {
                 .orElse("hidden");
     }
 
-    private static ValueProvider<ChallengeDto, String> getColor(List<UUID> completed, String completeColor, String defaultColor) {
+    private static ValueProvider<ChallengeDto, String> getColor(List<Integer> completed, String completeColor, String defaultColor) {
         return challenge -> completed.stream()
                 .filter(id -> id.equals(challenge.getId()))
                 .findAny()

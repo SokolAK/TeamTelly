@@ -7,7 +7,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import pl.sokolak.teamtally.backend.Data;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
@@ -31,17 +31,6 @@ public class UserView extends AbstractViewWithSideForm<UserDto> {
 
     @Override
     protected void configureGrid() {
-//        grid = new Grid<>(UserDto.class);
-//        grid.addClassNames("user-grid");
-//        grid.setColumns();
-//        grid.addColumn("username").setHeader(t("view.user.user.username"));
-//        grid.addColumn("firstName").setHeader(t("view.user.user.firstName"));
-//        grid.addColumn("lastName").setHeader(t("view.user.user.lastName"));
-//        grid.addColumn("email").setHeader(t("view.user.user.email"));
-//        grid.addColumn(u -> u.getUserRole() != null ? u.getUserRole().getName() : "NONE").setHeader(t("view.user.user.role"));
-//        grid.getColumns().forEach(col -> col.setAutoWidth(true));
-//        grid.asSingleSelect().addValueChangeListener(event ->
-//                editData(event.getValue()));
         grid = new Grid<>(UserDto.class);
         grid.addClassNames("user-grid");
         grid.setColumns();
@@ -57,17 +46,6 @@ public class UserView extends AbstractViewWithSideForm<UserDto> {
     @Override
     protected UserDto emptyData() {
         return UserDto.builder().build();
-    }
-
-    @Override
-    protected boolean shouldUpdate(SaveEvent event) {
-        return ((UserDto) event.getData()).getPassword().isEmpty();
-    }
-
-    @Override
-    protected void updateData(SaveEvent event) {
-        UserDto userDto = (UserDto) event.getData();
-        ((UserService) service).updateWithoutPassword(userDto);
     }
 
     @Override

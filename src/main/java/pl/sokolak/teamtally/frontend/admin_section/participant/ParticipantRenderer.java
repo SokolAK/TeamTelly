@@ -32,9 +32,12 @@ class ParticipantRenderer {
     ComponentRenderer<VerticalLayout, UserDto> create() {
         return new ComponentRenderer<>(user ->
         {
+            Span username = user.getUsername() != null
+                    ? new Span(user.getUsername() + " (" + user.getFirstName() + " " + user.getLastName() + ")")
+                    : new Span("User unregistered");
             VerticalLayout verticalLayout = new VerticalLayout(
-                    new Span(user.getUsername() + " (" + user.getFirstName() + " " + user.getLastName() + ")"),
                     new Span(user.getEmail()),
+                    username,
                     new TeamComboBox(user, sessionService.getEvent(), teams, createComboBoxValueChangeListener())
             );
             verticalLayout.addClassName("participants-grid-row");

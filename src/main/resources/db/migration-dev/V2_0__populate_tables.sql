@@ -27,7 +27,7 @@ VALUES ('sport'),
        ('bob');
 
 
-INSERT INTO challenge ("name", personal_points, team_points, event_id)
+INSERT INTO challenge ("name", individual_points, team_points, event_id)
 VALUES ('joga', 10, 0,           (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
        ('basketball', 15, 30,    (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
        ('add bob photo', 15, 30, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting')),
@@ -52,5 +52,11 @@ VALUES (true, (SELECT id FROM "event" WHERE name = 'Ziflow Meeting'), (SELECT id
 
 INSERT INTO code (active, code, event_id, challenge_id)
 VALUES (true, '111', 1, (SELECT id FROM challenge WHERE name = 'joga')),
+       (true, '1111', 1, (SELECT id FROM challenge WHERE name = 'joga')),
+       (true, '11111', 1, (SELECT id FROM challenge WHERE name = 'joga')),
        (true, '222', 1, (SELECT id FROM challenge WHERE name = 'basketball')),
-       (true, '333', 1, (SELECT id FROM challenge WHERE name = 'add bob photo'))
+       (true, '2222', 1, (SELECT id FROM challenge WHERE name = 'basketball')),
+       (true, '22222', 1, (SELECT id FROM challenge WHERE name = 'basketball')),
+       (true, '333', 1, (SELECT id FROM challenge WHERE name = 'add bob photo')),
+       (true, '3333', 1, (SELECT id FROM challenge WHERE name = 'add bob photo')),
+       (true, '33333', 1, (SELECT id FROM challenge WHERE name = 'add bob photo'))

@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Challenge extends AbstractEntityWithEvent {
     private String name;
-    private Integer personalPoints;
+    private Integer individualPoints;
     private Integer teamPoints;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

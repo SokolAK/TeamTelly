@@ -17,6 +17,7 @@ import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
+import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 
 import java.util.List;
 

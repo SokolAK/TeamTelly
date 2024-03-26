@@ -12,7 +12,7 @@ public class PointsCalculator {
 
     public int calculate(ParticipantDto participant) {
         return participant.getCompletedChallenges().stream()
-                .map(ChallengeDto::getPersonalPoints)
+                .map(ChallengeDto::getIndividualPoints)
                 .reduce(0, Integer::sum);
     }
 

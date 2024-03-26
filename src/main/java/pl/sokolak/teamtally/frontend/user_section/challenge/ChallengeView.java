@@ -118,7 +118,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         code.setEvent(sessionService.getEvent());
         code.setActive(false);
         codeService.save(code);
-        NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getPersonalPoints());
+        NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints());
     }
 
     private boolean isEmpty(String code) {

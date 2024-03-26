@@ -9,3 +9,13 @@
 .ranking-individual-grid::part(header-cell) {
     display: none;
 }
+
+vaadin-grid::part(details-cell) {
+    padding-left: 0px;
+    line-height: 10px;
+    outline: none;
+}
+
+vaadin-grid-cell-content {
+    padding: 5px 10px;
+}

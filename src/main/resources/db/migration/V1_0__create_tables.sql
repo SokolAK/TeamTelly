@@ -41,11 +41,11 @@ CREATE TABLE IF NOT EXISTS team
 
 CREATE TABLE IF NOT EXISTS challenge
 (
-    id              SERIAL PRIMARY KEY,
-    "name"          VARCHAR(255),
-    personal_points INTEGER,
-    team_points     INTEGER,
-    event_id        INT references event (id) ON DELETE CASCADE
+    id                SERIAL PRIMARY KEY,
+    "name"            VARCHAR(255),
+    individual_points INTEGER,
+    team_points       INTEGER,
+    event_id          INT references event (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS participant

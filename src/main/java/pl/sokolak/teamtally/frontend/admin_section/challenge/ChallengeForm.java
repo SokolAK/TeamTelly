@@ -14,7 +14,7 @@ import java.util.Set;
 class ChallengeForm extends AbstractForm {
 
     private final TextField name = new TextField("Name");
-    private final TextField personalPoints = new TextField("Personal points");
+    private final TextField individualPoints = new TextField("Personal points");
     private final TextField teamPoints = new TextField("Team points");
     private final MultiSelectComboBox<TagDto> tags = new MultiSelectComboBox<>("Tags");
 
@@ -23,7 +23,7 @@ class ChallengeForm extends AbstractForm {
         configureBinder();
         tags.setItems(tagsForEvent);
         tags.setItemLabelGenerator(TagDto::getName);
-        addFields(name, personalPoints, teamPoints, tags);
+        addFields(name, individualPoints, teamPoints, tags);
     }
 
     private void configureBinder() {

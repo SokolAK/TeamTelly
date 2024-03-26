@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 public class ChallengeDto extends Data {
     private String name;
-    private Integer personalPoints;
+    private Integer individualPoints;
     private Integer teamPoints;
     private EventDto event;
     private Set<TagDto> tags;

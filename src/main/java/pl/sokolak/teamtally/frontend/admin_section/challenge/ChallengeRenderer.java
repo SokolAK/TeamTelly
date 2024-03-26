@@ -15,7 +15,7 @@ public class ChallengeRenderer {
                         + "<h3>${item.name}</h3>"
                         + "<vaadin-horizontal-layout style='align-items: start' theme='spacing'>"
                         + "  <vaadin-icon class='challenge-icon' icon='vaadin:user'></vaadin-icon>"
-                        + "  <h5>${item.personalPoints}</h5>"
+                        + "  <h5>${item.individualPoints}</h5>"
                         + "  <vaadin-icon class='challenge-icon' icon='vaadin:users'></vaadin-icon>"
                         + "  <h5>${item.teamPoints}</h5>"
                         + "</vaadin-horizontal-layout>"
@@ -24,7 +24,7 @@ public class ChallengeRenderer {
                         + "</vaadin-horizontal-layout>"
                         + "</vaadin-vertical-layout>")
                 .withProperty("name", ChallengeDto::getName)
-                .withProperty("personalPoints", ChallengeDto::getPersonalPoints)
+                .withProperty("individualPoints", ChallengeDto::getIndividualPoints)
                 .withProperty("teamPoints", ChallengeDto::getTeamPoints)
                 .withProperty("tags", c -> c.getTags().stream()
                         .map(TagDto::getName)
@@ -40,7 +40,7 @@ public class ChallengeRenderer {
                                 + "<h3>${item.name}</h3>"
                                 + "<vaadin-horizontal-layout style='align-items:start' theme='spacing'>"
                                 + "  <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>"
-                                + "  <h5>${item.personalPoints}</h5>"
+                                + "  <h5>${item.individualPoints}</h5>"
                                 + "  <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:${item.colorTeam}'></vaadin-icon>"
                                 + "  <h5>${item.teamPoints}</h5>"
                                 + "</vaadin-horizontal-layout>"
@@ -53,7 +53,7 @@ public class ChallengeRenderer {
                                 + "</div>"
                                 + "</vaadin-horizontal-layout>")
                 .withProperty("name", ChallengeDto::getName)
-                .withProperty("personalPoints", ChallengeDto::getPersonalPoints)
+                .withProperty("individualPoints", ChallengeDto::getIndividualPoints)
                 .withProperty("teamPoints", ChallengeDto::getTeamPoints)
                 .withProperty("tags", c -> c.getTags().stream()
                         .map(TagDto::getName)

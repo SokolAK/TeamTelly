@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS participant
 (
     id       SERIAL PRIMARY KEY,
     active   BOOL,
-    team_id  INT references team (id) ON DELETE CASCADE,
+    team_id  INT references team (id) ON DELETE SET NULL,
     event_id INT references event (id) ON DELETE CASCADE,
     user_id  INT references "user" (id) ON DELETE CASCADE
 );

@@ -86,7 +86,6 @@ class ParticipantRenderer {
                     .map(UserDto::getParticipants)
                     .orElse(Set.of())
                     .stream()
-                    .filter(ParticipantDto::isActive)
                     .filter(p -> p.getEvent().equals(event))
                     .findFirst()
                     .map(ParticipantDto::getTeam)

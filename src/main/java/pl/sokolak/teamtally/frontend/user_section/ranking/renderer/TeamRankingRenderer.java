@@ -2,19 +2,20 @@ package pl.sokolak.teamtally.frontend.user_section.ranking.renderer;
 
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
+import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
-import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPoints;
 
 public class TeamRankingRenderer {
     public static Renderer<TeamWithPlace> createPlaces() {
         return LitRenderer.<TeamWithPlace>of("""
-                                <h5 style='text-align: center'>
-                                    ${index == 0 ? '\uD83E\uDD47' :
-                                    index == 1 ? '\uD83E\uDD48' :
-                                    index == 2 ? '\uD83E\uDD49' :
-                                    index + 1}
-                                </h5>""")
-                .withProperty("points", TeamWithPlace::points);
+                        <h5 style='text-align: center'>
+                            ${item.points > 0 && item.place == 1 ? '\uD83E\uDD47' :
+                            item.points > 0 && item.place == 2 ? '\uD83E\uDD48' :
+                            item.points > 0 && item.place == 3 ? '\uD83E\uDD49' :
+                            item.place}
+                        </h5>""")
+                .withProperty("points", TeamWithPlace::points)
+                .withProperty("place", TeamWithPlace::place);
     }
 
     public static Renderer<TeamWithPlace> createTeams() {

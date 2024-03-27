@@ -8,6 +8,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
@@ -48,16 +49,17 @@ public class ParticipantView extends VerticalLayout {
     }
 
     private void configureGrid() {
+        EventDto event = sessionService.getEvent();
         List<UserDto> users = userService.findAll();
-        List<TeamDto> teams = teamService.findAllByEvent(sessionService.getEvent());
-        List<ParticipantDto> participants = participantService.findAllByEvent(sessionService.getEvent());
+        List<TeamDto> teams = teamService.findAllByEvent(event);
+        List<ParticipantDto> participants = participantService.findAllByEvent(event);
 
         grid = new Grid<>(UserDto.class);
         grid.addClassNames("participant-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns();
         grid.addColumn(new ActiveCheckboxRenderer(
-                participants, this::activateParticipant, this::deactivateParticipant
+                event, this::activateParticipant, this::deactivateParticipant
         ).create()).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(new ParticipantRenderer(
                 teams, participantService, sessionService
@@ -68,20 +70,25 @@ public class ParticipantView extends VerticalLayout {
     private void activateParticipant(UserDto user) {
         user.getParticipantForEvent(sessionService.getEvent())
                 .ifPresentOrElse(
-                        p -> changeActiveStatusOfExistingParticipant(p, true),
+                        participant -> {
+                            ParticipantDto saved = changeActiveStatusOfExistingParticipant(participant, true);
+                            user.getParticipants().remove(saved);
+                            user.getParticipants().add(saved);
+                        },
                         () -> {
                             ParticipantDto saved = participantService.save(createNewParticipant(user));
                             user.getParticipants().add(saved);
                         }
                 );
+        grid.getDataProvider().refreshItem(user);
     }
 
-    private void changeActiveStatusOfExistingParticipant(ParticipantDto participant, boolean active) {
-        participantService.findById(participant.getId())
-                .ifPresent(existing -> {
+    private ParticipantDto changeActiveStatusOfExistingParticipant(ParticipantDto participant, boolean active) {
+        return participantService.findById(participant.getId())
+                .map(existing -> {
                     existing.setActive(active);
-                    participantService.save(existing);
-                });
+                    return participantService.save(existing);
+                }).orElse(participant);
     }
 
     private ParticipantDto createNewParticipant(UserDto user) {

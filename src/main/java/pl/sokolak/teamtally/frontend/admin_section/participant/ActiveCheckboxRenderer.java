@@ -7,32 +7,29 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
 class ActiveCheckboxRenderer {
 
-    private final List<ParticipantDto> participants;
+    private final EventDto event;
     private final Consumer<UserDto> checkListener;
     private final Consumer<UserDto> uncheckListener;
 
     ComponentRenderer<CheckboxWithUser, UserDto> create() {
         return new ComponentRenderer<>(user ->
-                new CheckboxWithUser(user, isParticipant(user, participants), createCheckboxValueChangeListener()));
+                new CheckboxWithUser(user, isParticipant(user), createCheckboxValueChangeListener()));
     }
 
-    private static boolean isParticipant(UserDto user, List<ParticipantDto> participants) {
-        return participants
-                .stream()
+    private boolean isParticipant(UserDto user) {
+        return user.getParticipants().stream()
                 .filter(ParticipantDto::isActive)
-                .map(ParticipantDto::getUser)
-                .map(UserDto::getId)
-                .anyMatch(id -> id.equals(user.getId()));
+                .anyMatch(p -> event.equals(p.getEvent()));
     }
 
     private HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<Checkbox, Boolean>> createCheckboxValueChangeListener() {

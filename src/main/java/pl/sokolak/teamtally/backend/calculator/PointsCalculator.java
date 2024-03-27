@@ -25,6 +25,7 @@ public class PointsCalculator {
             return 0;
         }
         return team.getParticipants().stream()
+                .filter(ParticipantDto::isActive)
                 .map(this::calculate)
                 .reduce(0, Integer::sum);
     }
@@ -34,6 +35,7 @@ public class PointsCalculator {
             return 0;
         }
         Set<ChallengeDto> challenges = team.getParticipants().stream()
+                .filter(ParticipantDto::isActive)
                 .map(ParticipantDto::getCompletedChallenges)
                 .min(Comparator.comparingInt(Set::size))
                 .orElse(Collections.emptySet());

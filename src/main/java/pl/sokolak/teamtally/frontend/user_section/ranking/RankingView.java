@@ -52,7 +52,7 @@ public class RankingView extends Div implements BeforeEnterObserver {
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if(sessionService.getEvents().isEmpty()) {
-            UI.getCurrent().navigate("/no-events");
+            beforeEnterEvent.rerouteTo("/no-events");
         }
     }
 }

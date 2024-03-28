@@ -35,11 +35,14 @@ class ParticipantRenderer {
             Span username = user.getUsername() != null
                     ? new Span(user.getUsername() + " (" + user.getFirstName() + " " + user.getLastName() + ")")
                     : new Span("User unregistered");
+            TeamComboBox teamComboBox = new TeamComboBox(user, sessionService.getEvent(), teams, createComboBoxValueChangeListener());
+            if(user.getParticipantForEvent(sessionService.getEvent()).filter(ParticipantDto::isActive).isEmpty()) {
+                teamComboBox.setReadOnly(true);
+            }
             VerticalLayout verticalLayout = new VerticalLayout(
                     new Span(user.getEmail()),
-                    username,
-                    new TeamComboBox(user, sessionService.getEvent(), teams, createComboBoxValueChangeListener())
-            );
+                    new Span(username),
+                    teamComboBox);
             verticalLayout.addClassName("participants-grid-row");
             return verticalLayout;
         }
@@ -56,9 +59,9 @@ class ParticipantRenderer {
             }
 
             user.getParticipantForEvent(sessionService.getEvent())
-                    .map(Data::getId)
-                    .map(participantService::findById)
-                    .flatMap(Function.identity())
+//                    .map(Data::getId)
+//                    .map(participantService::findById)
+//                    .flatMap(Function.identity())
                     .ifPresent(existing -> {
                         existing.setTeam(team);
                         participantService.save(existing);

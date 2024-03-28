@@ -22,11 +22,11 @@
 //@Route("register")
 //@PageTitle("Register")
 //@AnonymousAllowed
-//public class RegisterView extends VerticalLayout {
+//public class RegisterViewCopy extends VerticalLayout {
 //
 //    private final UserService userService;
 //
-//    public RegisterView(UserService userService) {
+//    public RegisterViewCopy(UserService userService) {
 //        this.userService = userService;
 //        TextField username = new TextField("Username");
 //        EmailField email = new EmailField("Email");

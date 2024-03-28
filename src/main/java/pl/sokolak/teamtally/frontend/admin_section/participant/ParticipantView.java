@@ -18,7 +18,6 @@ import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractForm;
-import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 
 import java.util.List;
 
@@ -52,7 +51,6 @@ public class ParticipantView extends VerticalLayout {
         EventDto event = sessionService.getEvent();
         List<UserDto> users = userService.findAll();
         List<TeamDto> teams = teamService.findAllByEvent(event);
-        List<ParticipantDto> participants = participantService.findAllByEvent(event);
 
         grid = new Grid<>(UserDto.class);
         grid.addClassNames("participant-grid");
@@ -101,6 +99,9 @@ public class ParticipantView extends VerticalLayout {
 
     private void deactivateParticipant(UserDto user) {
         user.getParticipantForEvent(sessionService.getEvent())
-                .ifPresent(p -> changeActiveStatusOfExistingParticipant(p, false));
+                .ifPresent(p -> p.setActive(
+                        changeActiveStatusOfExistingParticipant(p, false).isActive()
+                ));
+        grid.getDataProvider().refreshItem(user);
     }
 }

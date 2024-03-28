@@ -6,3 +6,8 @@ vaadin-login-form-wrapper::part(form-title) {
     color: var(--dim-grey);
     margin: auto;
 }
+
+vaadin-login-form-wrapper::part(form){
+    padding-bottom: 0;
+    margin-bottom: 0;
+}

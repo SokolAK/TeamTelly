@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.sokolak.teamtally.abstracts.Service;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
+import pl.sokolak.teamtally.backend.user.role.RoleService;
+import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserService implements Service<UserDto> {
 
     private final UserRepository userRepository;
+    private final RoleService userRoleService;
     private final Mapper mapper;
 
     @Override
@@ -37,6 +40,9 @@ public class UserService implements Service<UserDto> {
                     .ifPresent(user::setPassword);
         } else {
             user.setPassword(encodePassword(user.getPassword()));
+        }
+        if (user.getUserRole() == null) {
+            user.setUserRole(userRoleService.findDefault().orElse(null));
         }
         User entity = mapper.toEntity(user);
         User savedEntity = userRepository.save(entity);

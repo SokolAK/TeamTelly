@@ -1,11 +1,10 @@
 package pl.sokolak.teamtally.frontend.user_section.ranking;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.TabSheet;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -28,11 +27,15 @@ import java.util.List;
 @Route(value = "", layout = MainView.class)
 @RouteAlias(value = "ranking")
 @PageTitle("Ranking")
-public class RankingView extends Div {
+public class RankingView extends Div implements BeforeEnterObserver {
+
+    private final SessionService sessionService;
 
     public RankingView(IndividualRankingService individualRankingService,
                        TeamRankingService teamRankingService,
                        SessionService sessionService) {
+
+        this.sessionService = sessionService;
 
         EventDto event = sessionService.getEvent();
         List<ParticipantWithPlace> participantsWithPlace = individualRankingService.getParticipantsWithPlaces(event);
@@ -44,5 +47,12 @@ public class RankingView extends Div {
         tabSheet.add("Individual", individualRanking);
         tabSheet.add("Team", teamRanking);
         add(tabSheet);
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if(sessionService.getEvents().isEmpty()) {
+            UI.getCurrent().navigate("/no-events");
+        }
     }
 }

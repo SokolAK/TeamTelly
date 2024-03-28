@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS user_role
 (
-    id     SERIAL PRIMARY KEY,
-    "name" VARCHAR(15)
+    id         SERIAL PRIMARY KEY,
+    "name"     VARCHAR(15),
+    is_default BOOL
 );
 
 CREATE TABLE IF NOT EXISTS "user"

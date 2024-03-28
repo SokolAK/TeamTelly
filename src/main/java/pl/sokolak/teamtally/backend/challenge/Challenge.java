@@ -19,8 +19,7 @@ public class Challenge extends AbstractEntityWithEvent {
     private Integer individualPoints;
     private Integer teamPoints;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "challenge_tag",
+    @JoinTable(name = "challenge_tag",
             joinColumns = @JoinColumn(name = "challenge_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;

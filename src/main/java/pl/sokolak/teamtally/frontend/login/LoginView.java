@@ -1,13 +1,9 @@
 package pl.sokolak.teamtally.frontend.login;
 
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route("login")
@@ -20,7 +16,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 	public LoginView(){
 		prepareStyles();
 		prepareLoginForm();
-		add(createLogo(), loginForm);
+		add(LogoGenerator.createLogo(), loginForm, new RouterLink("Sign in", RegisterView.class));
 	}
 
 	@Override
@@ -43,6 +39,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 	private void prepareLoginForm() {
 		loginForm.setAction("login");
 		loginForm.setI18n(createLoginFormStrings());
+		loginForm.setForgotPasswordButtonVisible(false);
 	}
 
 	private LoginI18n createLoginFormStrings() {
@@ -52,11 +49,5 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 		loginFormStrings.getErrorMessage().setTitle("Incorrect email or password");
 		loginFormStrings.getErrorMessage().setMessage("Please check that you have entered the correct email and password and try again.");
 		return loginFormStrings;
-	}
-
-	private static Image createLogo() {
-		var logo = new Image("assets/logo.png", "Team Tally");
-		logo.addClassName("logo-medium");
-		return logo;
 	}
 }

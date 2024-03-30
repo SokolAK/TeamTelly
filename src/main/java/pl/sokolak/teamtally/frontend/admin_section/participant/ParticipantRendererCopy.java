@@ -1,11 +1,9 @@
 package pl.sokolak.teamtally.frontend.admin_section.participant;
 
 import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -20,28 +18,28 @@ import pl.sokolak.teamtally.backend.user.UserDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @AllArgsConstructor
-class ParticipantRenderer {
+class ParticipantRendererCopy {
 
     private final List<TeamDto> teams;
     private final ParticipantService participantService;
     private final SessionService sessionService;
 
-    ComponentRenderer<VerticalLayout, ParticipantDto> create() {
-        return new ComponentRenderer<>(participant ->
+    ComponentRenderer<VerticalLayout, UserDto> create() {
+        return new ComponentRenderer<>(user ->
         {
-            UserDto user = participant.getUser();
-            Component username = user.getUsername() != null
-                    ? createNameItem(user)
+            Span username = user.getUsername() != null
+                    ? new Span(user.getUsername() + " (" + user.getFirstName() + " " + user.getLastName() + ")")
                     : new Span("User unregistered");
-            TeamComboBox teamComboBox = new TeamComboBox(participant, sessionService.getEvent(), teams, createComboBoxValueChangeListener());
-            if(!participant.isActive()) {
+            TeamComboBox teamComboBox = new TeamComboBox(user, sessionService.getEvent(), teams, createComboBoxValueChangeListener());
+            if(user.getParticipantForEvent(sessionService.getEvent()).filter(ParticipantDto::isActive).isEmpty()) {
                 teamComboBox.setReadOnly(true);
             }
             VerticalLayout verticalLayout = new VerticalLayout(
-                    new Span(username),
                     new Span(user.getEmail()),
+                    new Span(username),
                     teamComboBox);
             verticalLayout.addClassName("participants-grid-row");
             return verticalLayout;
@@ -49,36 +47,50 @@ class ParticipantRenderer {
         );
     }
 
-    private Component createNameItem(UserDto user) {
-        return new Span(user.getUsername() + " (" + user.getFirstName() + " " + user.getLastName() + ")");
-    }
-
     private HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<ComboBox<TeamDto>, TeamDto>> createComboBoxValueChangeListener() {
         return event -> {
-            ParticipantDto participant = getParticipantForComboBox(event);
+            UserDto user = getUserForComboBox(event);
             TeamDto team = event.getValue();
-            participant.setTeam(team);
-            participantService.save(participant);
+
+            if (user == null || team == null) {
+                return;
+            }
+
+            user.getParticipantForEvent(sessionService.getEvent())
+//                    .map(Data::getId)
+//                    .map(participantService::findById)
+//                    .flatMap(Function.identity())
+                    .ifPresent(existing -> {
+                        existing.setTeam(team);
+                        participantService.save(existing);
+                    });
         };
     }
 
-    private static ParticipantDto getParticipantForComboBox(AbstractField.ComponentValueChangeEvent<ComboBox<TeamDto>, ?> event) {
+    private static UserDto getUserForComboBox(AbstractField.ComponentValueChangeEvent<ComboBox<TeamDto>, ?> event) {
         return Optional.ofNullable(event)
                 .map(ComponentEvent::getSource)
                 .map(TeamComboBox.class::cast)
-                .map(TeamComboBox::getParticipant)
+                .map(TeamComboBox::getUser)
                 .orElse(null);
     }
 
     @Getter
     private static class TeamComboBox extends ComboBox<TeamDto> {
-        private final ParticipantDto participant;
+        private final UserDto user;
 
-        public TeamComboBox(ParticipantDto participant, EventDto event, List<TeamDto> teams,
+        public TeamComboBox(UserDto user, EventDto event, List<TeamDto> teams,
                             ValueChangeListener<ComponentValueChangeEvent<ComboBox<TeamDto>, TeamDto>> changeValueListener) {
             super("", teams);
-            this.participant = participant;
-            this.setValue(participant.getTeam());
+            this.user = user;
+            this.setValue(Optional.ofNullable(user)
+                    .map(UserDto::getParticipants)
+                    .orElse(Set.of())
+                    .stream()
+                    .filter(p -> p.getEvent().equals(event))
+                    .findFirst()
+                    .map(ParticipantDto::getTeam)
+                    .orElse(null));
             this.addValueChangeListener(changeValueListener);
             this.addClassName("participant-combobox");
             this.setPlaceholder("Select a team");

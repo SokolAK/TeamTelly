@@ -11,7 +11,7 @@ public class IndividualRankingRenderer {
                             ${item.points > 0 && item.place == 1 ? '\uD83E\uDD47' :
                             item.points > 0 && item.place == 2 ? '\uD83E\uDD48' :
                             item.points > 0 && item.place == 3 ? '\uD83E\uDD49' :
-                            item.place}
+                            item.points > 0 ? item.place : ''}
                         </h5>""")
                 .withProperty("points", ParticipantWithPlace::points)
                 .withProperty("place", ParticipantWithPlace::place);

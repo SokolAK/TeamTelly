@@ -6,7 +6,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
 

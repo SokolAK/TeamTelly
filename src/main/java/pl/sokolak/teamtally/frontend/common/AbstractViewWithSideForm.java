@@ -13,6 +13,7 @@ import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 import pl.sokolak.teamtally.frontend.service.ReloadService;
 
+import java.util.Comparator;
 import java.util.List;
 
 @NoArgsConstructor
@@ -55,8 +56,8 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
-        content.setFlexGrow(5, grid);
-        content.setFlexGrow(1, form);
+        content.setFlexGrow(1, grid);
+        content.setFlexGrow(0, form);
         content.addClassNames("content");
         content.setSizeFull();
         return content;
@@ -128,6 +129,10 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
     protected void updateData(SaveEvent event) {
         saveData(event);
     }
+    
+    protected Comparator<T> getComparator() {
+        return Comparator.comparingInt(Data::getId);
+    }
 
     protected void deleteData(DeleteEvent event) {
         service.delete((T) event.getData());
@@ -137,6 +142,7 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected void updateList() {
         List<T> items = fetchData();
+        items.sort(getComparator());
         grid.setItems(items);
         grid.setVisible(items.size() > 0);
     }

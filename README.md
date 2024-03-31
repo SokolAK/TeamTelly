@@ -1,4 +1,6 @@
-# Application for tracking the results of team competitions
+# Application for tracking the results of team competition
+
+100 commits challenge
 
 🥞 Technology stack
 * Java 21

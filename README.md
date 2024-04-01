@@ -1,4 +1,6 @@
-# Application for tracking the results of team competition
+# Team Telly
+
+Application for tracking the results of team competition
 
 100 commits challenge
 

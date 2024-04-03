@@ -1,4 +1,8 @@
-# Application for tracking the results of team competitions
+# Team Telly
+
+Application for tracking the results of team competition
+
+100 commits challenge project
 
 🥞 Technology stack
 * Java 21

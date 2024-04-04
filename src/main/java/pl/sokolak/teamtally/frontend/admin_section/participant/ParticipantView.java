@@ -4,7 +4,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -17,10 +16,9 @@ import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.team.TeamService;
-import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.common.AbstractForm;
+import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 
 import java.util.List;
 
@@ -29,13 +27,10 @@ import java.util.List;
 @RolesAllowed("ADMIN")
 @Route(value = "/admin/participant", layout = MainView.class)
 @PageTitle("Participants")
-public class ParticipantView extends VerticalLayout {
+public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
 
-    protected Grid<ParticipantDto> grid;
     protected UserService userService;
-    protected ParticipantService participantService;
     protected TeamService teamService;
-    protected AbstractForm form;
     protected SessionService sessionService;
 
     public ParticipantView(UserService userService,
@@ -43,25 +38,19 @@ public class ParticipantView extends VerticalLayout {
                            TeamService teamService,
                            SessionService sessionService) {
         this.sessionService = sessionService;
+        this.service = participantService;
         this.userService = userService;
-        this.participantService = participantService;
         this.teamService = teamService;
+        this.form = new ParticipantForm();
         configureGrid();
-        add(getToolbar(), grid);
+        configureView();
     }
 
-    private Component getToolbar() {
-        Button addDataButton = new Button("Add");
-//        addDataButton.addClickListener(click -> addData());
-        var toolbar = new HorizontalLayout(addDataButton);
-        toolbar.addClassName("toolbar");
-        return toolbar;
-    }
-
-    private void configureGrid() {
+    @Override
+    protected void configureGrid() {
         EventDto event = sessionService.getEvent();
         List<TeamDto> teams = teamService.findAllByEvent(event);
-        List<ParticipantDto> participants = participantService.findAllByEvent(event);
+        List<ParticipantDto> participants = ((ParticipantService) service).findAllByEvent(event);
 
         grid = new Grid<>(ParticipantDto.class);
         grid.addClassNames("participant-grid");
@@ -71,9 +60,14 @@ public class ParticipantView extends VerticalLayout {
                 event, this::activateParticipant, this::deactivateParticipant
         ).create()).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(new ParticipantRenderer(
-                teams, participantService, sessionService
+                teams, (ParticipantService) service, sessionService
         ).create()).setAutoWidth(true);
         grid.setItems(participants);
+    }
+
+    @Override
+    protected ParticipantDto emptyData() {
+        return ParticipantDto.builder().build();
     }
 
     private void activateParticipant(ParticipantDto participant) {
@@ -86,7 +80,7 @@ public class ParticipantView extends VerticalLayout {
 
     private void changeParticipantActiveStatus(ParticipantDto participant, boolean active) {
         participant.setActive(active);
-        participantService.save(participant);
+        service.save(participant);
         grid.getDataProvider().refreshItem(participant);
     }
 }

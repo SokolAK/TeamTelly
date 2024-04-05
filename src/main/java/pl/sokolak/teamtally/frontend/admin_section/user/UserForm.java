@@ -7,11 +7,11 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
-import pl.sokolak.teamtally.frontend.common.AbstractForm;
+import pl.sokolak.teamtally.frontend.common.SaveDeleteCancelAbstractForm;
 
 import java.util.List;
 
-class UserForm extends AbstractForm {
+class UserForm extends SaveDeleteCancelAbstractForm {
     private final TextField username = new TextField("Username");
     private final TextField firstName = new TextField("First name");
     private final TextField lastName = new TextField("Last name");

@@ -49,4 +49,9 @@ public class UserDto extends Data {
                 .filter(participant -> event.getId().equals(participant.getEvent().getId()))
                 .findFirst();
     }
+
+    @Override
+    public String toString() {
+        return username + " " + firstName + " " + lastName + " " + email;
+    }
 }

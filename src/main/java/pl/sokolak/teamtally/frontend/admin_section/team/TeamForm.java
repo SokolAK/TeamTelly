@@ -8,11 +8,11 @@ import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.function.ValueProvider;
 import pl.sokolak.teamtally.backend.team.TeamDto;
-import pl.sokolak.teamtally.frontend.common.AbstractForm;
+import pl.sokolak.teamtally.frontend.common.SaveDeleteCancelAbstractForm;
 
 import java.util.List;
 
-class TeamForm extends AbstractForm {
+class TeamForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField name = new TextField("Name");
     private final ComboBox<String> color = new ComboBox<>("Color");

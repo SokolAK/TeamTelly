@@ -6,12 +6,11 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
-import pl.sokolak.teamtally.frontend.common.AbstractForm;
+import pl.sokolak.teamtally.frontend.common.SaveDeleteCancelAbstractForm;
 
-import java.util.Collection;
 import java.util.Set;
 
-class ChallengeForm extends AbstractForm {
+class ChallengeForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField name = new TextField("Name");
     private final TextField individualPoints = new TextField("Personal points");

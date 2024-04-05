@@ -123,7 +123,6 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected void saveData(SaveEvent event) {
         service.save((T) event.getData());
-
     }
 
     protected void updateData(SaveEvent event) {

@@ -14,7 +14,7 @@ import pl.sokolak.teamtally.frontend.common.event.CloseEvent;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-public abstract class AbstractForm extends FormLayout {
+public abstract class SaveDeleteCancelAbstractForm extends AbstractForm {
 
     private final Button save = new Button("Save");
     private final Button delete = new Button("Delete");
@@ -22,10 +22,7 @@ public abstract class AbstractForm extends FormLayout {
 
     protected Binder binder;
 
-    public AbstractForm() {
-    }
-
-    public void init() {
+    public SaveDeleteCancelAbstractForm() {
     }
 
     protected void setBinder(Binder<?> binder) {

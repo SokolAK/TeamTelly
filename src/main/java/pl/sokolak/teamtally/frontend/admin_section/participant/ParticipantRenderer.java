@@ -5,7 +5,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -36,7 +35,7 @@ class ParticipantRenderer {
                     ? createNameItem(user)
                     : new Span("User unregistered");
             TeamComboBox teamComboBox = new TeamComboBox(participant, sessionService.getEvent(), teams, createComboBoxValueChangeListener());
-            if(!participant.isActive()) {
+            if (!participant.isActive()) {
                 teamComboBox.setReadOnly(true);
             }
             VerticalLayout verticalLayout = new VerticalLayout(
@@ -50,7 +49,14 @@ class ParticipantRenderer {
     }
 
     private Component createNameItem(UserDto user) {
-        return new Span(user.getUsername() + " (" + user.getFirstName() + " " + user.getLastName() + ")");
+        String username = Optional.ofNullable(user.getUsername()).orElse("-");
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        String nameSeparator = firstName == null || lastName == null ? "" : " ";
+        if (firstName == null && lastName == null) {
+            return new Span(username);
+        }
+        return new Span(username + " (" + user.getFirstName() + nameSeparator + user.getLastName() + ")");
     }
 
     private HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<ComboBox<TeamDto>, TeamDto>> createComboBoxValueChangeListener() {

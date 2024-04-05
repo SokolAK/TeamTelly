@@ -5,9 +5,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.frontend.common.AbstractForm;
+import pl.sokolak.teamtally.frontend.common.SaveDeleteCancelAbstractForm;
 
-class EventForm extends AbstractForm {
+class EventForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField name = new TextField("Name");
     private final DatePicker startDate = new DatePicker("Start");

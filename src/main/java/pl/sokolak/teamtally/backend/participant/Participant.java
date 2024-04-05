@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cascade;
 import pl.sokolak.teamtally.abstracts.AbstractEntityWithEvent;
 import pl.sokolak.teamtally.backend.challenge.Challenge;
 import pl.sokolak.teamtally.backend.team.Team;
@@ -20,6 +21,7 @@ public class Participant extends AbstractEntityWithEvent {
     @ManyToOne
     private Team team;
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private User user;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

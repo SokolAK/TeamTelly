@@ -1,7 +1,7 @@
 # Team Telly
 
 Application for tracking the results of team competition
-
+screenshots soon
 
 100 commits challenge project
 

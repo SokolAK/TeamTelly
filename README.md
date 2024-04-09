@@ -4,6 +4,8 @@ Application for tracking the results of team competition
 
 screenshots coming soon
 
+awesome app
+
 100 commits challenge project
 
 🥞 Technology stack

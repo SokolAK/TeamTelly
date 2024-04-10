@@ -1,4 +1,4 @@
-# Team Telly
+## Team Telly
 
 Application for tracking the results of team competition
 

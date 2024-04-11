@@ -107,37 +107,39 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
 
     private void saveParticipantsFromUsers(Set<UserDto> users) {
         users.stream()
-                .map(user -> ParticipantDto.builder()
-                        .active(true)
-                        .event(sessionService.getEvent())
-                        .user(user)
-                        .build())
+                .map(this::createNewParticipant)
                 .forEach(p -> service.save(p));
     }
 
-    // TODO sprawdzanie czy email już istnieje
-    // TODO jeśli email już istnieje to przypisywanie użytkownika
     private void saveParticipantsFromEmails(Set<String> emails) {
         emails.stream()
                 .map(email -> userService.findFirstByEmail(email))
                 .flatMap(Optional::stream)
-                .map(user -> ParticipantDto.builder()
-                        .active(true)
-                        .event(sessionService.getEvent())
-                        .user(user)
-                        .build())
+                .map(this::createNewParticipant)
                 .forEach(p -> service.save(p));
         emails.stream()
                 .filter(email -> userService.findFirstByEmail(email).isEmpty())
-                .map(email -> ParticipantDto.builder()
-                        .active(false)
-                        .event(sessionService.getEvent())
-                        .user(UserDto.builder()
-                                .username("<Not signed in>")
-                                .email(email)
-                                .build())
-                        .build())
+                .map(this::createNewParticipant)
                 .forEach(p -> service.save(p));
+    }
+
+    private ParticipantDto createNewParticipant(UserDto user) {
+        return ParticipantDto.builder()
+                .active(true)
+                .event(sessionService.getEvent())
+                .user(user)
+                .build();
+    }
+
+    private ParticipantDto createNewParticipant(String email) {
+        return ParticipantDto.builder()
+                .active(false)
+                .event(sessionService.getEvent())
+                .user(UserDto.builder()
+                        .username("<Not signed in>")
+                        .email(email)
+                        .build())
+                .build();
     }
 
     private void removeParticipant(ParticipantDto participant) {

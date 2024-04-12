@@ -26,5 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Build the Docker image 1
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .    
+    - name: Build the Docker image 2
       run: docker build . --file Dockerfile --tag team-tally:$(date +%s)

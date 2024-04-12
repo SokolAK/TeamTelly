@@ -41,7 +41,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
       
   push-image:
-    needs: build-image
+    needs: login-to-docker-hub
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3 

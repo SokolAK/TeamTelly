@@ -28,3 +28,7 @@ jobs:
     - uses: actions/checkout@v3 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag team-tally:$(date +%s)
+    - name: Login to Docker Hub
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - name: Push Docker image
+      run: docker push $DOCKER_USERNAME/teamtally

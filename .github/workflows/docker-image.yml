@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag team-tally:$(date +%s)
+      run: docker build . --file Dockerfile --tag team-tally
 
   push-image:
     needs: build-image

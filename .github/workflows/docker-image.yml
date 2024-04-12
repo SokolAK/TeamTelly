@@ -27,7 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag team-tally:latest
+      run: docker build . --file Dockerfile --tag sokolak/team-tally:latest
 
   login-to-docker-hub:
     needs: build-image

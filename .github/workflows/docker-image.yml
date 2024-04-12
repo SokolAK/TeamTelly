@@ -46,5 +46,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3 
     - name: Push Docker image
-      run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/teamtally
+      run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/teamtally:latest
       

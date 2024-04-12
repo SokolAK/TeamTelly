@@ -40,5 +40,5 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Push Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/teamtally
+      run: docker push docker.io/${{ secrets.DOCKER_USERNAME }}/teamtally
       

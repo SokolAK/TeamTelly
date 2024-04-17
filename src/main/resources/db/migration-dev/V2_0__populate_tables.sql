@@ -35,11 +35,11 @@ VALUES ('joga', 10, 0,           (SELECT id FROM "event" WHERE name = 'Ziflow Me
        ('vodka', 40, 40,         (SELECT id FROM "event" WHERE name = 'BMS Meeting'));
 
 
--- INSERT INTO challenge_tag (id, challenge_id, tag_id)
--- VALUES (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'joga'), (SELECT id FROM tag WHERE name = 'sport')),
---        (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'basketball'), (SELECT id FROM tag WHERE name = 'sport')),
---        (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'basketball'), (SELECT id FROM tag WHERE name = 'openair')),
---        (gen_random_uuid(), (SELECT id FROM challenge WHERE name = 'add bob photo'), (SELECT id FROM tag WHERE name = 'bob'));
+INSERT INTO challenge_tag (challenge_id, tag_id)
+VALUES ((SELECT id FROM challenge WHERE name = 'joga'), (SELECT id FROM tag WHERE name = 'sport')),
+       ((SELECT id FROM challenge WHERE name = 'basketball'), (SELECT id FROM tag WHERE name = 'sport')),
+       ((SELECT id FROM challenge WHERE name = 'basketball'), (SELECT id FROM tag WHERE name = 'openair')),
+       ((SELECT id FROM challenge WHERE name = 'add bob photo'), (SELECT id FROM tag WHERE name = 'bob'));
 
 
 INSERT INTO participant (active, event_id, user_id)

@@ -102,7 +102,7 @@ VALUES ('igunia', 'Iga', 'Iga', 'iga@gmail.com', (SELECT id FROM user_role WHERE
        ('user1', 'user1', 'user1', 'user97@gmail.com', (SELECT id FROM user_role WHERE name = 'user'), '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
        ('user1', 'user1', 'user1', 'user98@gmail.com', (SELECT id FROM user_role WHERE name = 'user'), '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
        ('user1', 'user1', 'user1', 'user99@gmail.com', (SELECT id FROM user_role WHERE name = 'user'), '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
-       ('user1', 'user1', 'user1', 'user100@gmail.com', (SELECT id FROM user_role WHERE name = 'user'), '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6'),
+       ('user1', 'user1', 'user1', 'user100@gmail.com', (SELECT id FROM user_role WHERE name = 'user'), '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6');
 
 INSERT INTO event ("name", start_date, end_date, owner_id)
 VALUES ('Ziflow Meeting', '2024-03-12', '2024-06-13', (SELECT id FROM "user" WHERE email = 'admin@gmail.com'));

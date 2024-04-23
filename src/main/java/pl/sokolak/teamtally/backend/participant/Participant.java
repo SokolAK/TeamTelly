@@ -21,7 +21,7 @@ public class Participant extends AbstractEntityWithEvent {
     @ManyToOne
     private Team team;
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     private User user;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

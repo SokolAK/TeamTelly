@@ -15,6 +15,7 @@ class UserForm extends SaveDeleteCancelAbstractForm {
     private final TextField username = new TextField("Username");
     private final TextField firstName = new TextField("First name");
     private final TextField lastName = new TextField("Last name");
+    private final TextField jobTitle = new TextField("Job Title");
     private final EmailField email = new EmailField("Email");
     private final TextField password = new TextField("Password");
     private final ComboBox<UserRoleDto> role = new ComboBox<>("Role");
@@ -24,7 +25,7 @@ class UserForm extends SaveDeleteCancelAbstractForm {
         configureBinder();
         role.setItems(roles);
         role.setItemLabelGenerator(UserRoleDto::getName);
-        addFields(username, firstName, lastName, email, role, password);
+        addFields(username, firstName, lastName, jobTitle, email, role, password);
     }
 
     private void configureBinder() {

@@ -13,6 +13,7 @@ import java.util.Set;
 class ChallengeForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField name = new TextField("Name");
+    private final TextField description = new TextField("Description");
     private final TextField individualPoints = new TextField("Personal points");
     private final TextField teamPoints = new TextField("Team points");
     private final MultiSelectComboBox<TagDto> tags = new MultiSelectComboBox<>("Tags");
@@ -22,7 +23,7 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
         configureBinder();
         tags.setItems(tagsForEvent);
         tags.setItemLabelGenerator(TagDto::getName);
-        addFields(name, individualPoints, teamPoints, tags);
+        addFields(name, description, individualPoints, teamPoints, tags);
     }
 
     private void configureBinder() {

@@ -1,13 +1,14 @@
 package pl.sokolak.teamtally.frontend.admin_section.participant;
 
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import pl.sokolak.teamtally.backend.event.EventDto;
@@ -16,6 +17,7 @@ import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
+import pl.sokolak.teamtally.backend.util.ImageUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +29,7 @@ class ParticipantRenderer {
     private final ParticipantService participantService;
     private final SessionService sessionService;
 
-    ComponentRenderer<VerticalLayout, ParticipantDto> create() {
+    ComponentRenderer<HorizontalLayout, ParticipantDto> create() {
         return new ComponentRenderer<>(participant ->
         {
             UserDto user = participant.getUser();
@@ -38,25 +40,34 @@ class ParticipantRenderer {
             if (!participant.isActive()) {
                 teamComboBox.setReadOnly(true);
             }
-            VerticalLayout verticalLayout = new VerticalLayout(
+            HorizontalLayout horizontalLayout = new HorizontalLayout();
+            Div photoContainer = new Div();
+            photoContainer.addClassName("user-photo-div");
+            Image photo = ImageUtil.createUserPhotoAsImageMedium(user.getPhoto());
+            photo.addClassName("user-photo-medium");
+            photoContainer.add(photo);
+            VerticalLayout data = new VerticalLayout(
                     new Span(username),
-                    new Span(user.getEmail()),
+                    new Span(user.getJobTitle()),
+//                    new Span(user.getEmail()),
                     teamComboBox);
-            verticalLayout.addClassName("participants-grid-row");
-            return verticalLayout;
+            data.addClassName("participants-grid-row");
+            horizontalLayout.add(photoContainer, data);
+            return horizontalLayout;
         }
         );
     }
 
     private Component createNameItem(UserDto user) {
-        String username = Optional.ofNullable(user.getUsername()).orElse("-");
-        String firstName = user.getFirstName();
-        String lastName = user.getLastName();
-        String nameSeparator = firstName == null || lastName == null ? "" : " ";
-        if (firstName == null && lastName == null) {
-            return new Span(username);
-        }
-        return new Span(username + " (" + user.getFirstName() + nameSeparator + user.getLastName() + ")");
+        return new Html("<b>" + user.getFirstName() + " " + user.getLastName() + "</b>");
+//        String username = Optional.ofNullable(user.getUsername()).orElse("-");
+//        String firstName = user.getFirstName();
+//        String lastName = user.getLastName();
+//        String nameSeparator = firstName == null || lastName == null ? "" : " ";
+//        if (firstName == null && lastName == null) {
+//            return new Span(username);
+//        }
+//        return new Span(username + " (" + user.getFirstName() + nameSeparator + user.getLastName() + ")");
     }
 
     private HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<ComboBox<TeamDto>, TeamDto>> createComboBoxValueChangeListener() {

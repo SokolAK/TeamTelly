@@ -42,9 +42,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         this.userService = userService;
         prepareStyles();
         prepareLoginForm();
-        add(LogoGenerator.createLogo(), loginForm
-//				, new RouterLink("Sign in", RegisterView.class)
-        );
+        add(LogoGenerator.createLogo(), loginForm);
 
 
         Dialog dialog = new Dialog();
@@ -61,7 +59,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         Button button = new Button("Sign in", e -> dialog.open());
 
-        add(dialog, button);
+//        add(dialog, button);
+        add(dialog);
     }
 
     @Override

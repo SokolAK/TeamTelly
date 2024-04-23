@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.frontend.user_section.ranking.renderer;
 
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
+import pl.sokolak.teamtally.backend.util.ImageUtil;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 
 public class IndividualRankingRenderer {
@@ -19,16 +20,25 @@ public class IndividualRankingRenderer {
 
     public static Renderer<ParticipantWithPlace> createParticipants() {
         return LitRenderer.<ParticipantWithPlace>of("""
-                        <vaadin-vertical-layout>
-                            <span><b>${item.firstName} ${item.lastName}</b> <i>${item.username}</i></span>
-                            <span style='color: ${item.teamColor}'>${item.teamIcon} ${item.teamName}</span>
-                        </vaadin-vertical-layout>""")
+                        <vaadin-horizontal-layout>
+                            <div class='user-photo-div'>
+                                <img class='user-photo-medium' src=${item.photo} alt=${item.name}>
+                            </div>
+                            <vaadin-vertical-layout style='margin-left: 10px'>
+                                <span><b>${item.firstName} ${item.lastName}</b></span>
+                                <span>${item.jobTitle}</span>
+                                <span style='color: ${item.teamColor}'>${item.teamIcon} ${item.teamName}</span>
+                            </vaadin-vertical-layout>
+                        </vaadin-horizontal-layout>
+                        """)
                 .withProperty("username", ParticipantWithPlace::username)
                 .withProperty("firstName", ParticipantWithPlace::firstName)
                 .withProperty("lastName", ParticipantWithPlace::lastName)
+                .withProperty("jobTitle", ParticipantWithPlace::jobTitle)
                 .withProperty("teamIcon", ParticipantWithPlace::teamIcon)
                 .withProperty("teamName", ParticipantWithPlace::teamName)
-                .withProperty("teamColor", ParticipantWithPlace::teamColor);
+                .withProperty("teamColor", ParticipantWithPlace::teamColor)
+                .withProperty("photo", p -> ImageUtil.createUserPhotoAsBase64(p.photo()));
     }
 
     public static Renderer<ParticipantWithPlace> createPoints() {

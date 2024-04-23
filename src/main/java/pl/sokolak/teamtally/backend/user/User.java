@@ -22,8 +22,10 @@ public class User extends AbstractEntity {
     private String username;
     private String firstName;
     private String lastName;
+    private String jobTitle;
     private String email;
     private String password;
+    private byte[] photo;
     @ManyToOne(cascade = CascadeType.MERGE)
     private UserRole userRole;
     @OneToMany(mappedBy = "user")

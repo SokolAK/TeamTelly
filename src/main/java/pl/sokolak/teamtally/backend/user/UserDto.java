@@ -20,10 +20,12 @@ public class UserDto extends Data {
     private String username;
     private String firstName;
     private String lastName;
+    private String jobTitle;
     private String email;
     private String password;
     private UserRoleDto userRole;
     private Set<ParticipantDto> participants;
+    private byte[] photo;
 
     public UserDto withoutPassword() {
         return UserDto.builder()
@@ -31,8 +33,10 @@ public class UserDto extends Data {
                 .username(getUsername())
                 .firstName(getFirstName())
                 .lastName(getLastName())
+                .jobTitle(getJobTitle())
                 .email(getEmail())
                 .userRole(getUserRole())
+                .photo(getPhoto())
                 .build();
     }
 

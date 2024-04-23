@@ -6,6 +6,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -19,10 +20,10 @@ import pl.sokolak.teamtally.frontend.mainlayout.HeaderFactory;
 
 public class MainView extends AppLayout {
 
-    private final String appVersion = "0.1.0";
+    private final String appVersion = "0.2.0";
     private final SecurityService securityService;
     private final SessionService sessionService;
-    private final H2 viewTitle = new H2();
+    private final H4 viewTitle = new H4();
 
     public MainView(SecurityService securityService, SessionService sessionService) {
         this.securityService = securityService;
@@ -58,7 +59,7 @@ public class MainView extends AppLayout {
         Component events = drawerFactory.createEvents(selection -> reload(selection.getValue()));
         Footer footer = drawerFactory.createFooter(appVersion);
 
-        addToDrawer(logo);
+//        addToDrawer(logo);
         if (sessionService.hasEvent()) {
             addToDrawer(eventName, eventDate);
         }

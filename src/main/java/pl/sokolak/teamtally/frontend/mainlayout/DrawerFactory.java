@@ -28,7 +28,7 @@ public class DrawerFactory {
     private final SessionService sessionService;
 
     public Image createLogo() {
-        Image logo = new Image("assets/logo.png", "Team Tally");
+        Image logo = new Image("assets/logo.png", "TeamTally");
         logo.addClassName("logo-small");
         return logo;
     }
@@ -67,7 +67,7 @@ public class DrawerFactory {
 
     public Footer createFooter(String appVersion) {
         Footer layout = new Footer();
-        H3 version = new H3("v. " + appVersion);
+        H3 version = new H3("TeamTally v. " + appVersion);
         version.addClassName("version");
         layout.add(version);
         return layout;

@@ -1,0 +1,17 @@
+.user-photo-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-photo-medium {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.user-photo-small {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}

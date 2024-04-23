@@ -16,15 +16,16 @@ class TeamForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField name = new TextField("Name");
     private final ComboBox<String> color = new ComboBox<>("Color");
-    private final ComboBox<String> icon = new ComboBox<>("Icon");
+//    private final ComboBox<String> icon = new ComboBox<>("Icon");
+    private final TextField icon = new TextField("Icon");
 
     public TeamForm() {
         addClassName("team-form");
         configureBinder();
         color.setRenderer(createColorRenderer());
         color.setItems(createColors());
-        icon.setRenderer(createIconRenderer());
-        icon.setItems(createIcons());
+//        icon.setRenderer(createIconRenderer());
+//        icon.setItems(createIcons());
         addFields(name, color, icon);
     }
 
@@ -40,7 +41,7 @@ class TeamForm extends SaveDeleteCancelAbstractForm {
 
     private Renderer<String> createColorRenderer() {
         return LitRenderer.<String> of(
-                "<span style='background-color:${item.color}'>&nbsp; &nbsp; &nbsp; &nbsp; </span>")
+                "<span style='background-color:${item.color}'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>")
                 .withProperty("color", ValueProvider.identity());
     }
 

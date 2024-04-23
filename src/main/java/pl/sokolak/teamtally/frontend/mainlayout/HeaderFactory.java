@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -12,6 +13,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.util.ImageUtil;
 
 @AllArgsConstructor
 public class HeaderFactory {
@@ -24,7 +26,7 @@ public class HeaderFactory {
         var headerLeft = new HorizontalLayout(new DrawerToggle(), viewTitle);
         headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        var headerRight = new HorizontalLayout(createUserNameField(), createLogoutButton());
+        var headerRight = new HorizontalLayout(createUserPhoto(), createUserNameField(), createLogoutButton());
         headerRight.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         headerRight.addClassName("header-right");
 
@@ -38,6 +40,10 @@ public class HeaderFactory {
                 LumoUtility.Padding.Horizontal.MEDIUM);
 
         return header;
+    }
+
+    private Image createUserPhoto() {
+        return ImageUtil.createUserPhotoAsImageSmall(sessionService.getUser().getPhoto());
     }
 
     private Component createUserNameField() {

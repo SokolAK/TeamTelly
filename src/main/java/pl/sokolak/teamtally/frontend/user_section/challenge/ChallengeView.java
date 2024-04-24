@@ -135,13 +135,17 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         }
 
         ParticipantDto participant = sessionService.getParticipant();
-        participant.addCompletedChallenge(code.getChallenge());
-        participantService.save(participant);
-        code.setEvent(sessionService.getEvent());
-        code.setActive(false);
-        codeService.save(code);
-        NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
-        populateGrid();
+        if(!didParticipantCompleteChallenge(participant, code)) {
+            participant.addCompletedChallenge(code.getChallenge());
+            participantService.save(participant);
+            code.setEvent(sessionService.getEvent());
+            code.setActive(false);
+            codeService.save(code);
+            NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
+            populateGrid();
+        } else {
+            NotificationService.showSuccess("You already completed " + code.getChallenge().getName());
+        }
     }
 
     private void populateGrid() {
@@ -153,5 +157,9 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
 
     private boolean isEmpty(String code) {
         return code == null || code.isEmpty();
+    }
+
+    private boolean didParticipantCompleteChallenge(ParticipantDto participant, CodeDto code) {
+        return participant.getCompletedChallenges().contains(code.getChallenge());
     }
 }

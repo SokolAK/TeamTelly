@@ -20,7 +20,7 @@ import pl.sokolak.teamtally.frontend.mainlayout.HeaderFactory;
 
 public class MainView extends AppLayout {
 
-    private final String appVersion = "0.3.0";
+    private final String appVersion = "0.4.0";
     private final SecurityService securityService;
     private final SessionService sessionService;
     private final H4 viewTitle = new H4();

@@ -45,6 +45,7 @@ public class ChallengeRenderer {
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
                                 <h3>${item.name}</h3>
+                                <span style='margin-bottom:10px;'>${item.description}</span>
                                 <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>
                                     <h5>${item.individualPoints}</h5>
@@ -62,6 +63,7 @@ public class ChallengeRenderer {
                         </vaadin-horizontal-layout>
                         """)
                 .withProperty("name", ChallengeDto::getName)
+                .withProperty("description", ChallengeDto::getDescription)
                 .withProperty("individualPoints", ChallengeDto::getIndividualPoints)
                 .withProperty("teamPoints", ChallengeDto::getTeamPoints)
                 .withProperty("tags", c -> c.getTags().stream()

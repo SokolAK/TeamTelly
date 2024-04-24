@@ -3,6 +3,7 @@ package pl.sokolak.teamtally.backend.challenge;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.abstracts.Data;
+import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
 
@@ -18,4 +19,5 @@ public class ChallengeDto extends Data {
     private Integer teamPoints;
     private EventDto event;
     private Set<TagDto> tags;
+    private Set<CodeDto> codes;
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import pl.sokolak.teamtally.abstracts.AbstractEntityWithEvent;
+import pl.sokolak.teamtally.backend.code.Code;
 import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.tag.Tag;
 
@@ -26,4 +27,6 @@ public class Challenge extends AbstractEntityWithEvent {
     private Set<Tag> tags;
     @ManyToMany(mappedBy = "completedChallenges", cascade = CascadeType.ALL)
     private Set<Participant> participants;
+    @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Code> codes;
 }

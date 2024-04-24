@@ -93,6 +93,7 @@ public class DrawerFactory {
         if (sessionService.hasEvent()) {
             nav.addItem(new SideNavItem("Ranking", RankingView.class, VaadinIcon.TROPHY.create()));
             nav.addItem(new SideNavItem("Challenges", pl.sokolak.teamtally.frontend.user_section.challenge.ChallengeView.class, VaadinIcon.ROCKET.create()));
+            nav.addItem(new SideNavItem("Suggest improvements", pl.sokolak.teamtally.frontend.user_section.suggestion.SuggestionView.class, VaadinIcon.LIGHTBULB.create()));
         }
     }
 

@@ -1,7 +1,6 @@
 package pl.sokolak.teamtally.frontend.login;
 
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.server.StreamResource;
 
 class LogoGenerator {
     static Image createLogo() {

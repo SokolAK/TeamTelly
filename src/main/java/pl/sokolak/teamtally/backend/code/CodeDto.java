@@ -15,4 +15,26 @@ public class CodeDto extends Data {
     private boolean active;
     private EventDto event;
     private ChallengeDto challenge;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        CodeDto codeDto = (CodeDto) o;
+
+        if (!code.equals(codeDto.code)) return false;
+        if (!event.equals(codeDto.event)) return false;
+        return challenge.equals(codeDto.challenge);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + code.hashCode();
+        result = 31 * result + event.hashCode();
+        result = 31 * result + challenge.hashCode();
+        return result;
+    }
 }

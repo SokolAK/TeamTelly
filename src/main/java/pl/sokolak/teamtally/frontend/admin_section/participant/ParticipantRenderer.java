@@ -76,6 +76,9 @@ class ParticipantRenderer {
             TeamDto team = event.getValue();
             participant.setTeam(team);
             participantService.save(participant);
+            if(participant.equals(sessionService.getParticipant())) {
+                sessionService.init();
+            }
         };
     }
 

@@ -18,6 +18,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.code.CodeDto;
@@ -25,12 +26,14 @@ import pl.sokolak.teamtally.backend.code.CodeService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeRenderer;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
 import pl.sokolak.teamtally.frontend.common.NotificationService;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -62,7 +65,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         codeField.setPlaceholder("Insert code");
         Button confirmButton = new Button(new Icon(VaadinIcon.STAR));
         confirmButton.addClickListener(confirmButtonListener());
-        toolbar.setFlexGrow(1, codeField);
+//        toolbar.setFlexGrow(1, codeField);
         toolbar.setWidthFull();
         toolbar.add(codeField, confirmButton);
     }
@@ -72,15 +75,34 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         grid = new Grid<>(ChallengeDto.class, false);
         grid.addClassNames("challenge-grid");
         grid.setSizeFull();
-        grid.setColumns();
-        grid.addColumn(ChallengeRenderer.create());
-//        grid.addColumn(ChallengeRenderer.create(
-//                        List.of(UUID.fromString("afb75070-8176-4ccc-81ed-b0ea786335e2"),
-//                                UUID.fromString("3b7b5558-7319-4a7d-8882-8e5825bba707")),
-//                        List.of(UUID.fromString("3b7b5558-7319-4a7d-8882-8e5825bba707"))))
-//                .setHeader("Name")
-//                .setComparator(ChallengeDto::getName);
+        populateGrid();
         grid.sort(List.of(new GridSortOrder<>(grid.getColumns().get(0), SortDirection.ASCENDING)));
+    }
+
+    private List<Integer> getCompletedIndividualChallenges() {
+        return Optional.ofNullable(sessionService.getParticipant())
+                .map(ParticipantDto::getCompletedChallenges)
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(Data::getId)
+                .collect(Collectors.toList());
+    }
+
+    private List<Integer> getCompletedTeamChallenges() {
+        TeamDto team = sessionService.getParticipant().getTeam();
+        Set<ChallengeDto> challenges = Optional.ofNullable(team)
+                .map(TeamDto::getParticipants)
+                .orElse(Collections.emptySet())
+                .stream().filter(ParticipantDto::isActive)
+                .map(ParticipantDto::getCompletedChallenges)
+                .min(Comparator.comparingInt(Set::size))
+                .orElse(Collections.emptySet());
+        return challenges.stream()
+                .filter(c -> team.getParticipants().stream()
+                        .map(ParticipantDto::getCompletedChallenges)
+                        .allMatch(cs -> cs.contains(c)))
+                .map(ChallengeDto::getId)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -107,7 +129,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     }
 
     private void tryCompleteChallenge(CodeDto code) {
-        if(!code.isActive()) {
+        if (!code.isActive()) {
             NotificationService.showWarning("Code already used");
             return;
         }
@@ -118,7 +140,15 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         code.setEvent(sessionService.getEvent());
         code.setActive(false);
         codeService.save(code);
-        NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints());
+        NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
+        populateGrid();
+    }
+
+    private void populateGrid() {
+        grid.setColumns();
+        grid.addColumn(ChallengeRenderer.create(
+                getCompletedIndividualChallenges(), getCompletedTeamChallenges()
+        ));
     }
 
     private boolean isEmpty(String code) {

@@ -1,6 +1,6 @@
 ## Team Telly
 
-Application for tracking the results of team competition.
+Application for tracking the results of team competition
 
 🥞 Technology stack
 * Java 21

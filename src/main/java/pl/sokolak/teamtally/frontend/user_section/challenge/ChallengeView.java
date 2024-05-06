@@ -1,15 +1,20 @@
 package pl.sokolak.teamtally.frontend.user_section.challenge;
 
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H4;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.router.PageTitle;
@@ -19,6 +24,7 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.abstracts.Data;
+import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.code.CodeDto;
@@ -46,28 +52,34 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     private final ParticipantService participantService;
     private final CodeService codeService;
     private final TextField codeField = new TextField();
+    private final PointsCalculator pointsCalculator;
 
     public ChallengeView(ChallengeService service,
                          CodeService codeService,
                          ParticipantService participantService,
-                         SessionService sessionService) {
+                         SessionService sessionService,
+                         PointsCalculator pointsCalculator) {
         this.service = service;
         this.codeService = codeService;
         this.participantService = participantService;
         this.sessionService = sessionService;
+        this.pointsCalculator = pointsCalculator;
         addClassName("challenge-view");
         init();
     }
 
     @Override
-    protected void configureToolbar() {
-        toolbar = new HorizontalLayout();
+    protected Component getToolbar() {
+        VerticalLayout toolbar = new VerticalLayout();
+        int individualPoints = pointsCalculator.calculate(sessionService.getParticipant());
+        Component individualPointsField = new H4("Your points: " + individualPoints);
         codeField.setPlaceholder("Insert code");
         Button confirmButton = new Button(new Icon(VaadinIcon.STAR));
         confirmButton.addClickListener(confirmButtonListener());
 //        toolbar.setFlexGrow(1, codeField);
         toolbar.setWidthFull();
-        toolbar.add(codeField, confirmButton);
+        toolbar.add(individualPointsField, new HorizontalLayout(codeField, confirmButton));
+        return toolbar;
     }
 
     @Override

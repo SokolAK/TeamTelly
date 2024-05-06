@@ -44,7 +44,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         prepareLoginForm();
         add(LogoGenerator.createLogo(), loginForm);
 
-
         Dialog dialog = new Dialog();
 
         dialog.setHeaderTitle("Sign in");
@@ -57,9 +56,9 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         dialog.getFooter().add(cancelButton);
         dialog.getFooter().add(saveButton);
 
-        Button button = new Button("Sign in", e -> dialog.open());
-
+//        Button button = new Button("Sign in", e -> dialog.open());
 //        add(dialog, button);
+
         add(dialog);
     }
 
@@ -126,7 +125,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         }
         );
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
 
         return saveButton;
     }

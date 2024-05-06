@@ -21,8 +21,8 @@ import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 @PageTitle("Users")
 public class UserView extends AbstractViewWithSideForm<UserDto> {
 
-    public UserView(UserService userSer, RoleService roleService) {
-        this.service = userSer;
+    public UserView(UserService userService, RoleService roleService) {
+        this.service = userService;
         this.form = new UserForm(roleService.findAll());
         addClassName("user-view");
         init();

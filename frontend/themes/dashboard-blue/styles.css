@@ -13,6 +13,8 @@
 @import 'view/user.css';
 @import 'view/ranking.css';
 @import 'photo.css';
+@import 'toolbar.css';
+@import 'div.css';
 
 :root {
     /*--blue: #1a69a8;*/

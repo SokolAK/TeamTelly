@@ -26,6 +26,7 @@ public class UserDto extends Data {
     private UserRoleDto userRole;
     private Set<ParticipantDto> participants;
     private byte[] photo;
+    private boolean logged;
 
     public UserDto withoutPassword() {
         return UserDto.builder()
@@ -37,6 +38,7 @@ public class UserDto extends Data {
                 .email(getEmail())
                 .userRole(getUserRole())
                 .photo(getPhoto())
+                .logged(isLogged())
                 .build();
     }
 

@@ -44,7 +44,7 @@ public class ChallengeRenderer {
         return LitRenderer.<ChallengeDto>of("""
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
-                                <h3>${item.name}</h3>
+                                <h4>${item.name}</h4>
                                 <span style='margin-bottom:10px;'>${item.description}</span>
                                 <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>

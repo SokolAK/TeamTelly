@@ -11,7 +11,6 @@ import java.util.List;
 
 public abstract class AbstractView<T extends Data> extends VerticalLayout {
 
-    protected HorizontalLayout toolbar;
     protected Grid<T> grid;
     protected Service<T> service;
 
@@ -19,26 +18,25 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
     }
 
     protected void init() {
-        configureToolbar();
         configureGrid();
         configureView();
         updateList();
     }
 
-    protected abstract void configureToolbar();
-
     protected abstract void configureGrid();
 
     protected void configureView() {
         setSizeFull();
-        add(getToolbar(), getContent());
+        Component toolbar = getToolbar();
+        toolbar.addClassName("toolbar");
+        add(toolbar, getContent());
     }
 
-    private VerticalLayout getContent() {
-        VerticalLayout content = new VerticalLayout();
-        if (toolbar != null) {
-            content.add(toolbar);
-        }
+    private Component getContent() {
+        HorizontalLayout content = new HorizontalLayout();
+//        if (toolbar != null) {
+//            content.add(toolbar);
+//        }
         content.add(grid);
         content.addClassNames("content");
         content.setSizeFull();
@@ -46,10 +44,7 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
     }
 
     protected Component getToolbar() {
-
-        var toolbar = new HorizontalLayout();
-        toolbar.addClassName("toolbar");
-        return toolbar;
+        return new HorizontalLayout();
     }
 
 

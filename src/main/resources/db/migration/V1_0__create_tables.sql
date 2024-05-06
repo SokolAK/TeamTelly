@@ -5,26 +5,18 @@ CREATE TABLE IF NOT EXISTS user_role
     is_default BOOL
 );
 
-
--- CREATE TABLE IF NOT EXISTS job_title
--- (
---     id        SERIAL PRIMARY KEY,
---     job_title VARCHAR(63)
--- );
-
-
 CREATE TABLE IF NOT EXISTS "user"
 (
     id           SERIAL PRIMARY KEY,
     username     VARCHAR(127),
     first_name   VARCHAR(63),
     last_name    VARCHAR(63),
---     job_title_id INT references job_title (id),
     job_title    VARCHAR(63),
     email        VARCHAR(255) UNIQUE,
     "password"   VARCHAR(255) DEFAULT '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6',
     user_role_id INT          DEFAULT 2 references user_role (id) ON DELETE CASCADE,
-    photo        BYTEA
+    photo        BYTEA,
+    logged       BOOL DEFAULT false
 );
 
 

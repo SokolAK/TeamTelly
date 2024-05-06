@@ -20,6 +20,9 @@ public class UserRenderer {
                                 <span>${item.jobTitle}</span>
                                 <span><i>${item.email}</i></span>
                             </vaadin-vertical-layout>
+                            <div class='right-align-div'>
+                                <vaadin-icon icon='vaadin:user-check' style='color:#5DAD26; width:40px; height:40px; display:${item.logged}'></vaadin-icon>
+                            </div>
                         </vaadin-horizontal-layout>
                         """)
                 .withProperty("username", UserDto::getUsername)
@@ -29,6 +32,7 @@ public class UserRenderer {
                 .withProperty("email", UserDto::getEmail)
                 .withProperty("role", u -> u.getUserRole().getName())
                 .withProperty("roleColor", u -> u.isAdmin() ? "success" : "contrast")
-                .withProperty("photo", u -> ImageUtil.createUserPhotoAsBase64(u.getPhoto()));
+                .withProperty("photo", u -> ImageUtil.createUserPhotoAsBase64(u.getPhoto()))
+                .withProperty("logged", u -> u.isLogged() ? "block" : "none");
     }
 }

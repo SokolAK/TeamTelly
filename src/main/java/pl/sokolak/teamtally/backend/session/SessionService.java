@@ -6,6 +6,7 @@ import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.user.UserDto;
+import pl.sokolak.teamtally.backend.user.UserService;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -20,9 +21,15 @@ public class SessionService {
     private final SessionContext sessionContext;
     private final SecurityService securityService;
     private final ParticipantService participantService;
+    private final UserService userService;
 
     public void init() {
         UserDto authenticatedUser = securityService.getAuthenticatedUser();
+        if(!authenticatedUser.isLogged()) {
+            authenticatedUser.setLogged(true);
+            authenticatedUser = userService.save(authenticatedUser);
+        }
+
         List<ParticipantDto> participants = getParticipants(authenticatedUser);
 //        List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
         List<EventDto> participantsEvents = getAllEvents(participants);

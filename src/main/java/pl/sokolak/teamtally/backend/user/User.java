@@ -30,4 +30,5 @@ public class User extends AbstractEntity {
     private UserRole userRole;
     @OneToMany(mappedBy = "user")
     private Set<Participant> participants;
+    private Boolean logged;
 }

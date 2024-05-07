@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS team
 CREATE TABLE IF NOT EXISTS challenge
 (
     id                SERIAL PRIMARY KEY,
-    "name"            VARCHAR(63),
+    "name"            VARCHAR(255),
     description       VARCHAR(255),
     individual_points INTEGER,
     team_points       INTEGER,
@@ -81,7 +81,8 @@ CREATE TABLE IF NOT EXISTS code
 (
     id           SERIAL PRIMARY KEY,
     code         VARCHAR(15),
-    active       BOOLEAN,
+    active       BOOLEAN DEFAULT true,
+    disposable   BOOLEAN DEFAULT true,
     event_id     INT references event (id) ON DELETE CASCADE,
     challenge_id INT references challenge (id) ON DELETE CASCADE
 );

@@ -23,7 +23,8 @@ public class HeaderFactory {
 
     public Component create(Component viewTitle) {
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
-        var headerLeft = new HorizontalLayout(new DrawerToggle(), viewTitle);
+//        var headerLeft = new HorizontalLayout(new DrawerToggle(), viewTitle);
+        var headerLeft = new HorizontalLayout(new DrawerToggle());
         headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         var headerRight = new HorizontalLayout(createUserPhoto(), createUserNameField(), createLogoutButton());

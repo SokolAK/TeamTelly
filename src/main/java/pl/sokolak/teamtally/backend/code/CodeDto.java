@@ -13,6 +13,7 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 public class CodeDto extends Data {
     private String code;
     private boolean active;
+    private boolean disposable;
     private EventDto event;
     private ChallengeDto challenge;
 

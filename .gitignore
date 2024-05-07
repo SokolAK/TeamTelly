@@ -10,3 +10,4 @@ target/
 *.iml
 *.ipr
 /src/main/resources/db/migration-ziflow/
+/ziflow/

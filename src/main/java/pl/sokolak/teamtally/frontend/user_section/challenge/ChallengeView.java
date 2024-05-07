@@ -3,16 +3,13 @@ package pl.sokolak.teamtally.frontend.user_section.challenge;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -53,6 +50,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     private final CodeService codeService;
     private final TextField codeField = new TextField();
     private final PointsCalculator pointsCalculator;
+    private HtmlContainer achievedPointsText = new H4();
 
     public ChallengeView(ChallengeService service,
                          CodeService codeService,
@@ -71,14 +69,13 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     @Override
     protected Component getToolbar() {
         VerticalLayout toolbar = new VerticalLayout();
-        int individualPoints = pointsCalculator.calculate(sessionService.getParticipant());
-        Component individualPointsField = new H4("Your points: " + individualPoints);
         codeField.setPlaceholder("Insert code");
         Button confirmButton = new Button(new Icon(VaadinIcon.STAR));
         confirmButton.addClickListener(confirmButtonListener());
 //        toolbar.setFlexGrow(1, codeField);
         toolbar.setWidthFull();
-        toolbar.add(individualPointsField, new HorizontalLayout(codeField, confirmButton));
+        toolbar.add(achievedPointsText, new HorizontalLayout(codeField, confirmButton));
+        refreshAchievedPoints();
         return toolbar;
     }
 
@@ -89,6 +86,11 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         grid.setSizeFull();
         populateGrid();
         grid.sort(List.of(new GridSortOrder<>(grid.getColumns().get(0), SortDirection.ASCENDING)));
+    }
+
+    private void refreshAchievedPoints() {
+        int points = pointsCalculator.calculate(sessionService.getParticipant());
+        achievedPointsText.setText("Your points: " + points);
     }
 
     private List<Integer> getCompletedIndividualChallenges() {
@@ -151,12 +153,15 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
             participant.addCompletedChallenge(code.getChallenge());
             participantService.save(participant);
             code.setEvent(sessionService.getEvent());
-            code.setActive(false);
+            if(code.isDisposable()) {
+                code.setActive(false);
+            }
             codeService.save(code);
             NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
             populateGrid();
+            refreshAchievedPoints();
         } else {
-            NotificationService.showSuccess("You already completed " + code.getChallenge().getName());
+            NotificationService.showWarning("You already completed " + code.getChallenge().getName());
         }
     }
 

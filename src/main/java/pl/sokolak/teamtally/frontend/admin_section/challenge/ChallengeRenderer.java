@@ -3,36 +3,47 @@ package pl.sokolak.teamtally.frontend.admin_section.challenge;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.function.ValueProvider;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class ChallengeRenderer {
     public static Renderer<ChallengeDto> create() {
         return LitRenderer.<ChallengeDto>of("""
-                        <vaadin-vertical-layout>
-                            <h5>${item.name}</h5>
-                            <span style='margin-bottom:10px;'>${item.description}</span>
-                            <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
-                                <vaadin-icon class='challenge-icon' icon='vaadin:user'></vaadin-icon>
-                                <h5>${item.individualPoints}</h5>
-                                <vaadin-icon class='challenge-icon' icon='vaadin:users'></vaadin-icon>
-                                <h5>${item.teamPoints}</h5>
-                            </vaadin-horizontal-layout>
-                            <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
-                                ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
-                            </vaadin-horizontal-layout>
-                        </vaadin-vertical-layout>
+                        <vaadin-horizontal-layout style='align-items:center;'>
+                            <vaadin-vertical-layout>
+                                <h5>${item.name}</h5>
+                                <span style='margin-bottom:10px;'>${item.description}</span>
+                                <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
+                                    <vaadin-icon class='challenge-icon' icon='vaadin:user'></vaadin-icon>
+                                    <h5>${item.individualPoints}</h5>
+                                    <vaadin-icon class='challenge-icon' icon='vaadin:users'></vaadin-icon>
+                                    <h5>${item.teamPoints}</h5>
+                                </vaadin-horizontal-layout>
+                                <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
+                                    ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
+                                </vaadin-horizontal-layout>
+                            </vaadin-vertical-layout>
+                            <div class='right-align-div'>
+                                <span>Usages: ${item.usages}</span>
+                            </div>
+                        </vaadin-horizontal-layout>
                         """)
                 .withProperty("name", ChallengeDto::getName)
                 .withProperty("description", ChallengeDto::getDescription)
                 .withProperty("individualPoints", ChallengeDto::getIndividualPoints)
                 .withProperty("teamPoints", ChallengeDto::getTeamPoints)
+                .withProperty("usages", ChallengeRenderer::printUsages)
                 .withProperty("tags", c -> c.getTags().stream()
                         .map(TagDto::getName)
                         .map(name -> "#" + name)
@@ -44,21 +55,22 @@ public class ChallengeRenderer {
         return LitRenderer.<ChallengeDto>of("""
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
-                                <h5 style='width:100%; text-wrap:balance;'>${item.name}</h5>
+                                <span style='width:100%; text-wrap:balance;'>${item.name}</span>
                                 <span style='margin-bottom:10px;'>${item.description}</span>
                                 <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>
-                                    <h5>${item.individualPoints}</h5>
+                                    <span>${item.individualPoints}</span>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:${item.colorTeam}'></vaadin-icon>
-                                    <h5>${item.teamPoints}</h5>
+                                    <span>${item.teamPoints}</span>
                                 </vaadin-horizontal-layout>
                                 <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
                                     ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
                             </vaadin-vertical-layout>
                             <div style='margin-left:auto;'>
-                                <vaadin-icon icon='vaadin:check-circle' style='color:#5DAD26; width:40px; height:40px; display:${item.completed}'></vaadin-icon>
-                                <vaadin-icon icon='vaadin:close-circle' style='color:#FF0000; width:40px; height:40px; display:${item.unavailable}'></vaadin-icon>
+                                <span style='display:${item.available?"block":"none"}'>Codes left: ${item.usagesLeft}</span>
+                                <vaadin-icon icon='vaadin:check-circle' style='color:#5DAD26; width:30px; height:30px; display:${item.completed?"block":"none"}'></vaadin-icon>
+                                <vaadin-icon icon='vaadin:close-circle' style='color:#FF0000; width:30px; height:30px; display:${item.unavailable?"block":"none"}'></vaadin-icon>
                             </div>
                         </vaadin-horizontal-layout>
                         """)
@@ -66,6 +78,7 @@ public class ChallengeRenderer {
                 .withProperty("description", ChallengeDto::getDescription)
                 .withProperty("individualPoints", ChallengeDto::getIndividualPoints)
                 .withProperty("teamPoints", ChallengeDto::getTeamPoints)
+                .withProperty("usagesLeft", ChallengeRenderer::printUsagesLeft)
                 .withProperty("tags", c -> c.getTags().stream()
                         .map(TagDto::getName)
                         .map(name -> "#" + name)
@@ -74,27 +87,30 @@ public class ChallengeRenderer {
                 .withProperty("colorPersonal", getColor(completedPersonal, "#5DAD26", "#696969"))
                 .withProperty("colorTeam", getColor(completedTeam, "#5DAD26", "#696969"))
                 .withProperty("completed", checkIfCompleted(completedPersonal))
-                .withProperty("unavailable", checkIfUnavailable(completedPersonal));
+                .withProperty("available", checkIfAvailable(completedPersonal))
+                .withProperty("unavailable", checkIfUnavailable(completedPersonal))
+                ;
     }
 
-    private static ValueProvider<ChallengeDto, String> checkIfCompleted(List<Integer> completed) {
-        return challenge -> completed.stream()
-                .filter(id -> id.equals(challenge.getId()))
-                .findAny()
-                .map(__ -> "block")
-                .orElse("none");
+    private static ValueProvider<ChallengeDto, Boolean> checkIfCompleted(List<Integer> completed) {
+        return challenge -> isCompleted(challenge, completed);
     }
 
-    private static ValueProvider<ChallengeDto, String> checkIfUnavailable(List<Integer> completed) {
-        return challenge -> {
-            if (completed.stream().anyMatch(id -> id.equals(challenge.getId()))) {
-                return "none";
-            }
-            if (Optional.ofNullable(challenge.getCodes()).orElse(Collections.emptySet()).stream().noneMatch(CodeDto::isActive)) {
-                return "block";
-            }
-            return "none";
-        };
+    private static ValueProvider<ChallengeDto, Boolean> checkIfAvailable(List<Integer> completed) {
+        return challenge -> !isCompleted(challenge, completed) && isActive(challenge);
+    }
+
+    private static ValueProvider<ChallengeDto, Boolean> checkIfUnavailable(List<Integer> completed) {
+        return challenge -> !isCompleted(challenge, completed) && !isActive(challenge);
+    }
+
+    private static boolean isCompleted(ChallengeDto challenge, List<Integer> completed) {
+        return completed.stream()
+                .anyMatch(id -> id.equals(challenge.getId()));
+    }
+
+    private static boolean isActive(ChallengeDto challenge) {
+        return Optional.ofNullable(challenge.getCodes()).orElse(Collections.emptySet()).stream().anyMatch(CodeDto::isActive);
     }
 
     private static ValueProvider<ChallengeDto, String> getColor(List<Integer> completed, String completeColor, String defaultColor) {
@@ -103,5 +119,47 @@ public class ChallengeRenderer {
                 .findAny()
                 .map(__ -> completeColor)
                 .orElse(defaultColor);
+    }
+
+    private static String printUsagesLeft(ChallengeDto challenge) {
+        Usages usages = calculateUsages(challenge);
+        if(usages.infinitelyReusable) {
+            return "∞";
+        } else {
+            return String.valueOf(usages.getMaxUsages() - usages.getUsages());
+        }
+    }
+
+    private static String printUsages(ChallengeDto challenge) {
+        Usages usages = calculateUsages(challenge);
+        if(usages.infinitelyReusable) {
+            return usages.getUsages() + "/∞";
+        } else {
+            return usages.getUsages() + "/" + usages.getMaxUsages();
+        }
+    }
+
+    private static Usages calculateUsages(ChallengeDto challenge) {
+        AtomicInteger usages = new AtomicInteger();
+        AtomicInteger maxUsages = new AtomicInteger();
+        AtomicBoolean infinitelyReusable = new AtomicBoolean(false);
+        challenge.getCodes().forEach(
+                c -> {
+                    usages.addAndGet(c.getUsages());
+                    maxUsages.addAndGet(c.getMaxUsages());
+                    if(c.getMaxUsages() == 0) {
+                        infinitelyReusable.set(true);
+                    }
+                }
+        );
+        return new Usages(usages.get(), maxUsages.get(), infinitelyReusable.get());
+    }
+
+    @AllArgsConstructor
+    @Getter
+    private static class Usages {
+        private int usages;
+        private int maxUsages;
+        private boolean infinitelyReusable;
     }
 }

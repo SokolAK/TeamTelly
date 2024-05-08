@@ -5,6 +5,7 @@ import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -24,6 +25,7 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
     private final TextField individualPoints = new TextField("Personal points");
     private final TextField teamPoints = new TextField("Team points");
     private final MultiSelectComboBox<TagDto> tags = new MultiSelectComboBox<>("Tags");
+    private final NumberField maxUsages = new NumberField("Max usages");
     private final Grid<CodeDto> codes = new Grid<>(CodeDto.class);
 
     public ChallengeForm(Set<TagDto> tagsForEvent) {
@@ -31,7 +33,7 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
         configureBinder();
         tags.setItems(tagsForEvent);
         tags.setItemLabelGenerator(TagDto::getName);
-        addFields(name, description, individualPoints, teamPoints, tags, createCodeSection());
+        addFields(name, description, individualPoints, teamPoints, maxUsages, tags, createCodeSection());
     }
 
     private void configureBinder() {

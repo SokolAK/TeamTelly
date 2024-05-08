@@ -39,7 +39,8 @@ public class UserView extends AbstractViewWithSideForm<UserDto> {
 
     @Override
     protected Data convertToFormData(Data data) {
-        return ((UserDto) data).withoutPassword();
+//        return ((UserDto) data).withoutPassword();
+        return data;
     }
 
     @Override

@@ -32,15 +32,25 @@ public class UserService implements Service<UserDto> {
                 .map(mapper::toDto);
     }
 
+//    @Override
+//    public UserDto save(UserDto user) {
+//        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+//            userRepository.findById(user.getId())
+//                    .map(User::getPassword)
+//                    .ifPresent(user::setPassword);
+//        } else {
+//            user.setPassword(encodePassword(user.getPassword()));
+//        }
+//        if (user.getUserRole() == null) {
+//            user.setUserRole(userRoleService.findDefault().orElse(null));
+//        }
+//        User entity = mapper.toEntity(user);
+//        User savedEntity = userRepository.save(entity);
+//        return mapper.toDto(savedEntity);
+//    }
+
     @Override
     public UserDto save(UserDto user) {
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            userRepository.findById(user.getId())
-                    .map(User::getPassword)
-                    .ifPresent(user::setPassword);
-        } else {
-            user.setPassword(encodePassword(user.getPassword()));
-        }
         if (user.getUserRole() == null) {
             user.setUserRole(userRoleService.findDefault().orElse(null));
         }

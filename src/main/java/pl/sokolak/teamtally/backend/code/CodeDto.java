@@ -13,9 +13,21 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 public class CodeDto extends Data {
     private String code;
     private boolean active;
-    private boolean disposable;
+    private int usages;
+    private int maxUsages;
     private EventDto event;
     private ChallengeDto challenge;
+
+    public boolean canBeUsed() {
+        return active && usages < maxUsages;
+    }
+
+    public void use() {
+        usages++;
+        if(usages >= maxUsages) {
+            active = false;
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

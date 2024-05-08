@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "user"
     "password"   VARCHAR(255) DEFAULT '$2a$10$VaCLRT7rNO8LdWUpiw/rSue.MkW8EZS372zwFAwyCNzc9PcfKUPn6',
     user_role_id INT          DEFAULT 2 references user_role (id) ON DELETE CASCADE,
     photo        BYTEA,
-    logged       BOOL DEFAULT false
+    logged       BOOL         DEFAULT false
 );
 
 
@@ -82,7 +82,15 @@ CREATE TABLE IF NOT EXISTS code
     id           SERIAL PRIMARY KEY,
     code         VARCHAR(15),
     active       BOOLEAN DEFAULT true,
-    disposable   BOOLEAN DEFAULT true,
+    usages       INT DEFAULT 0,
+    max_usages   INT DEFAULT 1,
     event_id     INT references event (id) ON DELETE CASCADE,
     challenge_id INT references challenge (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS suggestion
+(
+    id      SERIAL PRIMARY KEY,
+    user_id INT references "user" (id) ON DELETE CASCADE,
+    text    VARCHAR(4096)
 );

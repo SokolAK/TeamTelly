@@ -9,6 +9,8 @@ import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.suggestion.Suggestion;
+import pl.sokolak.teamtally.backend.suggestion.SuggestionDto;
 import pl.sokolak.teamtally.backend.tag.Tag;
 import pl.sokolak.teamtally.backend.tag.TagDto;
 import pl.sokolak.teamtally.backend.team.Team;
@@ -69,6 +71,12 @@ public interface Mapper {
     }
     UserRoleDto toDto(UserRole entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
+    @DoIgnore
+    default SuggestionDto toDto(Suggestion entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    SuggestionDto toDto(Suggestion entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
 
 
     @DoIgnore
@@ -118,4 +126,10 @@ public interface Mapper {
         return toEntity(dto, new CycleAvoidingMappingContext());
     }
     UserRole toEntity(UserRoleDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default Suggestion toEntity(SuggestionDto dto) {
+        return toEntity(dto, new CycleAvoidingMappingContext());
+    }
+    Suggestion toEntity(SuggestionDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

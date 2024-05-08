@@ -35,7 +35,7 @@ public class ImageUtil {
     private static Image convertBase64ToImage(byte[] image) {
         ByteArrayInputStream bis = new ByteArrayInputStream(Base64.getDecoder().decode(image));
         StreamResource resource = new StreamResource("image.jpg", () -> bis);
-        return new Image(resource, "Alternative Text");
+        return new Image(resource, "");
     }
 
     private static String getImageAsBase64(byte[] image) {

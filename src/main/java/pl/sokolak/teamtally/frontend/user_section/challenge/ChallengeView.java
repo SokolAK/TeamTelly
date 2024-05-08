@@ -143,7 +143,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     }
 
     private void tryCompleteChallenge(CodeDto code) {
-        if (!code.isActive()) {
+        if (!code.canBeUsed()) {
             NotificationService.showWarning("Code already used");
             return;
         }
@@ -153,9 +153,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
             participant.addCompletedChallenge(code.getChallenge());
             participantService.save(participant);
             code.setEvent(sessionService.getEvent());
-            if(code.isDisposable()) {
-                code.setActive(false);
-            }
+            code.use();
             codeService.save(code);
             NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
             populateGrid();

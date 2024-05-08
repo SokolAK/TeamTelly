@@ -15,7 +15,8 @@ import pl.sokolak.teamtally.backend.challenge.Challenge;
 public class Code extends AbstractEntityWithEvent {
     private String code;
     private boolean active;
-    private boolean disposable;
+    private int usages;
+    private int maxUsages;
     @ManyToOne()
     private Challenge challenge;
 }

@@ -29,9 +29,16 @@ public class IndividualRankingService {
     private final PointsCalculator pointsCalculator;
 
     public List<ParticipantWithPlace> getParticipantsWithPlaces(EventDto event) {
+        long start = System.currentTimeMillis();
         List<ParticipantDto> participants = participantService.findAllActiveByEvent(event);
+        System.out.println(System.currentTimeMillis() - start);
+        start = System.currentTimeMillis();
         List<ParticipantWithPoints> participantsWithPoints = createParticipantsWithPoints(participants);
-        return createParticipantsWithPlaces(participantsWithPoints);
+        System.out.println(System.currentTimeMillis() - start);
+        start = System.currentTimeMillis();
+        List<ParticipantWithPlace> participantsWithPlaces = createParticipantsWithPlaces(participantsWithPoints);
+        System.out.println(System.currentTimeMillis() - start);
+        return participantsWithPlaces;
     }
 
     public Component create(List<ParticipantWithPlace> participantsWithPlace) {

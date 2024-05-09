@@ -7,8 +7,7 @@ import pl.sokolak.teamtally.backend.code.Code;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.participant.Participant;
-import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.participant.*;
 import pl.sokolak.teamtally.backend.suggestion.Suggestion;
 import pl.sokolak.teamtally.backend.suggestion.SuggestionDto;
 import pl.sokolak.teamtally.backend.tag.Tag;
@@ -132,4 +131,30 @@ public interface Mapper {
         return toEntity(dto, new CycleAvoidingMappingContext());
     }
     Suggestion toEntity(SuggestionDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+
+
+    @DoIgnore
+    default ParticipantDto toDto(ParticipantRankingView entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    ParticipantDto toDto(ParticipantRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default UserDto toDto(UserRankingView entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    UserDto toDto(UserRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default TeamDto toDto(TeamRankingView entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    TeamDto toDto(TeamRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
+    default ChallengeDto toDto(ChallengeRankingView entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+    ChallengeDto toDto(ChallengeRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

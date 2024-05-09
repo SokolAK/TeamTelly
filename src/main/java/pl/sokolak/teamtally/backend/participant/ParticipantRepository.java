@@ -12,5 +12,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
     List<Participant> findAllByUser(User user);
     List<Participant> findAllByEvent(Event event);
     List<Participant> findAllByEventAndActive(Event event, boolean active);
+    List<ParticipantRankingView> getAllByEventAndActive(Event event, boolean active);
     void deleteAllByUser(User user);
 }

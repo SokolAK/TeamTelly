@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
+import pl.sokolak.teamtally.backend.participant.ParticipantRankingView;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
 import java.util.Collections;
@@ -62,20 +63,11 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toList());
     }
 
-//    public List<ParticipantDto> findAllActiveByEvent(EventDto event) {
-//        if (event == null) {
-//            return Collections.emptyList();
-//        }
-//        return participantRepository.findAllByEventAndActive(mapper.toEntity(event), true).stream()
-//                .map(mapper::toDto)
-//                .collect(Collectors.toList());
-//    }
-
     public List<ParticipantDto> findAllActiveByEvent(EventDto event) {
         if (event == null) {
             return Collections.emptyList();
         }
-        return participantRepository.getAllByEventAndActive(mapper.toEntity(event), true).stream()
+        return participantRepository.getAllByEventAndActive(mapper.toEntity(event), true, ParticipantRankingView.class).stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }

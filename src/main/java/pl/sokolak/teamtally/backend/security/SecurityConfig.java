@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend.security;
 
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,8 +24,10 @@ public class SecurityConfig extends VaadinWebSecurity {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth ->
-                auth.requestMatchers(AntPathRequestMatcher.antMatcher(
-                        HttpMethod.GET, "/assets/**")).permitAll());
+                auth.requestMatchers(
+                        AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/**"),
+                        PathRequest.toH2Console()
+                ).permitAll());
         super.configure(http);
         setLoginView(http, LoginView.class);
     }

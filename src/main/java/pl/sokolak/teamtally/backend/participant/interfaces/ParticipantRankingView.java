@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.backend.participant;
+package pl.sokolak.teamtally.backend.participant.interfaces;
 
 import java.util.Set;
 

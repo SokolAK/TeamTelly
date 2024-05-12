@@ -32,12 +32,8 @@ public class IndividualRankingService {
         long start = System.currentTimeMillis();
         List<ParticipantDto> participants = participantService.findAllActiveByEvent(event);
         System.out.println(System.currentTimeMillis() - start);
-        start = System.currentTimeMillis();
         List<ParticipantWithPoints> participantsWithPoints = createParticipantsWithPoints(participants);
-        System.out.println(System.currentTimeMillis() - start);
-        start = System.currentTimeMillis();
         List<ParticipantWithPlace> participantsWithPlaces = createParticipantsWithPlaces(participantsWithPoints);
-        System.out.println(System.currentTimeMillis() - start);
         return participantsWithPlaces;
     }
 

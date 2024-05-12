@@ -1,8 +1,5 @@
-package pl.sokolak.teamtally.backend.participant;
+package pl.sokolak.teamtally.backend.participant.interfaces;
 
-import jakarta.persistence.Table;
-
-@Table(name = "users")
 public interface UserRankingView {
     String getUsername();
     String getFirstName();

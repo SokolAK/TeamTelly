@@ -17,7 +17,7 @@ import java.util.Set;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user", schema = "public")
+@Table(name = "users", schema = "public")
 public class User extends AbstractEntity {
     private String username;
     private String firstName;

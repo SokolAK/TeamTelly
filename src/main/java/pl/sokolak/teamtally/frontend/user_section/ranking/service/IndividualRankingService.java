@@ -9,9 +9,13 @@ import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
+import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantService;
+import pl.sokolak.teamtally.backend.participant.*;
+import pl.sokolak.teamtally.backend.team.TeamDto;
+import pl.sokolak.teamtally.backend.user.UserDto;
+import pl.sokolak.teamtally.frontend.user_section.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPoints;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
@@ -19,22 +23,77 @@ import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRan
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class IndividualRankingService {
 
     private final ParticipantService participantService;
+    private final ChallengeService challengeService;
     private final PointsCalculator pointsCalculator;
 
     public List<ParticipantWithPlace> getParticipantsWithPlaces(EventDto event) {
         long start = System.currentTimeMillis();
-        List<ParticipantDto> participants = participantService.findAllActiveByEvent(event);
+
+        Set<ParticipantRankingDto> participants = participantService.findAllActiveByEvent(event);
+        Set<ParticipantChallenge> completedChallenges = participantService.findCompletedChallengesForEvent(event);
+        Set<Integer> completedChallengeIds = completedChallenges.stream()
+                .map(ParticipantChallenge::getChallengeId)
+                .collect(Collectors.toSet());
+        Map<Integer, ChallengeDto> challenges = challengeService.findAllByIdIn(completedChallengeIds)
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> ChallengeDto.builder()
+                                .name(e.getValue().getName())
+                                .individualPoints(e.getValue().getIndividualPoints())
+                                .teamPoints(e.getValue().getTeamPoints())
+                                .build()
+                ));
+
+        List<ParticipantDto> participantsWithChallenges = participants.stream().map(
+                p -> {
+                    Set<ChallengeDto> participantChallenges = getParticipantChallenges(p, completedChallenges, challenges);
+                    return ParticipantDto.builder()
+                            .team(TeamDto.builder()
+                                    .name(p.getName())
+                                    .icon(p.getIcon())
+                                    .color(p.getColor())
+                                    .build())
+                            .user(UserDto.builder()
+                                    .username(p.getUsername())
+                                    .firstName(p.getFirstName())
+                                    .lastName(p.getLastName())
+                                    .jobTitle(p.getJobTitle())
+                                    .photo(p.getPhoto())
+                                    .build())
+                            .completedChallenges(participantChallenges)
+                            .build();
+                }
+        ).collect(Collectors.toList());
+
+
+        List<ParticipantWithPoints> participantsWithPoints = createParticipantsWithPoints(participantsWithChallenges);
+
+
         System.out.println(System.currentTimeMillis() - start);
-        List<ParticipantWithPoints> participantsWithPoints = createParticipantsWithPoints(participants);
+
         List<ParticipantWithPlace> participantsWithPlaces = createParticipantsWithPlaces(participantsWithPoints);
         return participantsWithPlaces;
+    }
+
+    private Set<ChallengeDto> getParticipantChallenges(ParticipantRankingDto participant,
+                                                       Set<ParticipantChallenge> completedChallenges,
+                                                       Map<Integer, ChallengeDto> challenges) {
+        return completedChallenges.stream()
+                .filter(challenge -> participant.getId().equals(challenge.getParticipantId()))
+                .map(challenge -> challenges.get(challenge.getChallengeId()))
+                .collect(Collectors.toSet());
     }
 
     public Component create(List<ParticipantWithPlace> participantsWithPlace) {

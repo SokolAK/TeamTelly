@@ -21,7 +21,7 @@ public class UserRenderer {
                                 <span><i>${item.email}</i></span>
                             </vaadin-vertical-layout>
                             <div class='right-align-div'>
-                                <vaadin-icon icon='vaadin:user-check' style='color:#5DAD26; width:40px; height:40px; display:${item.logged}'></vaadin-icon>
+                                <vaadin-icon icon='vaadin:user-check' style='color:#5DAD26; width:30px; height:30px; display:${item.logged}'></vaadin-icon>
                             </div>
                         </vaadin-horizontal-layout>
                         """)

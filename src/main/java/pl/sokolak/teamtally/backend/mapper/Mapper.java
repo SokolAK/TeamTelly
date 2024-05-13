@@ -23,6 +23,9 @@ import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.role.UserRole;
 import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @org.mapstruct.Mapper
 public interface Mapper {
 
@@ -143,6 +146,10 @@ public interface Mapper {
         return toDto(entity, new CycleAvoidingMappingContext());
     }
     ParticipantDto toDto(ParticipantRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    default Set<ChallengeDto> map(Set<Integer> ids) {
+        return ids.stream().map(id -> ChallengeDto.builder().id(id).build()).collect(Collectors.toSet());
+    }
 
     @DoIgnore
     default UserDto toDto(UserRankingView entity) {

@@ -2,11 +2,15 @@ package pl.sokolak.teamtally.backend.challenge;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import pl.sokolak.teamtally.backend.mapper.Mapper;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.mapper.Mapper;
+import pl.sokolak.teamtally.backend.participant.ChallengeRankingDto;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -41,5 +45,17 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
         return challengeRepository.findAllByEvent(mapper.toEntity(event)).stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public Map<Integer, ChallengeRankingDto> findAllByIdIn(Set<Integer> ids) {
+        return challengeRepository.findAllByIdIn(ids).stream()
+                .map(c -> new ChallengeRankingDto(
+                                (Integer) c.get("id"),
+                                String.valueOf(c.get("name")),
+                                (Integer) c.get("individual_points"),
+                                (Integer) c.get("team_points")
+                        )
+                )
+                .collect(Collectors.toMap(ChallengeRankingDto::getId, Function.identity()));
     }
 }

@@ -25,6 +25,11 @@ public class SessionService {
 
     public void init() {
         UserDto authenticatedUser = securityService.getAuthenticatedUser();
+        if(authenticatedUser == null) {
+            securityService.logout();
+            return;
+        }
+
         if(!authenticatedUser.isLogged()) {
             authenticatedUser.setLogged(true);
             authenticatedUser = userService.save(authenticatedUser);

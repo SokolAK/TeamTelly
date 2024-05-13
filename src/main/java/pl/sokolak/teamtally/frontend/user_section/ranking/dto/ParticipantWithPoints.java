@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.frontend.user_section.ranking.dto;
 
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.participant.ParticipantRankingDto;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
@@ -30,6 +31,20 @@ public record ParticipantWithPoints(String username,
                 Optional.ofNullable(participant.getTeam()).map(TeamDto::getName).orElse(null),
                 Optional.ofNullable(participant.getTeam()).map(TeamDto::getColor).orElse(null),
                 new HashSet<>(participant.getCompletedChallenges()),
+                points
+        );
+    }
+
+    public ParticipantWithPoints(ParticipantRankingDto participant, Set<ChallengeDto> participantChallenges, int points) {
+        this(participant.getUsername(),
+                participant.getFirstName(),
+                participant.getLastName(),
+                participant.getJobTitle(),
+                participant.getPhoto(),
+                participant.getIcon(),
+                participant.getName(),
+                participant.getColor(),
+                participantChallenges,
                 points
         );
     }

@@ -39,11 +39,14 @@ public class IndividualRankingService {
     public List<ParticipantWithPlace> getParticipantsWithPlaces(EventDto event) {
         long start = System.currentTimeMillis();
 
+        System.out.println("Getting participants");
         Set<ParticipantRankingDto> participants = participantService.findAllActiveByEvent(event);
+        System.out.println("Getting completedChallenges");
         Set<ParticipantChallenge> completedChallenges = participantService.findCompletedChallengesForEvent(event);
         Set<Integer> completedChallengeIds = completedChallenges.stream()
                 .map(ParticipantChallenge::getChallengeId)
                 .collect(Collectors.toSet());
+        System.out.println("Getting challenges");
         Map<Integer, ChallengeDto> challenges = challengeService.findAllByIdIn(completedChallengeIds)
                 .entrySet()
                 .stream()

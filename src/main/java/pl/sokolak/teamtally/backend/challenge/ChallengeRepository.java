@@ -2,6 +2,7 @@ package pl.sokolak.teamtally.backend.challenge;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.sokolak.teamtally.backend.event.Event;
 
@@ -15,5 +16,5 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
 
     @Query(value = "SELECT c.id, c.name, c.individual_points, c.team_points FROM challenge c " +
             "WHERE c.id IN :ids", nativeQuery = true)
-    List<Map<String, Object>> findAllByIdIn(Set<Integer> ids);
+    List<Map<String, Object>> findAllByIdIn(@Param("ids") Set<Integer> ids);
 }

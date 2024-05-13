@@ -9,7 +9,6 @@ import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.*;
 import pl.sokolak.teamtally.backend.participant.ChallengeRankingView;
-import pl.sokolak.teamtally.backend.participant.ParticipantRankingView;
 import pl.sokolak.teamtally.backend.participant.TeamRankingView;
 import pl.sokolak.teamtally.backend.participant.UserRankingView;
 import pl.sokolak.teamtally.backend.suggestion.Suggestion;
@@ -141,15 +140,6 @@ public interface Mapper {
 
 
 
-    @DoIgnore
-    default ParticipantDto toDto(ParticipantRankingView entity) {
-        return toDto(entity, new CycleAvoidingMappingContext());
-    }
-    ParticipantDto toDto(ParticipantRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-
-    default Set<ChallengeDto> map(Set<Integer> ids) {
-        return ids.stream().map(id -> ChallengeDto.builder().id(id).build()).collect(Collectors.toSet());
-    }
 
     @DoIgnore
     default UserDto toDto(UserRankingView entity) {

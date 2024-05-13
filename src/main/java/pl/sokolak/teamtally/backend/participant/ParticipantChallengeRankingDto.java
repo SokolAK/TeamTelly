@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ParticipantChallenge {
+public class ParticipantChallengeRankingDto {
     private Integer participantId;
     private Integer challengeId;
 }

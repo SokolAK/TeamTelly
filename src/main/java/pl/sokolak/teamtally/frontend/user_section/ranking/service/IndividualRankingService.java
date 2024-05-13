@@ -15,7 +15,6 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.*;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
-import pl.sokolak.teamtally.frontend.user_section.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPoints;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
@@ -37,22 +36,18 @@ public class IndividualRankingService {
     private final PointsCalculator pointsCalculator;
 
     public List<ParticipantWithPlace> getParticipantsWithPlaces(EventDto event) {
-        long start = System.currentTimeMillis();
-
-        System.out.println("Getting participants");
         Set<ParticipantRankingDto> participants = participantService.findAllActiveByEvent(event);
-        System.out.println("Getting completedChallenges");
-        Set<ParticipantChallenge> completedChallenges = participantService.findCompletedChallengesForEvent(event);
+        Set<ParticipantChallengeRankingDto> completedChallenges = participantService.findCompletedChallengesForEvent(event);
         Set<Integer> completedChallengeIds = completedChallenges.stream()
-                .map(ParticipantChallenge::getChallengeId)
+                .map(ParticipantChallengeRankingDto::getChallengeId)
                 .collect(Collectors.toSet());
-        System.out.println("Getting challenges");
         Map<Integer, ChallengeDto> challenges = challengeService.findAllByIdIn(completedChallengeIds)
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> ChallengeDto.builder()
+                                .id(e.getValue().getId())
                                 .name(e.getValue().getName())
                                 .individualPoints(e.getValue().getIndividualPoints())
                                 .teamPoints(e.getValue().getTeamPoints())
@@ -84,14 +79,12 @@ public class IndividualRankingService {
         List<ParticipantWithPoints> participantsWithPoints = createParticipantsWithPoints(participantsWithChallenges);
 
 
-        System.out.println(System.currentTimeMillis() - start);
-
         List<ParticipantWithPlace> participantsWithPlaces = createParticipantsWithPlaces(participantsWithPoints);
         return participantsWithPlaces;
     }
 
     private Set<ChallengeDto> getParticipantChallenges(ParticipantRankingDto participant,
-                                                       Set<ParticipantChallenge> completedChallenges,
+                                                       Set<ParticipantChallengeRankingDto> completedChallenges,
                                                        Map<Integer, ChallengeDto> challenges) {
         return completedChallenges.stream()
                 .filter(challenge -> participant.getId().equals(challenge.getParticipantId()))

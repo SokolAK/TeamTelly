@@ -2,7 +2,6 @@ package pl.sokolak.teamtally.backend.participant;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.util.SerializationUtils;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
@@ -38,16 +37,6 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
         participantRepository.delete(entity);
     }
 
-    public Optional<ParticipantDto> findById(Integer id) {
-        return participantRepository.findById(id)
-                .map(mapper::toDto);
-    }
-
-//    public void deleteByUserId(UserDto userDto) {
-//        User user = new UserMapper().toEntity(userDto);
-//        participantRepository.deleteAllByUser(user);
-//    }
-
     public List<ParticipantDto> findByUser(UserDto userDto) {
         return participantRepository.findAllByUser(mapper.toEntity(userDto)).stream()
                 .map(mapper::toDto)
@@ -60,16 +49,6 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
-
-//    public List<ParticipantDto> findAllActiveByEvent(EventDto event) {
-//        if (event == null) {
-//            return Collections.emptyList();
-//        }
-//        return participantRepository.getAllByEventAndActive(mapper.toEntity(event), true, ParticipantRankingView.class).stream()
-//                .map(mapper::toDto)
-//                .collect(Collectors.toList());
-//    }
-
 
     public Set<ParticipantRankingDto> findAllActiveByEvent(EventDto event) {
         if (event == null) {
@@ -89,13 +68,13 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 )).collect(Collectors.toSet());
     }
 
-    public Set<ParticipantChallenge> findCompletedChallengesForEvent(EventDto event) {
+    public Set<ParticipantChallengeRankingDto> findCompletedChallengesForEvent(EventDto event) {
         if (event == null) {
             return Collections.emptySet();
         }
 
         List<Map<String, Integer>> allCompletedChallengesForEvent = participantRepository.getAllCompletedChallengesForEvent(mapper.toEntity(event).getId());
         return allCompletedChallengesForEvent.stream()
-                .map(c -> new ParticipantChallenge(c.get("participantId"), c.get("challengeId"))).collect(Collectors.toSet());
+                .map(c -> new ParticipantChallengeRankingDto(c.get("participantId"), c.get("challengeId"))).collect(Collectors.toSet());
     }
 }

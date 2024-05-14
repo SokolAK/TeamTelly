@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
-import pl.sokolak.teamtally.backend.participant.ParticipantChallengeRankingView;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 public class TeamService implements ServiceWithEvent<TeamDto> {
 
     private final TeamRepository teamRepository;
-    private final TeamRankingRepository teamRankingRepository;
     private final Mapper mapper;
 
     public List<TeamDto> findAll() {
@@ -44,9 +42,9 @@ public class TeamService implements ServiceWithEvent<TeamDto> {
                 .collect(Collectors.toList());
     }
 
-    public Set<TeamRankingView> findAllForRankingByEvent(EventDto event) {
-        return teamRankingRepository.findAllByEvent(mapper.toEntity(event)).stream()
-                .map(t -> new TeamRankingView(
+    public Set<TeamDataView> findAllDataViewByEvent(EventDto event) {
+        return teamRepository.findAllByEvent(mapper.toEntity(event).getId()).stream()
+                .map(t -> new TeamDataView(
                         (Integer) t.get("id"),
                         getStringField(t.get("icon")),
                         getStringField(t.get("name")),

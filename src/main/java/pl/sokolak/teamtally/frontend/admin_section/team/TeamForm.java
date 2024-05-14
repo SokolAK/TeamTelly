@@ -16,7 +16,7 @@ class TeamForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField name = new TextField("Name");
     private final ComboBox<String> color = new ComboBox<>("Color");
-//    private final ComboBox<String> icon = new ComboBox<>("Icon");
+    //    private final ComboBox<String> icon = new ComboBox<>("Icon");
     private final TextField icon = new TextField("Icon");
 
     public TeamForm() {
@@ -36,12 +36,17 @@ class TeamForm extends SaveDeleteCancelAbstractForm {
     }
 
     private List<String> createColors() {
-        return List.of("#e69138", "#c90076", "#6aa84f", "#2986cc");
+        return List.of(
+//                "#e69138", "#c90076", "#6aa84f", "#2986cc"
+                "#c0392b", "#e74c3c", "#9b59b6", "#8e44ad", "#2980b9", "#3498db",
+                "#1abc9c", "#16a085", "#27ae60", "#2ecc71", "#f1c40f", "#f39c12",
+                "#e67e22", "#d35400", "#7f8c8d", "#2c3e50", "#000000"
+        );
     }
 
     private Renderer<String> createColorRenderer() {
-        return LitRenderer.<String> of(
-                "<span style='background-color:${item.color}'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>")
+        return LitRenderer.<String>of(
+                        "<span style='background-color:${item.color}'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>")
                 .withProperty("color", ValueProvider.identity());
     }
 
@@ -50,7 +55,7 @@ class TeamForm extends SaveDeleteCancelAbstractForm {
     }
 
     private Renderer<String> createIconRenderer() {
-        return LitRenderer.<String> of(
+        return LitRenderer.<String>of(
                         "<span>${item.icon}</span>")
                 .withProperty("icon", ValueProvider.identity());
     }

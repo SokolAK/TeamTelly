@@ -8,8 +8,7 @@ import pl.sokolak.teamtally.backend.mapper.MapperImpl;
 public class ParticipantConfiguration {
 
     @Bean
-    public ParticipantService participantService(ParticipantRepository repository,
-                                                 ParticipantRankingRepository rankingRepository) {
-        return new ParticipantService(repository, rankingRepository, new MapperImpl());
+    public ParticipantService participantService(ParticipantRepository repository) {
+        return new ParticipantService(repository, new MapperImpl());
     }
 }

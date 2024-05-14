@@ -9,8 +9,6 @@ import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.backend.participant.TeamRankingView;
-import pl.sokolak.teamtally.backend.participant.UserRankingView;
 import pl.sokolak.teamtally.backend.suggestion.Suggestion;
 import pl.sokolak.teamtally.backend.suggestion.SuggestionDto;
 import pl.sokolak.teamtally.backend.tag.Tag;
@@ -151,19 +149,4 @@ public interface Mapper {
     }
 
     Suggestion toEntity(SuggestionDto dto, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-
-
-    @DoIgnore
-    default UserDto toDto(UserRankingView entity) {
-        return toDto(entity, new CycleAvoidingMappingContext());
-    }
-
-    UserDto toDto(UserRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-
-    @DoIgnore
-    default TeamDto toDto(TeamRankingView entity) {
-        return toDto(entity, new CycleAvoidingMappingContext());
-    }
-
-    TeamDto toDto(TeamRankingView entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 }

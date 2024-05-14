@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
+import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
 import java.util.Collections;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
 
     private final ParticipantRepository participantRepository;
-    private final ParticipantRankingRepository participantRankingRepository;
     private final Mapper mapper;
 
     @Override
@@ -54,12 +54,12 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toList());
     }
 
-    public Set<ParticipantRankingView> findAllActiveForRankingByEvent(EventDto event) {
+    public Set<ParticipantDataView> findAllActiveDataByEvent(EventDto event) {
         if (event == null) {
             return Collections.emptySet();
         }
-        return participantRankingRepository.getAllByEvent(mapper.toEntity(event).getId()).stream()
-                .map(p -> new ParticipantRankingView(
+        return participantRepository.getAllByEvent(mapper.toEntity(event).getId()).stream()
+                .map(p -> new ParticipantDataView(
                         (Integer) p.get("id"),
                         getStringField(p.get("username")),
                         getStringField(p.get("first_name")),
@@ -74,11 +74,15 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
         if (event == null) {
             return Collections.emptySet();
         }
-        return participantRankingRepository.getParticipantChallenges(mapper.toEntity(event).getId()).stream()
+        return participantRepository.getParticipantChallenges(mapper.toEntity(event).getId()).stream()
                 .map(c -> new ParticipantChallengeRankingView(
                         c.get("participantId"),
                         c.get("challengeId"))
                 ).collect(Collectors.toSet());
+    }
+
+    public void updateTeam(ParticipantDto participant, TeamDto team) {
+        participantRepository.updateTeam(participant.getId(), team.getId());
     }
 
     private String getStringField(Object value) {

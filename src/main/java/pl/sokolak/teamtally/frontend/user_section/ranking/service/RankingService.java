@@ -59,7 +59,7 @@ public class RankingService {
     }
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {
-        return participantService.findAllActiveForRankingByEvent(event).stream()
+        return participantService.findAllActiveDataByEvent(event).stream()
                 .map(p -> ParticipantDto.builder()
                         .id(p.getId())
                         .active(true)

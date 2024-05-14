@@ -8,27 +8,12 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
-import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
-import pl.sokolak.teamtally.backend.challenge.ChallengeService;
-import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantChallengeRankingView;
-import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantRankingView;
-import pl.sokolak.teamtally.backend.participant.ParticipantService;
-import pl.sokolak.teamtally.backend.team.TeamDto;
-import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
-import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPoints;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRankingRenderer;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

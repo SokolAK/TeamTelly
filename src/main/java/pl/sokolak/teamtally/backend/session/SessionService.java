@@ -35,9 +35,17 @@ public class SessionService {
             authenticatedUser = userService.save(authenticatedUser);
         }
 
+        long start = System.currentTimeMillis();
+        System.out.println("Fetching participants");
         List<ParticipantDto> participants = getParticipants(authenticatedUser);
+        long finish = System.currentTimeMillis();
+        System.out.println(finish - start);
 //        List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
+        start = System.currentTimeMillis();
+        System.out.println("Fetching events");
         List<EventDto> participantsEvents = getAllEvents(participants);
+        finish = System.currentTimeMillis();
+        System.out.println(finish - start);
 
         EventDto event = Optional.ofNullable(sessionContext.getEvent())
                 .filter(e -> participantsEvents.stream()

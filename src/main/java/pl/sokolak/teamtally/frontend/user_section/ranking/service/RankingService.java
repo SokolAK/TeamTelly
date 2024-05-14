@@ -46,44 +46,16 @@ public class RankingService {
 
     public void init(EventDto event) {
         this.event = event;
-        long start = System.currentTimeMillis();
-        System.out.println("Fetching participants without challenges");
         participants = fetchParticipantsWithoutChallenges();
-        long finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        start = finish;
-        System.out.println("Fetching completed challenges");
         completedChallenges = fetchCompletedChallenges();
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        start = finish;
-        System.out.println("Fetching challenges");
         challenges = fetchChallenges();
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        start = finish;
-        System.out.println("Updating participant challenges");
         updateParticipantChallenges();
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        start = finish;
-        System.out.println("Fetching teams");
         teams = fetchTeams();
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        start = finish;
-        System.out.println("Updating participant teams");
         updateParticipantTeams();
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        start = finish;
-        System.out.println("Creating lists");
         participantsWithPoints = createParticipantsWithPoints();
         participantsWithPlaces = createParticipantsWithPlaces();
         Set<TeamWithPoints> teamsWithPoints = createTeamsWithPoints(teams);
         teamsWithPlaces = createTeamsWithPlaces(teamsWithPoints);
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
     }
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {

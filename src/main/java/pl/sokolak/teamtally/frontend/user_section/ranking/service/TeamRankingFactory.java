@@ -22,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class TeamRankingFactory {
 
-    public Component create(List<TeamWithPlace> teamsWithPlaces, Set<ParticipantWithPlace> participantsWithPlace) {
+    public Component create(Set<TeamWithPlace> teamsWithPlaces, Set<ParticipantWithPlace> participantsWithPlace) {
         Grid<TeamWithPlace> grid = new Grid<>(TeamWithPlace.class);
         grid.addClassNames("ranking-team-grid");
         grid.setAllRowsVisible(true);

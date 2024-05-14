@@ -15,11 +15,10 @@ import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPoints;
+import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
+import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPoints;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -32,14 +31,16 @@ public class RankingService {
     private final TeamService teamService;
     private final PointsCalculator pointsCalculator;
 
+    @Getter
+    private Set<ParticipantWithPlace> participantsWithPlaces;
+    @Getter
+    private Set<TeamWithPlace> teamsWithPlaces;
+
     private EventDto event;
     private Set<ParticipantDto> participants;
     private Set<ParticipantChallengeRankingView> completedChallenges;
     private Set<ChallengeDto> challenges;
     private Set<ParticipantWithPoints> participantsWithPoints;
-    @Getter
-    private Set<ParticipantWithPlace> participantsWithPlaces;
-    @Getter
     private Set<TeamDto> teams;
 
 
@@ -53,13 +54,15 @@ public class RankingService {
         updateParticipantTeams();
         participantsWithPoints = createParticipantsWithPoints();
         participantsWithPlaces = createParticipantsWithPlaces();
-
+        Set<TeamWithPoints> teamsWithPoints = createTeamsWithPoints(teams);
+        teamsWithPlaces = createTeamsWithPlaces(teamsWithPoints);
     }
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {
         return participantService.findAllActiveForRankingByEvent(event).stream()
                 .map(p -> ParticipantDto.builder()
                         .id(p.getId())
+                        .active(true)
                         .user(UserDto.builder()
                                 .username(p.getUsername())
                                 .firstName(p.getFirstName())
@@ -147,6 +150,27 @@ public class RankingService {
                     }
                     previousParticipantPoints.set(participant.points());
                     return new ParticipantWithPlace(participant, currentPlace.get());
+                })
+                .collect(Collectors.toSet());
+    }
+
+    private Set<TeamWithPoints> createTeamsWithPoints(Set<TeamDto> teams) {
+        return teams.stream()
+                .map(team -> new TeamWithPoints(team, pointsCalculator.calculate(team)))
+                .collect(Collectors.toSet());
+    }
+
+    private Set<TeamWithPlace> createTeamsWithPlaces(Set<TeamWithPoints> teamWithPoints) {
+        AtomicInteger currentPlace = new AtomicInteger(1);
+        AtomicInteger previousTeamPoints = new AtomicInteger();
+        return teamWithPoints.stream()
+                .sorted(Comparator.comparingInt(TeamWithPoints::points).reversed())
+                .map(team -> {
+                    if (team.points() < previousTeamPoints.get()) {
+                        currentPlace.getAndIncrement();
+                    }
+                    previousTeamPoints.set(team.points());
+                    return new TeamWithPlace(team, currentPlace.get());
                 })
                 .collect(Collectors.toSet());
     }

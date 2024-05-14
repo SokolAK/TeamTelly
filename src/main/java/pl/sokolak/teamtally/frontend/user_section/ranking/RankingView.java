@@ -29,9 +29,7 @@ public class RankingView extends Div implements BeforeEnterObserver {
     private final SessionService sessionService;
 
     public RankingView(RankingService rankingService,
-//                       IndividualRankingService individualRankingService,
                        IndividualRankingFactory individualRankingFactory,
-                       TeamRankingService teamRankingService,
                        TeamRankingFactory teamRankingFactory,
                        SessionService sessionService) {
 
@@ -43,8 +41,8 @@ public class RankingView extends Div implements BeforeEnterObserver {
         Component individualRanking = individualRankingFactory.create(participantsWithPlaces);
 
 
-        List<TeamWithPlace> teamsWithPlace = teamRankingService.getTeamsWithPlaces(event);
-        Component teamRanking = teamRankingFactory.create(teamsWithPlace, participantsWithPlaces);
+        Set<TeamWithPlace> teamsWithPlaces = rankingService.getTeamsWithPlaces();
+        Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces);
 
         TabSheet tabSheet = new TabSheet();
         tabSheet.add("Individual", individualRanking);

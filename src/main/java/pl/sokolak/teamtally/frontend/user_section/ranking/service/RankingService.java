@@ -138,7 +138,7 @@ public class RankingService {
     }
 
     private Set<TeamDto> fetchTeams() {
-        return teamService.findAllByEvent(event).stream()
+        return teamService.findAllDataViewByEvent(event).stream()
                 .map(t -> TeamDto.builder()
                         .id(t.getId())
                         .name(t.getName())

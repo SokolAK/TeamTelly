@@ -8,9 +8,7 @@ import pl.sokolak.teamtally.backend.mapper.Mapper;
 import pl.sokolak.teamtally.backend.participant.ChallengeRankingDto;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -18,6 +16,7 @@ import java.util.stream.Collectors;
 public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
 
     private final ChallengeRepository challengeRepository;
+    private final ChallengeRankingRepository challengeRankingRepository;
     private final Mapper mapper;
 
     @Override
@@ -47,8 +46,8 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                 .collect(Collectors.toList());
     }
 
-    public Map<Integer, ChallengeRankingDto> findAllByIdIn(Set<Integer> ids) {
-        return challengeRepository.findAllByIdIn(ids).stream()
+    public Set<ChallengeRankingDto> findAllForRankingByIdIn(Set<Integer> ids) {
+        return challengeRankingRepository.findAllByIdIn(ids).stream()
                 .map(c -> new ChallengeRankingDto(
                                 (Integer) c.get("id"),
                                 String.valueOf(c.get("name")),
@@ -56,6 +55,6 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                                 (Integer) c.get("team_points")
                         )
                 )
-                .collect(Collectors.toMap(ChallengeRankingDto::getId, Function.identity()));
+                .collect(Collectors.toSet());
     }
 }

@@ -8,7 +8,7 @@ import pl.sokolak.teamtally.backend.mapper.MapperImpl;
 public class TeamConfiguration {
 
     @Bean
-    public TeamService teamService(TeamRepository repository) {
-        return new TeamService(repository, new MapperImpl());
+    public TeamService teamService(TeamRepository repository, TeamRankingRepository teamRankingRepository) {
+        return new TeamService(repository, teamRankingRepository, new MapperImpl());
     }
 }

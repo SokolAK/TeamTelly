@@ -8,7 +8,8 @@ import pl.sokolak.teamtally.backend.mapper.MapperImpl;
 public class ChallengeConfiguration {
 
     @Bean
-    public ChallengeService challengeService(ChallengeRepository repository) {
-        return new ChallengeService(repository, new MapperImpl());
+    public ChallengeService challengeService(ChallengeRepository repository,
+                                             ChallengeRankingRepository challengeRankingRepository) {
+        return new ChallengeService(repository, challengeRankingRepository, new MapperImpl());
     }
 }

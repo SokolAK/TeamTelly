@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 public class TeamDetailsRenderer {
-    public static ComponentRenderer<VerticalLayout, TeamWithPlace> create(List<ParticipantWithPlace> participantsWithPlace) {
+    public static ComponentRenderer<VerticalLayout, TeamWithPlace> create(Set<ParticipantWithPlace> participantsWithPlace) {
         return new ComponentRenderer<>(team -> {
 
             VerticalLayout verticalLayout = new VerticalLayout();
@@ -34,12 +34,14 @@ public class TeamDetailsRenderer {
             }
 
             for (ChallengeDto completedChallenge : getChallengesCompletedByTeam(teamMembers)) {
-                HorizontalLayout horizontalLayout = new HorizontalLayout();
-                horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-                horizontalLayout.setWidthFull();
-                horizontalLayout.add(new Span("[Team Bonus] " + completedChallenge.getName()));
-                horizontalLayout.add(new Span(String.valueOf(completedChallenge.getTeamPoints())));
-                verticalLayout.add(horizontalLayout);
+                if(completedChallenge.getTeamPoints() > 0) {
+                    HorizontalLayout horizontalLayout = new HorizontalLayout();
+                    horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+                    horizontalLayout.setWidthFull();
+                    horizontalLayout.add(new Span("[Team Bonus] " + completedChallenge.getName()));
+                    horizontalLayout.add(new Span(String.valueOf(completedChallenge.getTeamPoints())));
+                    verticalLayout.add(horizontalLayout);
+                }
             }
 
             if (verticalLayout.getComponentCount() == 0) {

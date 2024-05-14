@@ -1,7 +1,6 @@
 package pl.sokolak.teamtally.frontend.user_section.ranking;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
@@ -11,15 +10,13 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
-import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
-import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPoints;
-import pl.sokolak.teamtally.frontend.user_section.ranking.service.IndividualRankingService;
-import pl.sokolak.teamtally.frontend.user_section.ranking.service.TeamRankingService;
+import pl.sokolak.teamtally.frontend.user_section.ranking.service.*;
 
 import java.util.List;
+import java.util.Set;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -31,17 +28,23 @@ public class RankingView extends Div implements BeforeEnterObserver {
 
     private final SessionService sessionService;
 
-    public RankingView(IndividualRankingService individualRankingService,
+    public RankingView(RankingService rankingService,
+//                       IndividualRankingService individualRankingService,
+                       IndividualRankingFactory individualRankingFactory,
                        TeamRankingService teamRankingService,
+                       TeamRankingFactory teamRankingFactory,
                        SessionService sessionService) {
 
         this.sessionService = sessionService;
 
         EventDto event = sessionService.getEvent();
-        List<ParticipantWithPlace> participantsWithPlace = individualRankingService.getParticipantsWithPlaces(event);
+        rankingService.init(event);
+        Set<ParticipantWithPlace> participantsWithPlaces = rankingService.getParticipantsWithPlaces();
+        Component individualRanking = individualRankingFactory.create(participantsWithPlaces);
+
+
         List<TeamWithPlace> teamsWithPlace = teamRankingService.getTeamsWithPlaces(event);
-        Component individualRanking = individualRankingService.create(participantsWithPlace);
-        Component teamRanking = teamRankingService.create(teamsWithPlace, participantsWithPlace);
+        Component teamRanking = teamRankingFactory.create(teamsWithPlace, participantsWithPlaces);
 
         TabSheet tabSheet = new TabSheet();
         tabSheet.add("Individual", individualRanking);
@@ -51,7 +54,7 @@ public class RankingView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if(sessionService.getEvents().isEmpty()) {
+        if (sessionService.getEvents().isEmpty()) {
             beforeEnterEvent.rerouteTo("/no-events");
         }
     }

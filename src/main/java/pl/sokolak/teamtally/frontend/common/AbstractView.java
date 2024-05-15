@@ -7,6 +7,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.abstracts.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractView<T extends Data> extends VerticalLayout {
@@ -47,12 +48,18 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
         return new HorizontalLayout();
     }
 
-
     protected void updateList() {
-        grid.setItems(fetchData());
+        List<T> items = fetchData();
+        items.sort(getComparator());
+        grid.setItems(items);
+        grid.setVisible(items.size() > 0);
     }
 
     protected List<T> fetchData() {
         return service.findAll();
+    }
+
+    protected Comparator<T> getComparator() {
+        return Comparator.comparingInt(Data::getId);
     }
 }

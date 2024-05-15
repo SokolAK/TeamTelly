@@ -37,7 +37,7 @@ public class TeamService implements ServiceWithEvent<TeamDto> {
 
     @Override
     public List<TeamDto> findAllByEvent(EventDto event) {
-        return teamRepository.findAllByEvent(mapper.toEntity(event)).stream()
+        return teamRepository.findAllByEventOrderByName(mapper.toEntity(event)).stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }

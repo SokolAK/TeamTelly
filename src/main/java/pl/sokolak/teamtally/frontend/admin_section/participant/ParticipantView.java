@@ -26,10 +26,7 @@ import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringComponent(value = "participant-view-admin")
@@ -180,5 +177,10 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
     @Override
     protected List<ParticipantDto> fetchData() {
         return new ArrayList<>(fetchParticipants(event, teams));
+    }
+
+    @Override
+    protected Comparator<ParticipantDto> getComparator() {
+        return Comparator.comparing(p -> p.getUser().getUsername());
     }
 }

@@ -25,9 +25,9 @@ public class ChallengeRenderer {
                                 <h5>${item.name}</h5>
                                 <span style='margin-bottom:10px;'>${item.description}</span>
                                 <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
-                                    <vaadin-icon class='challenge-icon' icon='vaadin:user'></vaadin-icon>
+                                    <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
                                     <h5>${item.individualPoints}</h5>
-                                    <vaadin-icon class='challenge-icon' icon='vaadin:users'></vaadin-icon>
+                                    <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
                                     <h5>${item.teamPoints}</h5>
                                 </vaadin-horizontal-layout>
                                 <vaadin-horizontal-layout style='align-items: start' theme='spacing'>

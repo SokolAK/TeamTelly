@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Integer> {
-    List<Team> findAllByEvent(Event event);
+    List<Team> findAllByEventOrderByName(Event event);
 
     @Query(value = "SELECT t.id, t.icon, t.name, t.color " +
             "FROM Team t " +

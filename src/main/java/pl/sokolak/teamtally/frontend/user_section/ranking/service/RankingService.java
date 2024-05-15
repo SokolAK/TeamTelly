@@ -9,10 +9,9 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.*;
-import pl.sokolak.teamtally.backend.team.TeamDataView;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.team.TeamService;
-import pl.sokolak.teamtally.backend.user.UserDto;
+import pl.sokolak.teamtally.frontend.common.DtoMapper;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPoints;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
@@ -64,7 +63,7 @@ public class RankingService {
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {
         return participantService.findAllActiveDataByEvent(event).stream()
-                .map(RankingMapper::map)
+                .map(DtoMapper::map)
                 .collect(Collectors.toSet());
     }
 
@@ -77,7 +76,7 @@ public class RankingService {
                 .map(ParticipantChallengeRankingView::getChallengeId) // Extract challengeId
                 .collect(Collectors.toSet());
         return challengeService.findAllForRankingByIdIn(challengeIds).stream()
-                .map(RankingMapper::map)
+                .map(DtoMapper::map)
                 .collect(Collectors.toSet());
     }
 
@@ -97,7 +96,7 @@ public class RankingService {
 
     private Set<TeamDto> fetchTeams() {
         return teamService.findAllDataViewByEvent(event).stream()
-                .map(RankingMapper::map)
+                .map(DtoMapper::map)
                 .collect(Collectors.toSet());
     }
 

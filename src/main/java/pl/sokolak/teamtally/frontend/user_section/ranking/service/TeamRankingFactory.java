@@ -5,6 +5,10 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,8 +42,12 @@ public class TeamRankingFactory {
         grid.setItemDetailsRenderer(TeamDetailsRenderer.create(participantsWithPlace));
 
         sort(grid);
+        HorizontalLayout legend = new HorizontalLayout(
+                new Icon(VaadinIcon.INFO_CIRCLE_O),
+                new Span("Team points = (sum of individual points) / (number of members) * 10 + team bonuses"));
+        legend.getElement().getThemeList().add("badge");
 
-        return new Div(grid);
+        return new Div(grid, legend);
     }
 
     private static void sort(Grid<TeamWithPlace> grid) {

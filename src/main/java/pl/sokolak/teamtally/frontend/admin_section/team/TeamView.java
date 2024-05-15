@@ -1,24 +1,23 @@
 package pl.sokolak.teamtally.frontend.admin_section.team;
 
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.common.DtoMapper;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -51,7 +50,9 @@ public class TeamView extends AbstractViewWithSideForm<TeamDto> {
 
     @Override
     protected List<TeamDto> fetchData() {
-        return ((TeamService) service).findAllByEvent(sessionService.getEvent());
+        return ((TeamService) service).findAllDataViewByEvent(sessionService.getEvent()).stream()
+                .map(DtoMapper::map)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package pl.sokolak.teamtally.frontend.user_section.ranking.service;
+package pl.sokolak.teamtally.frontend.common;
 
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.participant.ChallengeDataView;
@@ -10,7 +10,7 @@ import pl.sokolak.teamtally.backend.user.UserDto;
 
 import java.util.HashSet;
 
-public class RankingMapper {
+public class DtoMapper {
 
     public static ParticipantDto map(ParticipantDataView p) {
         return ParticipantDto.builder()

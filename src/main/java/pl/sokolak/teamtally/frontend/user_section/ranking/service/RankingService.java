@@ -8,9 +8,8 @@ import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantChallengeRankingView;
-import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantService;
+import pl.sokolak.teamtally.backend.participant.*;
+import pl.sokolak.teamtally.backend.team.TeamDataView;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.backend.user.UserDto;
@@ -64,23 +63,9 @@ public class RankingService {
     }
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {
-        return new HashSet<>(participantService.findAllByEvent(event));
-//        return participantService.findAllActiveDataByEvent(event).stream()
-//                .map(p -> ParticipantDto.builder()
-//                        .id(p.getId())
-//                        .active(true)
-//                        .user(UserDto.builder()
-//                                .username(p.getUsername())
-//                                .firstName(p.getFirstName())
-//                                .lastName(p.getLastName())
-//                                .jobTitle(p.getJobTitle())
-//                                .photo(p.getPhoto())
-//                                .build())
-//                        .team(TeamDto.builder()
-//                                .id(p.getTeamId())
-//                                .build())
-//                        .build()
-//                ).collect(Collectors.toSet());
+        return participantService.findAllActiveDataByEvent(event).stream()
+                .map(RankingMapper::map)
+                .collect(Collectors.toSet());
     }
 
     private Set<ParticipantChallengeRankingView> fetchCompletedChallenges() {
@@ -92,12 +77,7 @@ public class RankingService {
                 .map(ParticipantChallengeRankingView::getChallengeId) // Extract challengeId
                 .collect(Collectors.toSet());
         return challengeService.findAllForRankingByIdIn(challengeIds).stream()
-                .map(c -> ChallengeDto.builder()
-                        .id(c.getId())
-                        .name(c.getName())
-                        .individualPoints(c.getIndividualPoints())
-                        .teamPoints(c.getTeamPoints())
-                        .build())
+                .map(RankingMapper::map)
                 .collect(Collectors.toSet());
     }
 
@@ -117,13 +97,7 @@ public class RankingService {
 
     private Set<TeamDto> fetchTeams() {
         return teamService.findAllDataViewByEvent(event).stream()
-                .map(t -> TeamDto.builder()
-                        .id(t.getId())
-                        .name(t.getName())
-                        .icon(t.getIcon())
-                        .color(t.getColor())
-                        .participants(new HashSet<>())
-                        .build())
+                .map(RankingMapper::map)
                 .collect(Collectors.toSet());
     }
 

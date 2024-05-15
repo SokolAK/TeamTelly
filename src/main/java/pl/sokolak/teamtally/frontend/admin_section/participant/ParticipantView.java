@@ -179,11 +179,6 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
 
     @Override
     protected List<ParticipantDto> fetchData() {
-        long start = System.currentTimeMillis();
-        System.out.println("Fetching data");
-        List<ParticipantDto> participantDtos = new ArrayList<>(fetchParticipants(event, teams));
-        long finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-        return participantDtos;
+        return new ArrayList<>(fetchParticipants(event, teams));
     }
 }

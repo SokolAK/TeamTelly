@@ -17,6 +17,8 @@ import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.util.ImageUtil;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,10 +64,17 @@ class ParticipantRenderer {
         return event -> {
             ParticipantDto participant = getParticipantForComboBox(event);
             TeamDto team = event.getValue();
+            if(team.getParticipants() == null) {
+                team.setParticipants(new HashSet<>());
+            }
+            team.getParticipants().add(participant);
             participant.setTeam(team);
             participantService.updateTeam(participant, team);
             if (participant.equals(sessionService.getParticipant())) {
                 sessionService.init();
+            }
+            if(team.getId().equals(sessionService.getParticipant().getTeam().getId())) {
+                sessionService.getParticipant().setTeam(team);
             }
         };
     }

@@ -51,8 +51,4 @@ public class TeamService implements ServiceWithEvent<TeamDto> {
                         getStringField(t.get("color")))
                 ).collect(Collectors.toSet());
     }
-
-    private String getStringField(Object value) {
-        return Optional.ofNullable(value).map(String.class::cast).orElse(null);
-    }
 }

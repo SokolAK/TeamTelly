@@ -121,7 +121,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
 
     @Override
     protected List<ChallengeDto> fetchData() {
-        return ((ChallengeService) service).findAllByEvent(sessionService.getEvent());
+        return ((ChallengeService) service).findAllDataByEvent(sessionService.getEvent());
     }
 
     private ComponentEventListener<ClickEvent<Button>> confirmButtonListener() {

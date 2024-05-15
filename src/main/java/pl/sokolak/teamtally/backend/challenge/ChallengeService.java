@@ -3,9 +3,10 @@ package pl.sokolak.teamtally.backend.challenge;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
+import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
-import pl.sokolak.teamtally.backend.participant.ChallengeRankingDto;
+import pl.sokolak.teamtally.backend.participant.ChallengeDataView;
 
 import java.util.List;
 import java.util.Set;
@@ -45,9 +46,30 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                 .collect(Collectors.toList());
     }
 
-    public Set<ChallengeRankingDto> findAllForRankingByIdIn(Set<Integer> ids) {
+    public List<ChallengeDto> findAllDataByEvent(EventDto event) {
+        return challengeRepository.findAllByEvent(mapper.toEntity(event)).stream()
+                .map(c -> ChallengeDto.builder()
+                        .id(c.getId())
+                        .name(c.getName())
+                        .description(c.getDescription())
+                        .individualPoints(c.getIndividualPoints())
+                        .teamPoints(c.getTeamPoints())
+                        .codes(c.getCodes().stream().map(
+                                cc -> CodeDto.builder()
+                                        .code(cc.getCode())
+                                        .active(cc.isActive())
+                                        .usages(cc.getUsages())
+                                        .maxUsages(cc.getMaxUsages())
+                                        .build()
+                        ).collect(Collectors.toSet()))
+                        .tags(c.getTags().stream().map(mapper::toDto).collect(Collectors.toSet()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public Set<ChallengeDataView> findAllForRankingByIdIn(Set<Integer> ids) {
         return challengeRepository.findAllByIdIn(ids).stream()
-                .map(c -> new ChallengeRankingDto(
+                .map(c -> new ChallengeDataView(
                                 (Integer) c.get("id"),
                                 String.valueOf(c.get("name")),
                                 (Integer) c.get("individual_points"),

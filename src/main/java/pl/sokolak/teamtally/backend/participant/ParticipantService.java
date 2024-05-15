@@ -113,11 +113,4 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
     public void updateTeam(ParticipantDto participant, TeamDto team) {
         participantRepository.updateTeam(participant.getId(), team.getId());
     }
-
-    private String getStringField(Object value) {
-        return Optional.ofNullable(value).map(String.class::cast).orElse(null);
-    }
-
-
-
 }

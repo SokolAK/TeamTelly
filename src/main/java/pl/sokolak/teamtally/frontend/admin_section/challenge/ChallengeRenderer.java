@@ -84,8 +84,12 @@ public class ChallengeRenderer {
                         .map(name -> "#" + name)
                         .collect(Collectors.toList()))
 //                .withProperty("color", getColor(completedPersonal, "#E9FFE9", "white"))
-                .withProperty("colorPersonal", getColor(completedPersonal, "#5DAD26", "#696969"))
-                .withProperty("colorTeam", getColor(completedTeam, "#5DAD26", "#696969"))
+                // TODO
+//                .withProperty("colorPersonal", getColor(completedPersonal, "#5DAD26", "#696969"))
+                .withProperty("colorPersonal", __ -> "#696969")
+                // TODO
+//                .withProperty("colorTeam", getColor(completedTeam, "#5DAD26", "#696969"))
+                .withProperty("colorTeam", __ -> "#696969")
                 .withProperty("completed", checkIfCompleted(completedPersonal))
                 .withProperty("available", checkIfAvailable(completedPersonal))
                 .withProperty("unavailable", checkIfUnavailable(completedPersonal))

@@ -14,6 +14,11 @@ import java.util.Set;
 public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
     List<Challenge> findAllByEvent(Event event);
 
+//    @Query(value = "SELECT c.id, c.name, c.description, c.individual_points, c.team_points " +
+//            "FROM challenge c " +
+//            "WHERE c.event_id = :eventId", nativeQuery = true)
+//    List<Map<String, Object>> findAllDataByEvent(@Param("eventId") Integer eventId);
+
     @Query(value = "SELECT c.id, c.name, c.individual_points, c.team_points " +
             "FROM challenge c " +
             "WHERE c.id IN :ids", nativeQuery = true)

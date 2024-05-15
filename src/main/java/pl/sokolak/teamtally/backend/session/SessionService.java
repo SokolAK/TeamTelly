@@ -1,7 +1,9 @@
 package pl.sokolak.teamtally.backend.session;
 
 import lombok.AllArgsConstructor;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
@@ -21,6 +23,7 @@ public class SessionService {
     private final SessionContext sessionContext;
     private final SecurityService securityService;
     private final ParticipantService participantService;
+    private final EventService eventService;
     private final UserService userService;
 
     public void init() {
@@ -32,30 +35,27 @@ public class SessionService {
 
         if(!authenticatedUser.isLogged()) {
             authenticatedUser.setLogged(true);
-            authenticatedUser = userService.save(authenticatedUser);
+            userService.updateLogged(authenticatedUser);
         }
 
-        long start = System.currentTimeMillis();
-        System.out.println("Fetching participants");
-        List<ParticipantDto> participants = getParticipants(authenticatedUser);
-        long finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-//        List<EventDto> participantsOngoingEvents = getOngoingEvents(participants);
-        start = System.currentTimeMillis();
-        System.out.println("Fetching events");
-        List<EventDto> participantsEvents = getAllEvents(participants);
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-
-        EventDto event = Optional.ofNullable(sessionContext.getEvent())
-                .filter(e -> participantsEvents.stream()
-                        .anyMatch(e::equals))
-                .orElseGet(() -> getLast(participantsEvents));
-        ParticipantDto participant = getParticipant(participants, event);
-
-        sessionContext.setEvent(event);
-        sessionContext.setEvents(participantsEvents);
-        sessionContext.setParticipant(participant);
+        // TODO
+//        List<ParticipantDto> participants = getParticipants(authenticatedUser);
+//        List<EventDto> participantsEvents = getAllEvents(participants);
+//        EventDto event = Optional.ofNullable(sessionContext.getEvent())
+//                .filter(e -> participantsEvents.stream()
+//                        .anyMatch(e::equals))
+//                .orElseGet(() -> getLast(participantsEvents));
+        Optional<EventDto> maybeEvent = eventService.findAllData().stream().findFirst();
+        if(maybeEvent.isPresent()) {
+            EventDto event = maybeEvent.get();
+            sessionContext.setEvent(event);
+            sessionContext.setEvents(List.of(event));
+            sessionContext.setParticipant(participantService.findById(
+                    authenticatedUser.getParticipants().stream()
+                            .findFirst()
+                            .map(Data::getId)
+                            .orElse(null)));
+        }
     }
 
     public void reinit(EventDto event) {

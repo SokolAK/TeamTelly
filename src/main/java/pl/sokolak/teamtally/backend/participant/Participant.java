@@ -18,12 +18,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class Participant extends AbstractEntityWithEvent {
     private Boolean active;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     private User user;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(
             name = "participant_challenge",
             joinColumns = @JoinColumn(name = "participant_id"),

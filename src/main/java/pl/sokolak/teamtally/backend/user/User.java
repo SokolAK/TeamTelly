@@ -26,9 +26,9 @@ public class User extends AbstractEntity {
     private String email;
     private String password;
     private byte[] photo;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private UserRole userRole;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Participant> participants;
     private Boolean logged;
 }

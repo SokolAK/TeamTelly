@@ -1,9 +1,6 @@
 package pl.sokolak.teamtally.backend.event;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +21,8 @@ public class Event extends AbstractEntity {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Challenge> challenges;
 }

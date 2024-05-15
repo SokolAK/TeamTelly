@@ -35,6 +35,12 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toList());
     }
 
+    public ParticipantDto findById(Integer id) {
+        return participantRepository.findById(id)
+                .map(p -> mapper.toDto(p))
+                .orElse(null);
+    }
+
     @Override
     public void delete(ParticipantDto participant) {
         Participant entity = mapper.toEntity(participant);
@@ -47,10 +53,33 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toList());
     }
 
+//    @Override
+//    public List<ParticipantDto> findAllByEvent(EventDto event) {
+//        return participantRepository.findAllByEvent(mapper.toEntity(event)).stream()
+//                .map(mapper::toDto)
+//                .collect(Collectors.toList());
+//    }
+
     @Override
     public List<ParticipantDto> findAllByEvent(EventDto event) {
         return participantRepository.findAllByEvent(mapper.toEntity(event)).stream()
-                .map(mapper::toDto)
+                .map(p -> ParticipantDto.builder()
+                        .id(p.getId())
+                        .team(p.getTeam() != null ? TeamDto.builder()
+                                .id(p.getTeam().getId())
+                                .name(p.getTeam().getName())
+                                .icon(p.getTeam().getIcon())
+                                .color(p.getTeam().getColor())
+                                .build() : null)
+                        .user(UserDto.builder()
+                                .id(p.getUser().getId())
+                                .username(p.getUser().getUsername())
+                                .firstName(p.getUser().getFirstName())
+                                .lastName(p.getUser().getLastName())
+                                .jobTitle(p.getUser().getJobTitle())
+                                .photo(p.getUser().getPhoto())
+                                .build())
+                        .build())
                 .collect(Collectors.toList());
     }
 
@@ -88,4 +117,7 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
     private String getStringField(Object value) {
         return Optional.ofNullable(value).map(String.class::cast).orElse(null);
     }
+
+
+
 }

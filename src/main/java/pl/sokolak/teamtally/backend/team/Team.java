@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.backend.team;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,6 @@ public class Team extends AbstractEntityWithEvent {
     private String name;
     private String color;
     private String icon;
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private Set<Participant> participants;
 }

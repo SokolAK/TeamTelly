@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
 
     private final ChallengeRepository challengeRepository;
-    private final ChallengeRankingRepository challengeRankingRepository;
     private final Mapper mapper;
 
     @Override
@@ -47,7 +46,7 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
     }
 
     public Set<ChallengeRankingDto> findAllForRankingByIdIn(Set<Integer> ids) {
-        return challengeRankingRepository.findAllByIdIn(ids).stream()
+        return challengeRepository.findAllByIdIn(ids).stream()
                 .map(c -> new ChallengeRankingDto(
                                 (Integer) c.get("id"),
                                 String.valueOf(c.get("name")),

@@ -3,6 +3,7 @@ package pl.sokolak.teamtally.frontend.user_section.ranking.service;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
@@ -18,6 +19,7 @@ import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPoi
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPoints;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -46,7 +48,10 @@ public class RankingService {
 
     public void init(EventDto event) {
         this.event = event;
+        long start = System.currentTimeMillis();
         participants = fetchParticipantsWithoutChallenges();
+        long finish = System.currentTimeMillis();
+        System.out.println(finish - start);
         completedChallenges = fetchCompletedChallenges();
         challenges = fetchChallenges();
         updateParticipantChallenges();
@@ -59,22 +64,23 @@ public class RankingService {
     }
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {
-        return participantService.findAllActiveDataByEvent(event).stream()
-                .map(p -> ParticipantDto.builder()
-                        .id(p.getId())
-                        .active(true)
-                        .user(UserDto.builder()
-                                .username(p.getUsername())
-                                .firstName(p.getFirstName())
-                                .lastName(p.getLastName())
-                                .jobTitle(p.getJobTitle())
-                                .photo(p.getPhoto())
-                                .build())
-                        .team(TeamDto.builder()
-                                .id(p.getTeamId())
-                                .build())
-                        .build()
-                ).collect(Collectors.toSet());
+        return new HashSet<>(participantService.findAllByEvent(event));
+//        return participantService.findAllActiveDataByEvent(event).stream()
+//                .map(p -> ParticipantDto.builder()
+//                        .id(p.getId())
+//                        .active(true)
+//                        .user(UserDto.builder()
+//                                .username(p.getUsername())
+//                                .firstName(p.getFirstName())
+//                                .lastName(p.getLastName())
+//                                .jobTitle(p.getJobTitle())
+//                                .photo(p.getPhoto())
+//                                .build())
+//                        .team(TeamDto.builder()
+//                                .id(p.getTeamId())
+//                                .build())
+//                        .build()
+//                ).collect(Collectors.toSet());
     }
 
     private Set<ParticipantChallengeRankingView> fetchCompletedChallenges() {
@@ -123,8 +129,9 @@ public class RankingService {
 
     private void updateParticipantTeams() {
         for (ParticipantDto participant : participants) {
+            Integer participantTeamId = Optional.ofNullable(participant.getTeam()).map(Data::getId).orElse(null);
             teams.stream()
-                    .filter(t -> t.getId().equals(participant.getTeam().getId()))
+                    .filter(t -> t.getId().equals(participantTeamId))
                     .findFirst()
                     .ifPresent(teams -> {
                         teams.getParticipants().add(participant);
@@ -162,14 +169,14 @@ public class RankingService {
 
     private Set<TeamWithPlace> createTeamsWithPlaces(Set<TeamWithPoints> teamWithPoints) {
         AtomicInteger currentPlace = new AtomicInteger(1);
-        AtomicInteger previousTeamPoints = new AtomicInteger();
+        final BigDecimal[] previousTeamPoints = {new BigDecimal(0)};
         return teamWithPoints.stream()
-                .sorted(Comparator.comparingInt(TeamWithPoints::points).reversed())
+                .sorted(Comparator.comparing(TeamWithPoints::points))
                 .map(team -> {
-                    if (team.points() < previousTeamPoints.get()) {
+                    if (team.points().compareTo(previousTeamPoints[0]) < 0) {
                         currentPlace.getAndIncrement();
                     }
-                    previousTeamPoints.set(team.points());
+                    previousTeamPoints[0] = team.points();
                     return new TeamWithPlace(team, currentPlace.get());
                 })
                 .collect(Collectors.toSet());

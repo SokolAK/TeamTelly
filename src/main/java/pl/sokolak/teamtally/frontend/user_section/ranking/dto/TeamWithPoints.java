@@ -2,12 +2,14 @@ package pl.sokolak.teamtally.frontend.user_section.ranking.dto;
 
 import pl.sokolak.teamtally.backend.team.TeamDto;
 
+import java.math.BigDecimal;
+
 public record TeamWithPoints(String name,
                              String icon,
                              String color,
-                             int points) {
+                             BigDecimal points) {
 
-    public TeamWithPoints(TeamDto team, int points) {
+    public TeamWithPoints(TeamDto team, BigDecimal points) {
         this(team.getName(),
                 team.getIcon(),
                 team.getColor(),

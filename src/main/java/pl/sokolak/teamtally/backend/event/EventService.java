@@ -29,6 +29,17 @@ public class EventService implements Service<EventDto> {
                 .collect(Collectors.toList());
     }
 
+    public List<EventDto> findAllData() {
+        return eventRepository.findAll().stream()
+                .map(e -> EventDto.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .startDate(e.getStartDate())
+                        .endDate(e.getEndDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     @Override
     public void delete(EventDto event) {
         Event entity = mapper.toEntity(event);

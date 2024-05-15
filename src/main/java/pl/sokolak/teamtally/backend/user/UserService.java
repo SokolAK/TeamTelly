@@ -5,7 +5,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.sokolak.teamtally.abstracts.Service;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
+import pl.sokolak.teamtally.backend.participant.Participant;
+import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
+import pl.sokolak.teamtally.backend.user.role.UserRole;
 import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.List;
@@ -29,7 +33,20 @@ public class UserService implements Service<UserDto> {
 
     public Optional<UserDto> findFirstByEmail(String email) {
         return userRepository.findFirstByEmail(email)
-                .map(mapper::toDto);
+                .map(u -> UserDto.builder()
+                        .id(u.getId())
+                        .logged(u.getLogged())
+                        .username(u.getUsername())
+                        .email(u.getEmail())
+                        .password(u.getPassword())
+                        .photo(u.getPhoto())
+                        .userRole(mapper.toDto(u.getUserRole()))
+                        .participants(u.getParticipants().stream()
+                                .map(p -> ParticipantDto.builder()
+                                        .id(p.getId())
+                                        .build())
+                                .collect(Collectors.toSet()))
+                        .build());
     }
 
 //    @Override
@@ -48,6 +65,10 @@ public class UserService implements Service<UserDto> {
 //        User savedEntity = userRepository.save(entity);
 //        return mapper.toDto(savedEntity);
 //    }
+
+    public void updateLogged(UserDto user) {
+        userRepository.updateLogged(user.getId());
+    }
 
     @Override
     public UserDto save(UserDto user) {

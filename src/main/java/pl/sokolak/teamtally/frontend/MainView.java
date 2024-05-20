@@ -54,7 +54,7 @@ public class MainView extends AppLayout {
         Component events = drawerFactory.createEvents(selection -> reload(selection.getValue()));
         Footer footer = drawerFactory.createFooter(appVersion);
 
-//        addToDrawer(logo);
+        addToDrawer(logo);
         if (sessionService.hasEvent()) {
             addToDrawer(eventName, eventDate);
         }

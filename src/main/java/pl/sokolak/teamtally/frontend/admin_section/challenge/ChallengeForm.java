@@ -33,7 +33,7 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
         configureBinder();
         tags.setItems(tagsForEvent);
         tags.setItemLabelGenerator(TagDto::getName);
-        addFields(name, description, individualPoints, teamPoints, maxUsages, tags, createCodeSection());
+        addFields(name, description, individualPoints, teamPoints, maxUsages, tags);
     }
 
     private void configureBinder() {
@@ -42,40 +42,12 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
         setBinder(binder);
     }
 
-    @Override
-    public void setData(Data data) {
-        binder.setBean(data);
-        Optional.ofNullable(data)
-                .map(ChallengeDto.class::cast)
-                .map(ChallengeDto::getCodes)
-                .ifPresent(codes::setItems);
-    }
-
-    private VerticalLayout createCodeSection() {
-        codes.setColumns("code");
-        codes.setAllRowsVisible(true);
-
-        TextField addCodeField = new TextField();
-        addCodeField.setPlaceholder("Enter new code");
-        Button addCodeButton = new Button("Add code");
-        addCodeButton.addClickListener(__ -> {
-            ChallengeDto bean = (ChallengeDto) binder.getBean();
-            bean.getCodes().add(CodeDto.builder()
-                    .code(addCodeField.getValue())
-                    .challenge(bean)
-                    .event(bean.getEvent())
-                    .active(true)
-                    .build());
-            setData(bean);
-        });
-
-        codes.addItemDoubleClickListener(e -> {
-            ChallengeDto bean = (ChallengeDto) binder.getBean();
-            bean.getCodes().remove(e.getItem());
-            setData(bean);
-        });
-
-        HorizontalLayout toolbar = new HorizontalLayout(addCodeField, addCodeButton);
-        return new VerticalLayout(toolbar, codes);
-    }
+//    @Override
+//    public void setData(Data data) {
+//        binder.setBean(data);
+//        Optional.ofNullable(data)
+//                .map(ChallengeDto.class::cast)
+//                .map(ChallengeDto::getCodes)
+//                .ifPresent(codes::setItems);
+//    }
 }

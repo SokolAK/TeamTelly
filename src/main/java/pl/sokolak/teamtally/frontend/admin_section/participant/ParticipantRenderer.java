@@ -22,12 +22,17 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-@AllArgsConstructor
 class ParticipantRenderer {
 
     private final Set<TeamDto> teams;
     private final ParticipantService participantService;
     private final SessionService sessionService;
+
+    public ParticipantRenderer(Set<TeamDto> teams, ParticipantService participantService, SessionService sessionService) {
+        this.teams = new HashSet<>(teams);
+        this.participantService = participantService;
+        this.sessionService = sessionService;
+    }
 
     ComponentRenderer<HorizontalLayout, ParticipantDto> create() {
         return new ComponentRenderer<>(participant -> {
@@ -64,6 +69,10 @@ class ParticipantRenderer {
         return event -> {
             ParticipantDto participant = getParticipantForComboBox(event);
             TeamDto team = event.getValue();
+            if(team == null) {
+                participantService.updateTeam(participant, null);
+                return;
+            }
             if(team.getParticipants() == null) {
                 team.setParticipants(new HashSet<>());
             }
@@ -73,7 +82,7 @@ class ParticipantRenderer {
             if (participant.equals(sessionService.getParticipant())) {
                 sessionService.init();
             }
-            if(team.getId().equals(sessionService.getParticipant().getTeam().getId())) {
+            if(team.getId().equals(sessionService.getParticipant().getTeamId())) {
                 sessionService.getParticipant().setTeam(team);
             }
         };
@@ -94,6 +103,7 @@ class ParticipantRenderer {
         public TeamComboBox(ParticipantDto participant, Set<TeamDto> teams,
                             ValueChangeListener<ComponentValueChangeEvent<ComboBox<TeamDto>, TeamDto>> changeValueListener) {
             super("", teams);
+            setClearButtonVisible(true);
             this.participant = participant;
             this.setValue(participant.getTeam());
             this.addValueChangeListener(changeValueListener);

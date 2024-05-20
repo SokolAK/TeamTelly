@@ -141,9 +141,11 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected void updateList() {
         List<T> items = fetchData();
-        items.sort(getComparator());
+        if(!items.isEmpty()) {
+            items.sort(getComparator());
+        }
         grid.setItems(items);
-        grid.setVisible(items.size() > 0);
+        grid.setVisible(!items.isEmpty());
     }
 
     protected List<T> fetchData() {

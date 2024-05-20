@@ -13,9 +13,7 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantDataView;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.backend.participant.ParticipantRepository;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.team.TeamDto;
@@ -25,6 +23,7 @@ import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,14 +38,18 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
     protected UserService userService;
     protected TeamService teamService;
     protected SessionService sessionService;
+    protected ParticipantService participantService;
     private Set<TeamDto> teams;
     private EventDto event;
 
     public ParticipantView(UserService userService,
                            ParticipantService participantService,
+
+
                            TeamService teamService,
                            SessionService sessionService) {
         this.service = participantService;
+        this.participantService = participantService;
         this.sessionService = sessionService;
         this.userService = userService;
         this.teamService = teamService;
@@ -64,9 +67,7 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
         grid.addClassNames("participant-grid");
         grid.setAllRowsVisible(true);
         grid.setColumns();
-//        grid.addColumn(new ActiveCheckboxRenderer(
-//                event, this::activateParticipant, this::deactivateParticipant
-//        ).create()).setAutoWidth(true).setFlexGrow(0);
+        grid.addColumn(new ActiveCheckboxRenderer(this::activateParticipant, this::deactivateParticipant).create()).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(new ParticipantRenderer(teams, (ParticipantService) service, sessionService).create()).setAutoWidth(true);
         grid.addColumn(
                 new ComponentRenderer<>(Button::new, (button, participant) -> {
@@ -76,13 +77,26 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
                     button.addClickListener(e -> this.removeParticipant(participant));
                     button.setIcon(new Icon(VaadinIcon.TRASH));
                 })).setAutoWidth(true).setFlexGrow(0);
+//        grid.setItemDetailsRenderer(UsedCodesRenderer.create());
+    }
+
+    private void activateParticipant(ParticipantDto participantDto) {
+        participantDto.setActive(true);
+        participantService.updateActive(participantDto, true);
+        grid.getDataProvider().refreshItem(participantDto);
+    }
+
+    private void deactivateParticipant(ParticipantDto participantDto) {
+        participantDto.setActive(false);
+        participantService.updateActive(participantDto, false);
+        grid.getDataProvider().refreshItem(participantDto);
     }
 
     private Set<ParticipantDto> fetchParticipants(EventDto event, Set<TeamDto> teams) {
-        return ((ParticipantService) service).findAllActiveDataByEvent(event).stream()
+        return participantService.findAllDataByEvent(event, false).stream()
                 .map(p -> ParticipantDto.builder()
                         .id(p.getId())
-                        .active(true)
+                        .active(p.getIsActive())
                         .user(UserDto.builder()
                                 .username(p.getUsername())
                                 .firstName(p.getFirstName())
@@ -135,7 +149,7 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
     private void saveParticipantsFromUsers(Set<UserDto> users) {
         users.stream()
                 .map(this::createNewParticipant)
-                .forEach(p -> service.save(p));
+                .forEach(p -> participantService.save(p));
     }
 
     private void saveParticipantsFromEmails(Set<String> emails) {
@@ -143,11 +157,11 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
                 .map(email -> userService.findFirstByEmail(email))
                 .flatMap(Optional::stream)
                 .map(this::createNewParticipant)
-                .forEach(p -> service.save(p));
+                .forEach(p -> participantService.save(p));
         emails.stream()
                 .filter(email -> userService.findFirstByEmail(email).isEmpty())
                 .map(this::createNewParticipant)
-                .forEach(p -> service.save(p));
+                .forEach(p -> participantService.save(p));
     }
 
     private ParticipantDto createNewParticipant(UserDto user) {
@@ -170,7 +184,7 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
     }
 
     private void removeParticipant(ParticipantDto participant) {
-        service.delete(participant);
+        participantService.delete(participant);
         updateList();
     }
 

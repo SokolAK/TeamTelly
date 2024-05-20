@@ -43,6 +43,11 @@ public class SuggestionView extends VerticalLayout {
                 }
         );
 
+        textArea.setMinWidth("300px");
+        textArea.setMaxWidth("600px");
+        textArea.setMinHeight("100px");
+        textArea.setMaxHeight("100px");
+
         add(new H4("Please suggest an improvement"), textArea, sumbitButton);
     }
 }

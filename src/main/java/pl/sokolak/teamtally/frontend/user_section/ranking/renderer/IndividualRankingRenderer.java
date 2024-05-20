@@ -8,12 +8,12 @@ import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPla
 public class IndividualRankingRenderer {
     public static Renderer<ParticipantWithPlace> createPlaces() {
         return LitRenderer.<ParticipantWithPlace>of("""
-                        <h5 style='text-align: center'>
+                        <span style='text-align: center'>
                             ${item.points > 0 && item.place == 1 ? '\uD83E\uDD47' :
                             item.points > 0 && item.place == 2 ? '\uD83E\uDD48' :
                             item.points > 0 && item.place == 3 ? '\uD83E\uDD49' :
-                            item.points > 0 ? item.place : ''}
-                        </h5>""")
+                            item.place}
+                        </span>""")
                 .withProperty("points", ParticipantWithPlace::points)
                 .withProperty("place", ParticipantWithPlace::place);
     }
@@ -42,7 +42,7 @@ public class IndividualRankingRenderer {
     }
 
     public static Renderer<ParticipantWithPlace> createPoints() {
-        return LitRenderer.<ParticipantWithPlace>of("<span><b>${item.points}</b></span>")
+        return LitRenderer.<ParticipantWithPlace>of("<span><b>⭐ ${item.points}</b></span>")
                 .withProperty("points", ParticipantWithPlace::points);
     }
 }

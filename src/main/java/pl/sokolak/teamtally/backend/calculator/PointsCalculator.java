@@ -21,14 +21,14 @@ public class PointsCalculator {
     }
 
     public BigDecimal calculate(TeamDto team) {
-        int numberOfMembers = team.getParticipants().toArray().length;
+        long numberOfMembers = team.getParticipants().stream().filter(ParticipantDto::isActive).count();
         if(numberOfMembers == 0) {
             return BigDecimal.ZERO;
         }
         BigDecimal averageIndividualPoints = new BigDecimal((double) sumIndividualPoints(team) / numberOfMembers)
+                .multiply(BigDecimal.TEN)
                 .setScale(2, RoundingMode.HALF_UP);
         return averageIndividualPoints
-                .multiply(BigDecimal.TEN)
                 .add(BigDecimal.valueOf(sumBonusPoints(team)));
     }
 

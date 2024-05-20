@@ -3,15 +3,14 @@ package pl.sokolak.teamtally.backend.participant;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
+import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
+import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -83,11 +82,14 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toList());
     }
 
-    public Set<ParticipantDataView> findAllActiveDataByEvent(EventDto event) {
+    public Set<ParticipantDataView> findAllDataByEvent(EventDto event, boolean activeOnly) {
         if (event == null) {
             return Collections.emptySet();
         }
-        return participantRepository.getAllByEvent(mapper.toEntity(event).getId()).stream()
+        List<Map<String, Object>> participants = activeOnly ?
+                participantRepository.getAllActiveByEvent(event.getId()) :
+                participantRepository.getAllByEvent(event.getId());
+        return participants.stream()
                 .map(p -> new ParticipantDataView(
                         (Integer) p.get("id"),
                         getStringField(p.get("username")),
@@ -95,7 +97,8 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                         getStringField(p.get("last_name")),
                         getStringField(p.get("job_title")),
                         (byte[]) p.get("photo"),
-                        (Integer) p.get("team_id")
+                        (Integer) p.get("team_id"),
+                        (boolean) p.get("active")
                 )).collect(Collectors.toSet());
     }
 
@@ -110,7 +113,24 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 ).collect(Collectors.toSet());
     }
 
-    public void updateTeam(ParticipantDto participant, TeamDto team) {
-        participantRepository.updateTeam(participant.getId(), team.getId());
+    public Set<ParticipantDataView> findUsernamesByCode(CodeDto code) {
+        return participantRepository.getAllUsernamesByCode(code.getId()).stream()
+                .map(p -> ParticipantDataView.builder()
+                        .id((Integer) p.get("id"))
+                        .username(getStringField(p.get("username")))
+                        .build())
+                .collect(Collectors.toSet());
     }
+
+    public void updateTeam(ParticipantDto participant, TeamDto team) {
+        participantRepository.updateTeam(participant.getId(), Optional.ofNullable(team).map(TeamDto::getId).orElse(null));
+    }
+
+    public void updateActive(ParticipantDto participant, boolean isActive) {
+        participantRepository.updateActive(participant.getId(), isActive);
+    }
+
+//    public void updateCodeAndChallenge(ParticipantDto participant, CodeDto code, ChallengeDto challenge) {
+//        participantRepository.updateCodeAndChallenge(code.getId(), challenge.getId());
+//    }
 }

@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeView;
+import pl.sokolak.teamtally.frontend.admin_section.code.CodeView;
 import pl.sokolak.teamtally.frontend.admin_section.event.EventView;
 import pl.sokolak.teamtally.frontend.admin_section.participant.ParticipantView;
 import pl.sokolak.teamtally.frontend.admin_section.team.TeamView;
@@ -106,6 +107,7 @@ public class DrawerFactory {
             nav.addItem(new SideNavItem("Teams", TeamView.class, VaadinIcon.USERS.create()));
             nav.addItem(new SideNavItem("Participants", ParticipantView.class, VaadinIcon.USER.create()));
             nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
+            nav.addItem(new SideNavItem("Codes", CodeView.class, VaadinIcon.BARCODE.create()));
         }
     }
 

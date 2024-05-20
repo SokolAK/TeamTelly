@@ -46,10 +46,7 @@ public class RankingService {
 
     public void init(EventDto event) {
         this.event = event;
-        long start = System.currentTimeMillis();
         participants = fetchParticipantsWithoutChallenges();
-        long finish = System.currentTimeMillis();
-        System.out.println(finish - start);
         completedChallenges = fetchCompletedChallenges();
         challenges = fetchChallenges();
         updateParticipantChallenges();
@@ -62,7 +59,7 @@ public class RankingService {
     }
 
     private Set<ParticipantDto> fetchParticipantsWithoutChallenges() {
-        return participantService.findAllActiveDataByEvent(event).stream()
+        return participantService.findAllDataByEvent(event, true).stream()
                 .map(DtoMapper::map)
                 .collect(Collectors.toSet());
     }

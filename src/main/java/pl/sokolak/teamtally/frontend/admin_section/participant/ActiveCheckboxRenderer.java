@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 @AllArgsConstructor
 class ActiveCheckboxRenderer {
 
-    private final EventDto event;
     private final Consumer<ParticipantDto> checkListener;
     private final Consumer<ParticipantDto> uncheckListener;
 

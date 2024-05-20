@@ -7,9 +7,11 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Cascade;
 import pl.sokolak.teamtally.abstracts.AbstractEntityWithEvent;
 import pl.sokolak.teamtally.backend.challenge.Challenge;
+import pl.sokolak.teamtally.backend.code.Code;
 import pl.sokolak.teamtally.backend.team.Team;
 import pl.sokolak.teamtally.backend.user.User;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,4 +31,10 @@ public class Participant extends AbstractEntityWithEvent {
             joinColumns = @JoinColumn(name = "participant_id"),
             inverseJoinColumns = @JoinColumn(name = "challenge_id"))
     private Set<Challenge> completedChallenges;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "participant_code",
+            joinColumns = @JoinColumn(name = "participant_id"),
+            inverseJoinColumns = @JoinColumn(name = "code_id"))
+    private List<Code> usedCodes;
 }

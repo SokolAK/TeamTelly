@@ -2,12 +2,16 @@ package pl.sokolak.teamtally.frontend.user_section.ranking;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
@@ -40,13 +44,13 @@ public class RankingView extends Div implements BeforeEnterObserver {
         Set<ParticipantWithPlace> participantsWithPlaces = rankingService.getParticipantsWithPlaces();
         Component individualRanking = individualRankingFactory.create(participantsWithPlaces);
 
-
         Set<TeamWithPlace> teamsWithPlaces = rankingService.getTeamsWithPlaces();
         Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces);
 
         TabSheet tabSheet = new TabSheet();
         tabSheet.add("Individual", individualRanking);
         tabSheet.add("Team", teamRanking);
+
         add(tabSheet);
     }
 

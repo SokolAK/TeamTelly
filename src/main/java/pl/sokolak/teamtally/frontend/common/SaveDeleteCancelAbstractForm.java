@@ -60,15 +60,4 @@ public abstract class SaveDeleteCancelAbstractForm extends AbstractForm {
         binder.setBean(data);
     }
 
-    public void addDeleteListener(ComponentEventListener<DeleteEvent> listener) {
-        addListener(DeleteEvent.class, listener);
-    }
-
-    public void addSaveListener(ComponentEventListener<SaveEvent> listener) {
-        addListener(SaveEvent.class, listener);
-    }
-
-    public void addCloseListener(ComponentEventListener<CloseEvent> listener) {
-        addListener(CloseEvent.class, listener);
-    }
 }

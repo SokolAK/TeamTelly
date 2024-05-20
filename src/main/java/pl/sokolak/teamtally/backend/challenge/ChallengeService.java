@@ -46,7 +46,7 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                 .collect(Collectors.toList());
     }
 
-    public List<ChallengeDto> findAllDataByEvent(EventDto event) {
+    public Set<ChallengeDto> findAllDataByEvent(EventDto event) {
         return challengeRepository.findAllByEvent(mapper.toEntity(event)).stream()
                 .map(c -> ChallengeDto.builder()
                         .id(c.getId())
@@ -54,6 +54,7 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                         .description(c.getDescription())
                         .individualPoints(c.getIndividualPoints())
                         .teamPoints(c.getTeamPoints())
+                        .event(event)
                         .codes(c.getCodes().stream().map(
                                 cc -> CodeDto.builder()
                                         .code(cc.getCode())
@@ -64,7 +65,7 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                         ).collect(Collectors.toSet()))
                         .tags(c.getTags().stream().map(mapper::toDto).collect(Collectors.toSet()))
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     public Set<ChallengeDataView> findAllForRankingByIdIn(Set<Integer> ids) {

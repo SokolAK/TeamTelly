@@ -50,9 +50,11 @@ public abstract class AbstractView<T extends Data> extends VerticalLayout {
 
     protected void updateList() {
         List<T> items = fetchData();
-        items.sort(getComparator());
+        if(!items.isEmpty()) {
+            items.sort(getComparator());
+        }
         grid.setItems(items);
-        grid.setVisible(items.size() > 0);
+        grid.setVisible(!items.isEmpty());
     }
 
     protected List<T> fetchData() {

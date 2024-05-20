@@ -11,10 +11,7 @@ import pl.sokolak.teamtally.backend.tag.TagDto;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class ChallengeRenderer {
@@ -127,7 +124,7 @@ public class ChallengeRenderer {
 
     private static String printUsagesLeft(ChallengeDto challenge) {
         Usages usages = calculateUsages(challenge);
-        if(usages.infinitelyReusable) {
+        if (usages.isInfinitelyReusable()) {
             return "∞";
         } else {
             return String.valueOf(usages.getMaxUsages() - usages.getUsages());
@@ -136,7 +133,7 @@ public class ChallengeRenderer {
 
     private static String printUsages(ChallengeDto challenge) {
         Usages usages = calculateUsages(challenge);
-        if(usages.infinitelyReusable) {
+        if (usages.isInfinitelyReusable()) {
             return usages.getUsages() + "/∞";
         } else {
             return usages.getUsages() + "/" + usages.getMaxUsages();
@@ -144,26 +141,30 @@ public class ChallengeRenderer {
     }
 
     private static Usages calculateUsages(ChallengeDto challenge) {
-        AtomicInteger usages = new AtomicInteger();
-        AtomicInteger maxUsages = new AtomicInteger();
-        AtomicBoolean infinitelyReusable = new AtomicBoolean(false);
-        challenge.getCodes().forEach(
-                c -> {
-                    usages.addAndGet(c.getUsages());
-                    maxUsages.addAndGet(c.getMaxUsages());
-                    if(c.getMaxUsages() == 0) {
-                        infinitelyReusable.set(true);
-                    }
-                }
-        );
-        return new Usages(usages.get(), maxUsages.get(), infinitelyReusable.get());
+        int usages = 0;
+        Integer maxUsages = 0;
+        for (CodeDto code : challenge.getCodes()) {
+            usages += code.getUsages();
+            if (code.getMaxUsages() == null) {
+                maxUsages = null;
+            }
+            if (maxUsages != null) {
+                maxUsages += code.getMaxUsages();
+            }
+        }
+        return new Usages(usages, maxUsages);
     }
 
     @AllArgsConstructor
     @Getter
     private static class Usages {
         private int usages;
-        private int maxUsages;
-        private boolean infinitelyReusable;
+        private Integer maxUsages;
+
+        boolean isInfinitelyReusable() {
+            return maxUsages == null;
+        }
+
+        ;
     }
 }

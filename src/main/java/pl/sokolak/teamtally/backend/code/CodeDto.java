@@ -16,15 +16,18 @@ public class CodeDto extends Data {
     private String code;
     private boolean active;
     private int usages;
-    private int maxUsages;
+    private Integer maxUsages;
     private EventDto event;
     private ChallengeDto challenge;
 
     public boolean canBeUsed() {
-        return active && usages < maxUsages;
+        return active && (maxUsages == null || usages < maxUsages);
     }
 
     public void use() {
+        if(maxUsages == null) {
+            return;
+        }
         usages++;
         if(usages >= maxUsages) {
             active = false;

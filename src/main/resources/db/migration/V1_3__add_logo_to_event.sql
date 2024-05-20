@@ -1,0 +1,2 @@
+ALTER TABLE event
+ADD logo BYTEA;

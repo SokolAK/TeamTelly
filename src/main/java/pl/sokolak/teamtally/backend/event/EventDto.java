@@ -18,4 +18,5 @@ public class EventDto extends Data {
     private LocalDate endDate;
     private UserDto owner;
     Set<ParticipantDto> participants;
+    private byte[] logo;
 }

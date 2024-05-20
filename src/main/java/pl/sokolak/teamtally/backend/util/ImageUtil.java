@@ -20,7 +20,7 @@ public class ImageUtil {
         return image;
     }
 
-    private static Image createUserPhotoAsImage(byte[] photo) {
+    public static Image createUserPhotoAsImage(byte[] photo) {
         return photo != null ?
                 convertBase64ToImage(photo) :
                 convertBase64ToImage(getDefaultUserPhoto());

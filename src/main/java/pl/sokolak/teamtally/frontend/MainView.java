@@ -55,12 +55,12 @@ public class MainView extends AppLayout {
         Footer footer = drawerFactory.createFooter(appVersion);
 
         addToDrawer(logo);
-        if (sessionService.hasEvent()) {
-            addToDrawer(eventName, eventDate);
-        }
-        if (sessionService.getEvents().size() > 1) {
-            addToDrawer(events);
-        }
+//        if (sessionService.hasEvent()) {
+//            addToDrawer(eventName, eventDate);
+//        }
+//        if (sessionService.getEvents().size() > 1) {
+//            addToDrawer(events);
+//        }
         addToDrawer(scroller, footer);
     }
 

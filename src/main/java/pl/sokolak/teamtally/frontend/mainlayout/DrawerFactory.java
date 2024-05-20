@@ -12,6 +12,7 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.util.ImageUtil;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.admin_section.code.CodeView;
 import pl.sokolak.teamtally.frontend.admin_section.event.EventView;
@@ -29,8 +30,10 @@ public class DrawerFactory {
     private final SessionService sessionService;
 
     public Image createLogo() {
-        Image logo = new Image("assets/logo.png", "TeamTally");
-        logo.addClassName("logo-small");
+        EventDto event = sessionService.getEvent();
+        Image logo = ImageUtil.createUserPhotoAsImage(event.getLogo());
+//        Image logo = new Image("assets/logo.png", "TeamTally");
+//        logo.addClassName("logo-small");
         return logo;
     }
 

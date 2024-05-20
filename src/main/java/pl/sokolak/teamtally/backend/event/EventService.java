@@ -36,6 +36,7 @@ public class EventService implements Service<EventDto> {
                         .name(e.getName())
                         .startDate(e.getStartDate())
                         .endDate(e.getEndDate())
+                        .logo(e.getLogo())
                         .build())
                 .collect(Collectors.toList());
     }

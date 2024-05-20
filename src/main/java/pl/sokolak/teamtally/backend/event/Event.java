@@ -25,4 +25,5 @@ public class Event extends AbstractEntity {
     private User owner;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Challenge> challenges;
+    private byte[] logo;
 }

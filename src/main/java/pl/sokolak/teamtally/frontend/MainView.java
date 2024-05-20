@@ -9,6 +9,7 @@ import com.vaadin.flow.router.PageTitle;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.util.EventBus;
 import pl.sokolak.teamtally.frontend.mainlayout.DrawerFactory;
 import pl.sokolak.teamtally.frontend.mainlayout.HeaderFactory;
 
@@ -19,10 +20,12 @@ public class MainView extends AppLayout {
     private final SecurityService securityService;
     private final SessionService sessionService;
     private final H4 viewTitle = new H4();
+    private final EventBus eventBus;
 
-    public MainView(SecurityService securityService, SessionService sessionService) {
+    public MainView(SecurityService securityService, SessionService sessionService, EventBus eventBus) {
         this.securityService = securityService;
         this.sessionService = sessionService;
+        this.eventBus = eventBus;
         init();
     }
 
@@ -65,7 +68,7 @@ public class MainView extends AppLayout {
     }
 
     private void addHeaderContent() {
-        HeaderFactory headerFactory = new HeaderFactory(sessionService, securityService);
+        HeaderFactory headerFactory = new HeaderFactory(sessionService, securityService, eventBus);
         addToNavbar(true, headerFactory.create(viewTitle));
     }
 

@@ -19,13 +19,13 @@ public class ChallengeRenderer {
         return LitRenderer.<ChallengeDto>of("""
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
-                                <h5>${item.name}</h5>
-                                <span style='margin-bottom:10px;'>${item.description}</span>
+                                <span>${item.name}</span>
+                                <span style='margin-bottom:10px; white-space:pre-wrap; font-size:small'><i>${item.description}</i></span>
                                 <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
-                                    <h5>${item.individualPoints}</h5>
+                                    <span>${item.individualPoints}</span>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
-                                    <h5>${item.teamPoints}</h5>
+                                    <span>${item.teamPoints}</span>
                                 </vaadin-horizontal-layout>
                                 <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
                                     ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
@@ -53,7 +53,7 @@ public class ChallengeRenderer {
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:balance;'>${item.name}</span>
-                                <span style='margin-bottom:10px;'>${item.description}</span>
+                                <span style='margin-bottom:10px; white-space:pre-wrap; font-size:small'><i>${item.description}</i></span>
                                 <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
                                     <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>
                                     <span>${item.individualPoints}</span>

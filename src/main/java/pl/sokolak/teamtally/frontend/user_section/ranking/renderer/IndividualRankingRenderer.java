@@ -8,7 +8,7 @@ import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPla
 public class IndividualRankingRenderer {
     public static Renderer<ParticipantWithPlace> createPlaces() {
         return LitRenderer.<ParticipantWithPlace>of("""
-                        <span style='text-align: center'>
+                        <span style='text-align:center; font-size:${item.points > 0 & item.place <= 3 ? "x-large" : "large"}'>
                             ${item.points > 0 && item.place == 1 ? '\uD83E\uDD47' :
                             item.points > 0 && item.place == 2 ? '\uD83E\uDD48' :
                             item.points > 0 && item.place == 3 ? '\uD83E\uDD49' :
@@ -26,7 +26,7 @@ public class IndividualRankingRenderer {
                             </div>
                             <vaadin-vertical-layout style='margin-left: 10px'>
                                 <span><b>${item.firstName} ${item.lastName}</b></span>
-                                <span>${item.jobTitle}</span>
+                                <span style='text-wrap:balance'>${item.jobTitle}</span>
                                 <span style='color: ${item.teamColor}'>${item.teamIcon} ${item.teamName}</span>
                             </vaadin-vertical-layout>
                         </vaadin-horizontal-layout>
@@ -42,7 +42,7 @@ public class IndividualRankingRenderer {
     }
 
     public static Renderer<ParticipantWithPlace> createPoints() {
-        return LitRenderer.<ParticipantWithPlace>of("<span><b>⭐ ${item.points}</b></span>")
+        return LitRenderer.<ParticipantWithPlace>of("<h4>⭐ ${item.points}</h4>")
                 .withProperty("points", ParticipantWithPlace::points);
     }
 }

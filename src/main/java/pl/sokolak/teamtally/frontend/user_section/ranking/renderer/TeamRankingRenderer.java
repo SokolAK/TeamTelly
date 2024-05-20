@@ -8,7 +8,7 @@ import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
 public class TeamRankingRenderer {
     public static Renderer<TeamWithPlace> createPlaces() {
         return LitRenderer.<TeamWithPlace>of("""
-                        <span style='text-align: center'>
+                        <span style='text-align:center; font-size:${item.points > 0 & item.place <= 3 ? "x-large" : "medium"}'>
                             ${item.points > 0 && item.place == 1 ? '\uD83E\uDD47' :
                             item.points > 0 && item.place == 2 ? '\uD83E\uDD48' :
                             item.points > 0 && item.place == 3 ? '\uD83E\uDD49' :

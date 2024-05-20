@@ -26,7 +26,7 @@ public class IndividualRankingFactory {
 
         grid.setColumns();
         grid.addColumn(IndividualRankingRenderer.createPlaces())
-                .setAutoWidth(true).setFlexGrow(0);
+                .setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true).setFlexGrow(0).setClassNameGenerator(item -> "no-margin");
         grid.addColumn(IndividualRankingRenderer.createParticipants());
         grid.addColumn(IndividualRankingRenderer.createPoints())
                 .setTextAlign(ColumnTextAlign.END).setAutoWidth(true).setFlexGrow(0);

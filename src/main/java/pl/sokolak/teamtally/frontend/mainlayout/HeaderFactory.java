@@ -15,13 +15,18 @@ import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.util.EventBus;
 import pl.sokolak.teamtally.backend.util.ImageUtil;
+
+import java.util.function.Consumer;
 
 @AllArgsConstructor
 public class HeaderFactory {
 
     private final SessionService sessionService;
     private final SecurityService securityService;
+    private final EventBus eventBus;
+    private final H5 myPointsField = new H5();
 
     public Component create(Component viewTitle) {
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
@@ -29,7 +34,7 @@ public class HeaderFactory {
         var headerLeft = new HorizontalLayout(new DrawerToggle());
         headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        var headerRight = new HorizontalLayout(createPoints(), createUserPhoto(), createLogoutButton());
+        var headerRight = new HorizontalLayout(myPointsField, createUserPhoto(), createLogoutButton());
         headerRight.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         headerRight.addClassName("header-right");
 
@@ -42,12 +47,18 @@ public class HeaderFactory {
                 LumoUtility.Padding.Vertical.NONE,
                 LumoUtility.Padding.Horizontal.MEDIUM);
 
+        myPointsField.setText(createPoints());
+        eventBus.addListener("my-points", points -> myPointsField.setText(printPoints((Integer) points)));
+
         return header;
     }
 
-    private Component createPoints() {
-        int points = new PointsCalculator().calculate(sessionService.getParticipant());
-        return new Span("⭐" + points);
+    private String createPoints() {
+        return printPoints(new PointsCalculator().calculate(sessionService.getParticipant()));
+    }
+
+    private String printPoints(Integer points) {
+        return "⭐ " + points;
     }
 
     private Image createUserPhoto() {

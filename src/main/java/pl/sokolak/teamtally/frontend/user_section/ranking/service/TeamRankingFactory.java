@@ -33,7 +33,7 @@ public class TeamRankingFactory {
 
         grid.setColumns();
         grid.addColumn(TeamRankingRenderer.createPlaces())
-                .setAutoWidth(true).setFlexGrow(0);
+                .setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(TeamRankingRenderer.createTeams());
         grid.addColumn(TeamRankingRenderer.createPoints())
                 .setTextAlign(ColumnTextAlign.END).setAutoWidth(true).setFlexGrow(0);

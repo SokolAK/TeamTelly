@@ -10,7 +10,7 @@ public class ImageUtil {
 
     public static Image createUserPhotoAsImageSmall(byte[] photo) {
         Image image = createUserPhotoAsImage(photo);
-        image.addClassName("user-photo-small");
+        image.addClassName("user-photo-x-small");
         return image;
     }
 

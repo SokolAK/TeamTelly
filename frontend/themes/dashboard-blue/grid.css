@@ -15,3 +15,8 @@ vaadin-grid::part(selected-row) {
 vaadin-grid {
     max-width: 600px;
 }
+
+vaadin-grid-cell-content {
+    margin: 0 !important;
+    padding: 4px !important;
+}

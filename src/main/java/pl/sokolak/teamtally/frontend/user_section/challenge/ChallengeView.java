@@ -3,13 +3,9 @@ package pl.sokolak.teamtally.frontend.user_section.challenge;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -32,6 +28,7 @@ import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.team.TeamDto;
+import pl.sokolak.teamtally.backend.util.EventBus;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeRenderer;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
@@ -51,16 +48,19 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     private final ParticipantService participantService;
     private final CodeService codeService;
     private final TextField codeField = new TextField();
+    private final EventBus eventBus;
 
     public ChallengeView(ChallengeService service,
                          CodeService codeService,
                          ParticipantService participantService,
                          SessionService sessionService,
-                         PointsCalculator pointsCalculator) {
+                         PointsCalculator pointsCalculator,
+                         EventBus eventBus) {
         this.service = service;
         this.codeService = codeService;
         this.participantService = participantService;
         this.sessionService = sessionService;
+        this.eventBus = eventBus;
         addClassName("challenge-view");
         init();
     }
@@ -142,12 +142,13 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         }
 
         ParticipantDto participant = sessionService.getParticipant();
-        if(!didParticipantCompleteChallenge(participant, code)) {
+        if (!didParticipantCompleteChallenge(participant, code)) {
             participant.completeChallenge(code);
             participantService.save(participant);
             code.setEvent(sessionService.getEvent());
             code.use();
             codeService.save(code);
+            eventBus.push("my-points", new PointsCalculator().calculate(sessionService.getParticipant()));
             NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
             populateGrid();
         } else {

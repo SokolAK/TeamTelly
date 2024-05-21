@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 class CodeForm extends SaveDeleteCancelAbstractForm {
 
     private final TextField code = new TextField("Code");
-    private final TextField maxUsages = new TextField("MaxUsages");
+    private final TextField maxUsages = new TextField("Max usages (∞ if empty)");
     private final Checkbox active = new Checkbox("Active");
     private final ComboBox<ChallengeDto> challenge = new ComboBox<>("Challenge");
     private final Grid<ParticipantDataView> participants = new Grid<>(ParticipantDataView.class);

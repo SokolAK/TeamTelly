@@ -48,8 +48,8 @@ public class RankingView extends Div implements BeforeEnterObserver {
         Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces);
 
         TabSheet tabSheet = new TabSheet();
-        tabSheet.add("Individual", individualRanking);
-        tabSheet.add("Team", teamRanking);
+        tabSheet.add("\uD83D\uDC64 Individual", individualRanking);
+        tabSheet.add("\uD83D\uDC65 Team", teamRanking);
 
         add(tabSheet);
     }

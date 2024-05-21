@@ -114,6 +114,9 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
     }
 
     public Set<ParticipantDataView> findUsernamesByCode(CodeDto code) {
+        if(code.getId() == null) {
+            return Set.of();
+        }
         return participantRepository.getAllUsernamesByCode(code.getId()).stream()
                 .map(p -> ParticipantDataView.builder()
                         .id((Integer) p.get("id"))

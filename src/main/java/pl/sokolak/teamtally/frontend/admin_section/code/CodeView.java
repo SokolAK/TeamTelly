@@ -65,7 +65,7 @@ public class CodeView extends AbstractViewWithSideForm<CodeDto> {
 
     @Override
     protected CodeDto emptyData() {
-        return CodeDto.builder().build();
+        return CodeDto.builder().active(true).build();
     }
 
     @Override

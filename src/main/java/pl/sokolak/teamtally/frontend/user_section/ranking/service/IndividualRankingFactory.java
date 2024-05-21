@@ -41,9 +41,9 @@ public class IndividualRankingFactory {
 
         sort(grid);
 
-        H5 h5 = new H5(createPoints(participant));
+        H5 myPoints = new H5(createPoints(participant));
 //        h5.addClassName("right-align-div");
-        return new Div(h5, grid);
+        return new Div(myPoints, grid);
     }
 
     private String createPoints(ParticipantDto participant) {

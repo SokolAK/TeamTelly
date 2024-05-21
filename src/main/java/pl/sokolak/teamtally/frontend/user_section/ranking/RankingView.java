@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
@@ -41,12 +42,13 @@ public class RankingView extends Div implements BeforeEnterObserver {
         this.sessionService = sessionService;
 
         EventDto event = sessionService.getEvent();
+        ParticipantDto participant = sessionService.getParticipant();
         rankingService.init(event);
         Set<ParticipantWithPlace> participantsWithPlaces = rankingService.getParticipantsWithPlaces();
-        Component individualRanking = individualRankingFactory.create(participantsWithPlaces, sessionService.getParticipant());
+        Component individualRanking = individualRankingFactory.create(participantsWithPlaces, participant);
 
         Set<TeamWithPlace> teamsWithPlaces = rankingService.getTeamsWithPlaces();
-        Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces);
+        Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces, participant);
 
         TabSheet tabSheet = new TabSheet();
         tabSheet.add("\uD83D\uDC64 Individual", individualRanking);

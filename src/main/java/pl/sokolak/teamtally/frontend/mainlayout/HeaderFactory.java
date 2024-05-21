@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.util.EventBus;
 import pl.sokolak.teamtally.backend.util.ImageUtil;
 
@@ -62,6 +63,14 @@ public class HeaderFactory {
 
     private String printPoints(Integer points) {
         return "⭐ " + points;
+    }
+
+    private Component createUserTeam() {
+        TeamDto team = sessionService.getParticipant().getTeam();
+        if(team == null) {
+            return new Span();
+        }
+        return new Span(team.getIcon() + " " + team.getName());
     }
 
     private Image createUserPhoto() {

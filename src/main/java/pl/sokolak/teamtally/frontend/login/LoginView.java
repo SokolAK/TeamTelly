@@ -16,6 +16,8 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
 import pl.sokolak.teamtally.frontend.common.NotificationService;
@@ -27,6 +29,7 @@ import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 @AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
+    private static final Logger log = LoggerFactory.getLogger(LoginView.class);
     private final UserService userService;
     private final LoginForm loginForm = new LoginForm();
 
@@ -91,6 +94,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginFormStrings.getErrorMessage().setUsername(t("login.form.email.required"));
         loginFormStrings.getErrorMessage().setTitle(t("login.form.error.title"));
         loginFormStrings.getErrorMessage().setMessage(t("login.form.error.message"));
+        loginFormStrings.getForm().setTitle(null);
         return loginFormStrings;
     }
 

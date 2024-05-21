@@ -53,4 +53,12 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
     @Modifying
     @Query(value = "UPDATE Participant p SET active = :isActive WHERE id = :id", nativeQuery = true)
     void updateActive(@Param("id") Integer id, @Param("isActive") boolean isActive);
+
+    @Modifying
+    @Query(value = "INSERT INTO participant_code(participant_id, code_id) VALUES (:id, :codeId)", nativeQuery = true)
+    void updateCode(@Param("id") Integer id, @Param("codeId") Integer codeId);
+
+    @Modifying
+    @Query(value = "INSERT INTO participant_challenge(participant_id, challenge_id) VALUES (:id, :challengeId)", nativeQuery = true)
+    void updateChallenge(@Param("id") Integer id, @Param("challengeId") Integer challengeId);
 }

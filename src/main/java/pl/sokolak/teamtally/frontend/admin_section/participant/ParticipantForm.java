@@ -46,8 +46,7 @@ class ParticipantForm extends SaveCancelAbstractForm {
     }
 
     private void setNonParticipantUsers() {
-        users.setItems(userService.findAll().stream()
-                .filter(u -> u.getParticipantForEvent(event).isEmpty())
+        users.setItems(userService.findAllUnassignedByEvent(event).stream()
                 .toList());
     }
 

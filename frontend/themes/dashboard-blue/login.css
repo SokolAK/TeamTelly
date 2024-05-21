@@ -1,13 +1,32 @@
 .login-view {
-    /*background-color: var(--light-blue);*/
+    background-color: black;
 }
 
 vaadin-login-form-wrapper::part(form-title) {
-    color: var(--dim-grey);
+    /*color: var(--dim-grey);*/
+    color: white;
     margin: auto;
 }
 
 vaadin-login-form-wrapper::part(form){
     padding-bottom: 0;
     margin-bottom: 0;
+    background-color: black;
+    /*border: 2px solid var(--dim-grey);*/
+}
+
+vaadin-login-form-wrapper vaadin-text-field input{
+    background-color: white;
+}
+
+vaadin-login-form-wrapper vaadin-text-field label{
+    color: white;
+}
+
+vaadin-login-form-wrapper vaadin-password-field input{
+    background-color: white;
+}
+
+vaadin-login-form-wrapper vaadin-password-field label{
+    color: white;
 }

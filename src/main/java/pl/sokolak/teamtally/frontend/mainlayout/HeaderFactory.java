@@ -1,6 +1,7 @@
 package pl.sokolak.teamtally.frontend.mainlayout;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H5;
@@ -10,6 +11,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.server.Command;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
@@ -34,7 +36,7 @@ public class HeaderFactory {
         var headerLeft = new HorizontalLayout(new DrawerToggle());
         headerLeft.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 
-        var headerRight = new HorizontalLayout(myPointsField, createUserPhoto(), createLogoutButton());
+        var headerRight = new HorizontalLayout(createUserPhoto(), createLogoutButton());
         headerRight.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         headerRight.addClassName("header-right");
 
@@ -47,8 +49,9 @@ public class HeaderFactory {
                 LumoUtility.Padding.Vertical.NONE,
                 LumoUtility.Padding.Horizontal.MEDIUM);
 
-        myPointsField.setText(createPoints());
-        eventBus.addListener("my-points", points -> myPointsField.setText(printPoints((Integer) points)));
+//        myPointsField.setClassName("points-field");
+//        myPointsField.setText(createPoints());
+//        eventBus.addListener("my-points", points -> myPointsField.setText(printPoints((Integer) points)));
 
         return header;
     }

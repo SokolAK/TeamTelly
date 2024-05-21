@@ -14,6 +14,8 @@ import pl.sokolak.teamtally.backend.user.role.RoleService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 
+import java.util.List;
+
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RolesAllowed("ADMIN")
@@ -41,6 +43,11 @@ public class UserView extends AbstractViewWithSideForm<UserDto> {
     protected Data convertToFormData(Data data) {
 //        return ((UserDto) data).withoutPassword();
         return data;
+    }
+
+    @Override
+    protected List<UserDto> fetchData() {
+        return ((UserService) service).findAllData();
     }
 
     @Override

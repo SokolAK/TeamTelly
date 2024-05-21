@@ -6,6 +6,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -72,6 +73,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         Button confirmButton = new Button("Submit", new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT));
         confirmButton.addClickListener(confirmButtonListener());
 //        toolbar.setFlexGrow(1, codeField);
+
         toolbar.setWidthFull();
         toolbar.add(new HorizontalLayout(codeField, confirmButton));
         return toolbar;
@@ -143,8 +145,8 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
 
         ParticipantDto participant = sessionService.getParticipant();
         if (!didParticipantCompleteChallenge(participant, code)) {
+            participantService.updateCodeAndChallenge(participant, code, code.getChallenge());
             participant.completeChallenge(code);
-            participantService.save(participant);
             code.setEvent(sessionService.getEvent());
             code.use();
             codeService.save(code);

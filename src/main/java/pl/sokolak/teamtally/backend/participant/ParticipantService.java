@@ -133,6 +133,11 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
         participantRepository.updateActive(participant.getId(), isActive);
     }
 
+    public void updateCodeAndChallenge(ParticipantDto participant, CodeDto code, ChallengeDto challenge) {
+        participantRepository.updateCode(participant.getId(), code.getId());
+        participantRepository.updateChallenge(participant.getId(), challenge.getId());
+    }
+
 //    public void updateCodeAndChallenge(ParticipantDto participant, CodeDto code, ChallengeDto challenge) {
 //        participantRepository.updateCodeAndChallenge(code.getId(), challenge.getId());
 //    }

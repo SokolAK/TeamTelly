@@ -4,16 +4,14 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.sokolak.teamtally.abstracts.Service;
+import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
-import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.user.role.RoleService;
-import pl.sokolak.teamtally.backend.user.role.UserRole;
-import pl.sokolak.teamtally.backend.user.role.UserRoleDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -31,22 +29,49 @@ public class UserService implements Service<UserDto> {
                 .collect(Collectors.toList());
     }
 
+    public List<UserDto> findAllData() {
+        return userRepository.findAll().stream()
+                .map(u -> mapWithoutParticipantAndPhoto(u)
+                        .photo(u.getPhoto())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public Set<UserDto> findAllUnassignedByEvent(EventDto event) {
+        if(event == null) {
+            return Set.of();
+        }
+        return userRepository.findAllUnassignedByEvent(event.getId()).stream()
+                .map(u -> UserDto.builder()
+                        .id((Integer) u.get("id"))
+                        .username(getStringField(u.get("username")))
+                        .build())
+                .collect(Collectors.toSet());
+    }
+
     public Optional<UserDto> findFirstByEmail(String email) {
         return userRepository.findFirstByEmail(email)
-                .map(u -> UserDto.builder()
-                        .id(u.getId())
-                        .logged(u.getLogged())
-                        .username(u.getUsername())
-                        .email(u.getEmail())
-                        .password(u.getPassword())
+                .map(u -> mapWithoutParticipantAndPhoto(u)
                         .photo(u.getPhoto())
-                        .userRole(mapper.toDto(u.getUserRole()))
                         .participants(u.getParticipants().stream()
                                 .map(p -> ParticipantDto.builder()
                                         .id(p.getId())
                                         .build())
                                 .collect(Collectors.toSet()))
                         .build());
+    }
+
+    private UserDto.UserDtoBuilder<?, ?> mapWithoutParticipantAndPhoto(User u) {
+        return UserDto.builder()
+                .id(u.getId())
+                .username(u.getUsername())
+                .firstName(u.getFirstName())
+                .lastName(u.getLastName())
+                .jobTitle(u.getJobTitle())
+                .email(u.getEmail())
+                .password(u.getPassword())
+                .userRole(mapper.toDto(u.getUserRole()))
+                .logged(u.getLogged());
     }
 
 //    @Override

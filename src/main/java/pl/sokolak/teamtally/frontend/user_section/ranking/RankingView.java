@@ -31,6 +31,7 @@ import java.util.Set;
 public class RankingView extends Div implements BeforeEnterObserver {
 
     private final SessionService sessionService;
+//    private final Span myPointsField = new Span();
 
     public RankingView(RankingService rankingService,
                        IndividualRankingFactory individualRankingFactory,
@@ -42,7 +43,7 @@ public class RankingView extends Div implements BeforeEnterObserver {
         EventDto event = sessionService.getEvent();
         rankingService.init(event);
         Set<ParticipantWithPlace> participantsWithPlaces = rankingService.getParticipantsWithPlaces();
-        Component individualRanking = individualRankingFactory.create(participantsWithPlaces);
+        Component individualRanking = individualRankingFactory.create(participantsWithPlaces, sessionService.getParticipant());
 
         Set<TeamWithPlace> teamsWithPlaces = rankingService.getTeamsWithPlaces();
         Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces);
@@ -51,7 +52,18 @@ public class RankingView extends Div implements BeforeEnterObserver {
         tabSheet.add("\uD83D\uDC64 Individual", individualRanking);
         tabSheet.add("\uD83D\uDC65 Team", teamRanking);
 
+//        myPointsField.setText(createPoints());
+//        eventBus.addListener("my-points", points -> myPointsField.setText(printPoints((Integer) points)));
+
         add(tabSheet);
+    }
+
+    private String createPoints() {
+        return printPoints(new PointsCalculator().calculate(sessionService.getParticipant()));
+    }
+
+    private String printPoints(Integer points) {
+        return "My points: ⭐ " + points;
     }
 
     @Override

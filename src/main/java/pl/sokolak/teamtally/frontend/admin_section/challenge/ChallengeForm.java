@@ -26,15 +26,13 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
     private final TextField individualPoints = new TextField("Personal points");
     private final TextField teamPoints = new TextField("Team points");
     private final MultiSelectComboBox<TagDto> tags = new MultiSelectComboBox<>("Tags");
-    private final NumberField maxUsages = new NumberField("Max usages");
-    private final Grid<CodeDto> codes = new Grid<>(CodeDto.class);
 
     public ChallengeForm(Set<TagDto> tagsForEvent) {
         addClassName("challenge-form");
         configureBinder();
         tags.setItems(tagsForEvent);
         tags.setItemLabelGenerator(TagDto::getName);
-        addFields(name, description, individualPoints, teamPoints, maxUsages, tags);
+        addFields(name, description, individualPoints, teamPoints, tags);
     }
 
     private void configureBinder() {
@@ -42,13 +40,4 @@ class ChallengeForm extends SaveDeleteCancelAbstractForm {
         binder.bindInstanceFields(this);
         setBinder(binder);
     }
-
-//    @Override
-//    public void setData(Data data) {
-//        binder.setBean(data);
-//        Optional.ofNullable(data)
-//                .map(ChallengeDto.class::cast)
-//                .map(ChallengeDto::getCodes)
-//                .ifPresent(codes::setItems);
-//    }
 }

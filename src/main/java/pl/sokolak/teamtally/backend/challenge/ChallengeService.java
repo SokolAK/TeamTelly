@@ -57,10 +57,17 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                         .event(event)
                         .codes(c.getCodes().stream().map(
                                 cc -> CodeDto.builder()
+                                        .id(cc.getId())
                                         .code(cc.getCode())
                                         .active(cc.isActive())
                                         .usages(cc.getUsages())
                                         .maxUsages(cc.getMaxUsages())
+//                                        .event(EventDto.builder()
+//                                                .id(cc.getEvent().getId())
+//                                                .build())
+//                                        .challenge(ChallengeDto.builder()
+//                                                .id(cc.getChallenge().getId())
+//                                                .build())
                                         .build()
                         ).collect(Collectors.toSet()))
                         .tags(c.getTags().stream().map(mapper::toDto).collect(Collectors.toSet()))
@@ -78,5 +85,24 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                         )
                 )
                 .collect(Collectors.toSet());
+    }
+
+    public void updateOrSave(ChallengeDto challenge) {
+        challengeRepository.findById(challenge.getId())
+                .ifPresentOrElse(
+                        entity -> update(entity, challenge),
+                        () -> save(challenge)
+                );
+    }
+
+    private void update(Challenge entity, ChallengeDto challenge) {
+        entity.setName(challenge.getName());
+        entity.setDescription(challenge.getDescription());
+        entity.setIndividualPoints(challenge.getIndividualPoints());
+        entity.setTeamPoints(challenge.getTeamPoints());
+        entity.setTags(challenge.getTags().stream()
+                .map(mapper::toEntity)
+                .collect(Collectors.toSet()));
+        challengeRepository.save(entity);
     }
 }

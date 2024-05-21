@@ -15,6 +15,7 @@ import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -49,13 +50,13 @@ public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
     @Override
     protected List<ChallengeDto> fetchData() {
-        return ((ChallengeService) service).findAllByEvent(sessionService.getEvent());
+        return new ArrayList<>(((ChallengeService) service).findAllDataByEvent(sessionService.getEvent()));
     }
 
     @Override
     protected void saveData(SaveEvent event) {
         ChallengeDto challenge = (ChallengeDto) event.getData();
         challenge.setEvent(sessionService.getEvent());
-        service.save(challenge);
+        ((ChallengeService) service).updateOrSave(challenge);
     }
 }

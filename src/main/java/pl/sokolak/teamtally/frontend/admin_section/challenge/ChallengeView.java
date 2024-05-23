@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
+import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.tag.TagService;
 import pl.sokolak.teamtally.frontend.MainView;
@@ -16,6 +17,7 @@ import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -51,6 +53,11 @@ public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
     @Override
     protected List<ChallengeDto> fetchData() {
         return new ArrayList<>(((ChallengeService) service).findAllDataByEvent(sessionService.getEvent()));
+    }
+
+    @Override
+    protected Comparator<ChallengeDto> getComparator() {
+        return Comparator.comparing(ChallengeDto::getName);
     }
 
     @Override

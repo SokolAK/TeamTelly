@@ -88,6 +88,10 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
     }
 
     public void updateOrSave(ChallengeDto challenge) {
+        if(challenge.getId() == null) {
+            save(challenge);
+            return;
+        }
         challengeRepository.findById(challenge.getId())
                 .ifPresentOrElse(
                         entity -> update(entity, challenge),

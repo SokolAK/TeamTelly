@@ -16,7 +16,7 @@ import pl.sokolak.teamtally.frontend.mainlayout.HeaderFactory;
 
 public class MainView extends AppLayout {
 
-    private final String appVersion = "0.4.0";
+    private static final String APP_VERSION = "0.4.1";
     private final SecurityService securityService;
     private final SessionService sessionService;
     private final H4 viewTitle = new H4();
@@ -55,7 +55,7 @@ public class MainView extends AppLayout {
         Component eventName = drawerFactory.createEventBanner();
         Component eventDate = drawerFactory.createEventDate();
         Component events = drawerFactory.createEvents(selection -> reload(selection.getValue()));
-        Footer footer = drawerFactory.createFooter(appVersion);
+        Footer footer = drawerFactory.createFooter(APP_VERSION);
 
         addToDrawer(logo);
 //        if (sessionService.hasEvent()) {

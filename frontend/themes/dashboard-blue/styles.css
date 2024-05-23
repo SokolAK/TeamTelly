@@ -42,10 +42,10 @@ html {
     --vaadin-button-text-color: var(--dim-grey);
 }
 
-/*.challenge-grid {*/
-/*    max-width: 350px;*/
-/*    min-width: 0;*/
-/*}*/
+*{
+    -webkit-tap-highlight-color: transparent !important;
+}
 
-
-
+body {
+    background-color: #FBFBFB;
+}

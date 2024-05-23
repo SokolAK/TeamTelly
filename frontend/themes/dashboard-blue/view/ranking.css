@@ -20,6 +20,3 @@ vaadin-grid::part(selected-row-cell) {
     outline: none;
 }
 
-vaadin-grid-cell-content {
-    padding: 5px 10px;
-}

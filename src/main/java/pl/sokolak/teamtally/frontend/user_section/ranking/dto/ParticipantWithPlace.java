@@ -5,7 +5,8 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import java.util.HashSet;
 import java.util.Set;
 
-public record ParticipantWithPlace(String username,
+public record ParticipantWithPlace(Integer id,
+                                   String username,
                                    String firstName,
                                    String lastName,
                                    String jobTitle,
@@ -18,7 +19,8 @@ public record ParticipantWithPlace(String username,
                                    int place) {
 
     public ParticipantWithPlace(ParticipantWithPoints participant, int place) {
-        this(participant.username(),
+        this(participant.id(),
+                participant.username(),
                 participant.firstName(),
                 participant.lastName(),
                 participant.jobTitle(),

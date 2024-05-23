@@ -75,7 +75,7 @@ public class CodeView extends AbstractViewWithSideForm<CodeDto> {
 
     @Override
     protected Comparator<CodeDto> getComparator() {
-        return Comparator.comparing(CodeDto::getCode);
+        return Comparator.comparing(c -> c.getChallenge().getName());
     }
 
     @Override

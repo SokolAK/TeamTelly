@@ -27,7 +27,7 @@ class PointsCalculatorTest {
     @Test
     void shouldCalculateTeamPoints() {
         BigDecimal points = pointsCalculator.calculate(teamDto());
-        assertEquals(new BigDecimal("316.67"), points);
+        assertEquals(new BigDecimal("510"), points);
     }
 
     private TeamDto teamDto() {
@@ -54,8 +54,10 @@ class PointsCalculatorTest {
 
     private ParticipantDto participant2() {
         Set<ChallengeDto> challenges = new HashSet<>();
-        challenges.add(challenge(4, 2, 200));
-        challenges.add(challenge(5, 3, 300));
+        challenges.add(challenge(1, 10, 100));
+        challenges.add(challenge(2, 20, 200));
+        challenges.add(challenge(4, 40, 400));
+        challenges.add(challenge(5, 50, 500));
         return ParticipantDto.builder()
                 .id(2)
                 .active(true)
@@ -83,7 +85,6 @@ class PointsCalculatorTest {
     private ParticipantDto participant4() {
         Set<ChallengeDto> challenges = new HashSet<>();
         challenges.add(challenge(1, 10, 100));
-        challenges.add(challenge(2, 20, 200));
         return ParticipantDto.builder()
                 .id(4)
                 .active(false)

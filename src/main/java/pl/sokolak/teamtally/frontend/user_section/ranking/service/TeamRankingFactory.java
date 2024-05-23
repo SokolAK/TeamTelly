@@ -47,13 +47,17 @@ public class TeamRankingFactory {
         grid.setItemDetailsRenderer(TeamDetailsRenderer.create(participantsWithPlace));
 
         sort(grid);
+
+        H5 myTeam = new H5(createMyTeam(participant));
+        return new Div(myTeam, grid);
+    }
+
+    private static HorizontalLayout createLegend() {
         HorizontalLayout legend = new HorizontalLayout(
                 new Icon(VaadinIcon.INFO_CIRCLE_O),
                 new Span("Team points = (sum of individual points) / (number of members) * 10 + team bonuses"));
         legend.getElement().getThemeList().add("badge");
-
-        H5 myTeam = new H5(createMyTeam(participant));
-        return new Div(myTeam, grid, legend);
+        return legend;
     }
 
     private Component createMyTeam(ParticipantDto participant) {

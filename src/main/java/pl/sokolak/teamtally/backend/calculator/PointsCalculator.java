@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -21,6 +22,11 @@ public class PointsCalculator {
     }
 
     public BigDecimal calculate(TeamDto team) {
+        return BigDecimal.valueOf(sumIndividualPoints(team) + sumBonusPoints(team))
+                .setScale(0, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal calculateAverage(TeamDto team) {
         long numberOfMembers = team.getParticipants().stream().filter(ParticipantDto::isActive).count();
         if(numberOfMembers == 0) {
             return BigDecimal.ZERO;
@@ -46,16 +52,17 @@ public class PointsCalculator {
         if(team.getParticipants() == null) {
             return 0;
         }
-        Set<ChallengeDto> challenges = team.getParticipants().stream()
+        return team.getParticipants().stream()
                 .filter(ParticipantDto::isActive)
                 .map(ParticipantDto::getCompletedChallenges)
-                .min(Comparator.comparingInt(Set::size))
-                .orElse(Collections.emptySet());
-        return challenges.stream()
-                .filter(c -> team.getParticipants().stream()
-                        .map(ParticipantDto::getCompletedChallenges)
-                        .allMatch(cs -> cs.contains(c)))
+                .reduce(team.getParticipants().stream().findFirst().get().getCompletedChallenges(), this::retain)
+                .stream()
                 .map(ChallengeDto::getTeamPoints)
                 .reduce(0, Integer::sum);
+    }
+
+    private <T> Set<T> retain(Set<T> a, Set<T> b) {
+        a.retainAll(b);
+        return a;
     }
 }

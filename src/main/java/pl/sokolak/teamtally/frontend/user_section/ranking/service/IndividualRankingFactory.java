@@ -4,20 +4,23 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
+import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRankingRenderer;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -25,25 +28,47 @@ import java.util.Set;
 public class IndividualRankingFactory {
 
     public Component create(Set<ParticipantWithPlace> participantsWithPlace, ParticipantDto participant) {
-        Grid<ParticipantWithPlace> grid = new Grid<>(ParticipantWithPlace.class);
-        grid.addClassNames("ranking-individual-grid");
-        grid.setAllRowsVisible(true);
+        Grid<ParticipantWithPlace> gridRanking = createGrid(participantsWithPlace);
 
-        grid.setColumns();
-        grid.addColumn(IndividualRankingRenderer.createPlaces())
+        Div body = new Div();
+        if (participant.isActive()) {
+            participantsWithPlace.stream()
+                    .filter(p -> Objects.equals(p.id(), participant.getId()))
+                    .findFirst()
+                    .ifPresent(participantWithPlace ->
+                            body.add(createTitle("Me"), createGrid(Set.of(participantWithPlace))));
+        }
+        body.add(createTitle("Ranking"), gridRanking);
+        return body;
+    }
+
+    private Component createTitle(String text) {
+        H5 title = new H5(text);
+        title.setMaxWidth("600px");
+        title.getStyle()
+                .set("text-align", "center")
+                .set("margin", "0");
+        return title;
+    }
+
+    private static Grid<ParticipantWithPlace> createGrid(Set<ParticipantWithPlace> participantsWithPlace) {
+        Grid<ParticipantWithPlace> gridRanking = new Grid<>(ParticipantWithPlace.class);
+        gridRanking.addClassNames("ranking-individual-grid");
+        gridRanking.setAllRowsVisible(true);
+
+        gridRanking.setColumns();
+        gridRanking.addColumn(IndividualRankingRenderer.createPlaces())
                 .setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true).setFlexGrow(0).setClassNameGenerator(item -> "no-margin");
-        grid.addColumn(IndividualRankingRenderer.createParticipants());
-        grid.addColumn(IndividualRankingRenderer.createPoints())
+        gridRanking.addColumn(IndividualRankingRenderer.createParticipants());
+        gridRanking.addColumn(IndividualRankingRenderer.createPoints())
                 .setTextAlign(ColumnTextAlign.END).setAutoWidth(true).setFlexGrow(0);
 
-        grid.setItems(participantsWithPlace);
-        grid.setItemDetailsRenderer(IndividualDetailsRenderer.create());
+        gridRanking.setItems(participantsWithPlace);
+        gridRanking.setItemDetailsRenderer(IndividualDetailsRenderer.create());
 
-        sort(grid);
-
-        H5 myPoints = new H5(createPoints(participant));
-//        h5.addClassName("right-align-div");
-        return new Div(myPoints, grid);
+        sort(gridRanking);
+        gridRanking.getStyle().set("margin-bottom", "20px");
+        return gridRanking;
     }
 
     private String createPoints(ParticipantDto participant) {

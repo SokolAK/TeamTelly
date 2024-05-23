@@ -141,7 +141,7 @@ public class RankingService {
         AtomicInteger currentPlace = new AtomicInteger(1);
         final BigDecimal[] previousTeamPoints = {new BigDecimal(0)};
         return teamWithPoints.stream()
-                .sorted(Comparator.comparing(TeamWithPoints::points))
+                .sorted(Comparator.comparing(TeamWithPoints::points).reversed())
                 .map(team -> {
                     if (team.points().compareTo(previousTeamPoints[0]) < 0) {
                         currentPlace.getAndIncrement();

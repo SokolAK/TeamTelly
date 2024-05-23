@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public record ParticipantWithPoints(String username,
+public record ParticipantWithPoints(Integer id,
+                                    String username,
                                     String firstName,
                                     String lastName,
                                     String jobTitle,
@@ -21,7 +22,8 @@ public record ParticipantWithPoints(String username,
                                     int points) {
 
     public ParticipantWithPoints(ParticipantDto participant, int points) {
-        this(Optional.ofNullable(participant.getUser()).map(UserDto::getUsername).orElse(null),
+        this(participant.getId(),
+                Optional.ofNullable(participant.getUser()).map(UserDto::getUsername).orElse(null),
                 Optional.ofNullable(participant.getUser()).map(UserDto::getFirstName).orElse(null),
                 Optional.ofNullable(participant.getUser()).map(UserDto::getLastName).orElse(null),
                 Optional.ofNullable(participant.getUser()).map(UserDto::getJobTitle).orElse(null),

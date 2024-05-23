@@ -3,10 +3,10 @@ package pl.sokolak.teamtally.frontend.user_section.challenge;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -68,14 +68,18 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
 
     @Override
     protected Component getToolbar() {
-        VerticalLayout toolbar = new VerticalLayout();
         codeField.setPlaceholder("Insert code");
-        Button confirmButton = new Button("Submit", new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT));
-        confirmButton.addClickListener(confirmButtonListener());
+
+        Button submitButton = new Button("Submit", new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT));
+        submitButton.addClickShortcut(Key.ENTER);
+        submitButton.addClickListener(submitButtonListener());
 //        toolbar.setFlexGrow(1, codeField);
 
+        HorizontalLayout toolbar = new HorizontalLayout(codeField, submitButton);
         toolbar.setWidthFull();
-        toolbar.add(new HorizontalLayout(codeField, confirmButton));
+        toolbar.setMaxWidth("600px");
+        toolbar.setFlexGrow(1, codeField);
+        toolbar.setJustifyContentMode(JustifyContentMode.BETWEEN);
         return toolbar;
     }
 
@@ -119,7 +123,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         return new ArrayList<>(((ChallengeService) service).findAllDataByEvent(sessionService.getEvent()));
     }
 
-    private ComponentEventListener<ClickEvent<Button>> confirmButtonListener() {
+    private ComponentEventListener<ClickEvent<Button>> submitButtonListener() {
         return buttonClickEvent -> {
             String insertedCode = codeField.getValue();
             if (isEmpty(insertedCode)) {
@@ -134,6 +138,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
                             this::tryCompleteChallenge,
                             () -> NotificationService.showWarning("Wrong code")
                     );
+            codeField.clear();
         };
     }
 

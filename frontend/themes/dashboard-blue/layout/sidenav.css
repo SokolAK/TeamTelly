@@ -1,3 +1,7 @@
+vaadin-app-layout::part(drawer) {
+    background-color: black;
+}
+
 vaadin-side-nav-item[current] {
     background-color: var(--light-blue);
 }

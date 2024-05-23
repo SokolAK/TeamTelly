@@ -1,3 +1,9 @@
+vaadin-app-layout::part(navbar) {
+    font-family: Arial, serif;
+    color: dimgrey;
+    background-color: var(--very-light-grey);
+}
+
 .header-right {
     padding-right: 1rem;
 }

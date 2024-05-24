@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.abstracts.Service;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.util.LogService;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 import pl.sokolak.teamtally.frontend.service.ReloadService;
@@ -23,6 +24,11 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
     protected Service<T> service;
     protected AbstractForm form;
     protected SessionService sessionService;
+    private LogService log = new LogService();
+
+    public AbstractViewWithSideForm(LogService log) {
+        this.log = log;
+    }
 
     protected void init() {
         configureForm();
@@ -65,7 +71,10 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected Component getToolbar() {
         Button addDataButton = new Button("Add");
-        addDataButton.addClickListener(click -> addData());
+        addDataButton.addClickListener(click -> {
+            log.info("'Add' button clicked [{}]", this.getClass().getSimpleName());
+            addData();
+        });
 
         var toolbar = new HorizontalLayout(addDataButton);
         toolbar.addClassName("toolbar");
@@ -73,6 +82,7 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
     }
 
     protected void editData(Data data) {
+        log.info("Open edit form [{}]", this.getClass().getSimpleName());
         if (data == null) {
             closeEditor();
         } else {

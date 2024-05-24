@@ -2,25 +2,23 @@ package pl.sokolak.teamtally.frontend.user_section.ranking;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
+import pl.sokolak.teamtally.backend.util.LogService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.service.*;
 
-import java.util.List;
 import java.util.Set;
 
 @SpringComponent
@@ -29,6 +27,7 @@ import java.util.Set;
 @Route(value = "", layout = MainView.class)
 @RouteAlias(value = "ranking")
 @PageTitle("Ranking")
+@Log4j2
 public class RankingView extends Div implements BeforeEnterObserver {
 
     private final SessionService sessionService;
@@ -37,9 +36,11 @@ public class RankingView extends Div implements BeforeEnterObserver {
     public RankingView(RankingService rankingService,
                        IndividualRankingFactory individualRankingFactory,
                        TeamRankingFactory teamRankingFactory,
-                       SessionService sessionService) {
+                       SessionService sessionService,
+                       LogService log) {
 
         this.sessionService = sessionService;
+        log.info("Show ranking view");
 
         EventDto event = sessionService.getEvent();
         ParticipantDto participant = sessionService.getParticipant();

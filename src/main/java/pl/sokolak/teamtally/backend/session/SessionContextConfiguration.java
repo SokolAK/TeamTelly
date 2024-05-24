@@ -8,9 +8,16 @@ import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.security.SecurityService;
 import pl.sokolak.teamtally.backend.user.UserService;
+import pl.sokolak.teamtally.backend.util.LogService;
 
 @Configuration
 public class SessionContextConfiguration {
+
+    @Bean
+    @Scope(WebApplicationContext.SCOPE_SESSION)
+    public LogService logService(SessionService sessionService) {
+        return new LogService(sessionService);
+    }
 
     @Bean
     @Scope(WebApplicationContext.SCOPE_SESSION)

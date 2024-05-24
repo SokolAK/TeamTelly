@@ -12,6 +12,7 @@ import pl.sokolak.teamtally.backend.tag.TagDto;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ChallengeRenderer {
@@ -52,7 +53,7 @@ public class ChallengeRenderer {
                 );
     }
 
-    public static Renderer<ChallengeDto> create(List<Integer> completedPersonal, List<Integer> completedTeam) {
+    public static Renderer<ChallengeDto> create(Set<Integer> completedPersonal, Set<Integer> completedTeam) {
         return LitRenderer.<ChallengeDto>of("""
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
@@ -60,11 +61,11 @@ public class ChallengeRenderer {
                                 <span style='margin-bottom:5px; white-space:wrap; font-size:small'><i>${item.description}</i></span>
                                 <vaadin-horizontal-layout style='align-items: start;' theme='spacing'>
                                     <div style='display: inline-block;'>
-                                        <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
+                                        <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>
                                         <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.individualPoints}</h6>
                                     </div>
                                     <div style='display: inline-block;'>
-                                        <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
+                                        <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:${item.colorTeam}'></vaadin-icon>
                                         <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.teamPoints}</h6>
                                     </div>
                                 </vaadin-horizontal-layout>
@@ -90,30 +91,30 @@ public class ChallengeRenderer {
                         .collect(Collectors.toList()))
 //                .withProperty("color", getColor(completedPersonal, "#E9FFE9", "white"))
                 // TODO
-//                .withProperty("colorPersonal", getColor(completedPersonal, "#5DAD26", "#696969"))
-                .withProperty("colorPersonal", __ -> "#696969")
+                .withProperty("colorPersonal", getColor(completedPersonal, "#5DAD26", "#696969"))
+//                .withProperty("colorPersonal", __ -> "#696969")
                 // TODO
-//                .withProperty("colorTeam", getColor(completedTeam, "#5DAD26", "#696969"))
-                .withProperty("colorTeam", __ -> "#696969")
+                .withProperty("colorTeam", getColor(completedTeam, "#5DAD26", "#696969"))
+//                .withProperty("colorTeam", __ -> "#696969")
                 .withProperty("completed", checkIfCompleted(completedPersonal))
                 .withProperty("available", checkIfAvailable(completedPersonal))
                 .withProperty("unavailable", checkIfUnavailable(completedPersonal))
                 ;
     }
 
-    private static ValueProvider<ChallengeDto, Boolean> checkIfCompleted(List<Integer> completed) {
+    private static ValueProvider<ChallengeDto, Boolean> checkIfCompleted(Set<Integer> completed) {
         return challenge -> isCompleted(challenge, completed);
     }
 
-    private static ValueProvider<ChallengeDto, Boolean> checkIfAvailable(List<Integer> completed) {
+    private static ValueProvider<ChallengeDto, Boolean> checkIfAvailable(Set<Integer> completed) {
         return challenge -> !isCompleted(challenge, completed) && isActive(challenge);
     }
 
-    private static ValueProvider<ChallengeDto, Boolean> checkIfUnavailable(List<Integer> completed) {
+    private static ValueProvider<ChallengeDto, Boolean> checkIfUnavailable(Set<Integer> completed) {
         return challenge -> !isCompleted(challenge, completed) && !isActive(challenge);
     }
 
-    private static boolean isCompleted(ChallengeDto challenge, List<Integer> completed) {
+    private static boolean isCompleted(ChallengeDto challenge, Set<Integer> completed) {
         return completed.stream()
                 .anyMatch(id -> id.equals(challenge.getId()));
     }
@@ -122,12 +123,8 @@ public class ChallengeRenderer {
         return Optional.ofNullable(challenge.getCodes()).orElse(Collections.emptySet()).stream().anyMatch(CodeDto::isActive);
     }
 
-    private static ValueProvider<ChallengeDto, String> getColor(List<Integer> completed, String completeColor, String defaultColor) {
-        return challenge -> completed.stream()
-                .filter(id -> id.equals(challenge.getId()))
-                .findAny()
-                .map(__ -> completeColor)
-                .orElse(defaultColor);
+    private static ValueProvider<ChallengeDto, String> getColor(Set<Integer> completed, String completeColor, String defaultColor) {
+        return challenge -> completed.contains(challenge.getId()) ? completeColor : defaultColor;
     }
 
     private static String printUsagesLeft(ChallengeDto challenge) {

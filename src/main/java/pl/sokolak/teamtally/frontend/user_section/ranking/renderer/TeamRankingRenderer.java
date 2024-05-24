@@ -29,7 +29,7 @@ public class TeamRankingRenderer {
     }
 
     public static Renderer<TeamWithPlace> createPoints() {
-        return LitRenderer.<TeamWithPlace>of("<span><b>⭐ ${item.points}</b></span>")
+        return LitRenderer.<TeamWithPlace>of("<span>⭐ ${item.points}</span>")
                 .withProperty("points", TeamWithPlace::points);
     }
 }

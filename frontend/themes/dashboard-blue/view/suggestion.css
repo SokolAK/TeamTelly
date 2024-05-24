@@ -1,0 +1,9 @@
+.suggestion-textarea {
+    min-width: 300px;
+    max-width: 600px;
+    min-height: 200px;
+    max-height: 200px;
+    --vaadin-input-field-background: white;
+    --vaadin-input-field-border-width: 2px;
+    --vaadin-input-field-border-color: lightgrey;
+}

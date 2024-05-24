@@ -12,7 +12,7 @@
 
 vaadin-grid::part(details-cell) {
     padding-left: 0px;
-    line-height: 10px;
+    line-height: 16px;
     outline: none;
 }
 
@@ -26,5 +26,5 @@ vaadin-grid::part(selected-row-cell) {
 
 .ranking-grid vaadin-grid-cell-content {
     margin: 0 !important;
-    padding: 4px !important;
+    padding: 4px 4px 4px 4px !important;
 }

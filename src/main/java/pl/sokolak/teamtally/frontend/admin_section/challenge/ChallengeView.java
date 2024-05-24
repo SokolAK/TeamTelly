@@ -12,6 +12,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.tag.TagService;
+import pl.sokolak.teamtally.backend.util.LogService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
@@ -28,7 +29,8 @@ import java.util.List;
 @PageTitle("Challenges")
 public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
-    public ChallengeView(ChallengeService service, SessionService sessionService, TagService tagService) {
+    public ChallengeView(ChallengeService service, SessionService sessionService, TagService tagService, LogService log) {
+        super(log);
         this.sessionService = sessionService;
         this.service = service;
         this.form = new ChallengeForm(new HashSet<>(tagService.findAll()));

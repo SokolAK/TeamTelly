@@ -20,6 +20,7 @@ import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.backend.user.UserDto;
 import pl.sokolak.teamtally.backend.user.UserService;
+import pl.sokolak.teamtally.backend.util.LogService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
@@ -44,10 +45,10 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
 
     public ParticipantView(UserService userService,
                            ParticipantService participantService,
-
-
                            TeamService teamService,
-                           SessionService sessionService) {
+                           SessionService sessionService,
+                           LogService log) {
+        super(log);
         this.service = participantService;
         this.participantService = participantService;
         this.sessionService = sessionService;

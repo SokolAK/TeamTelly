@@ -10,7 +10,6 @@ import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.router.PageTitle;
@@ -19,7 +18,6 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
@@ -28,15 +26,14 @@ import pl.sokolak.teamtally.backend.code.CodeService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
-import pl.sokolak.teamtally.backend.team.TeamDto;
 import pl.sokolak.teamtally.backend.util.EventBus;
+import pl.sokolak.teamtally.backend.util.LogService;
 import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeRenderer;
 import pl.sokolak.teamtally.frontend.common.AbstractView;
 import pl.sokolak.teamtally.frontend.common.NotificationService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -47,21 +44,27 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
 
     private final SessionService sessionService;
     private final ParticipantService participantService;
+    private final ChallengeService challengeService;
     private final CodeService codeService;
     private final TextField codeField = new TextField();
     private final EventBus eventBus;
+    private final LogService log;
 
     public ChallengeView(ChallengeService service,
                          CodeService codeService,
                          ParticipantService participantService,
+                         ChallengeService challengeService,
                          SessionService sessionService,
-                         PointsCalculator pointsCalculator,
-                         EventBus eventBus) {
+                         EventBus eventBus,
+                         LogService log) {
         this.service = service;
         this.codeService = codeService;
         this.participantService = participantService;
+        this.challengeService = challengeService;
         this.sessionService = sessionService;
         this.eventBus = eventBus;
+        this.log = log;
+        log.info("Show challenge view");
         addClassName("challenge-view");
         init();
     }
@@ -92,30 +95,15 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         grid.sort(List.of(new GridSortOrder<>(grid.getColumns().get(0), SortDirection.ASCENDING)));
     }
 
-    private List<Integer> getCompletedIndividualChallenges() {
-        return Optional.ofNullable(sessionService.getParticipant())
-                .map(ParticipantDto::getCompletedChallenges)
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(Data::getId)
-                .collect(Collectors.toList());
+    private Set<Integer> getCompletedIndividualChallenges() {
+        return challengeService.findAllIdsCompletedByParticipant(sessionService.getParticipant());
     }
 
-    private List<Integer> getCompletedTeamChallenges() {
-        TeamDto team = sessionService.getParticipant().getTeam();
-        Set<ChallengeDto> challenges = Optional.ofNullable(team)
-                .map(TeamDto::getParticipants)
-                .orElse(Collections.emptySet())
-                .stream().filter(ParticipantDto::isActive)
-                .map(ParticipantDto::getCompletedChallenges)
-                .min(Comparator.comparingInt(Set::size))
-                .orElse(Collections.emptySet());
-        return challenges.stream()
-                .filter(c -> team.getParticipants().stream()
-                        .map(ParticipantDto::getCompletedChallenges)
-                        .allMatch(cs -> cs.contains(c)))
-                .map(ChallengeDto::getId)
-                .collect(Collectors.toList());
+    private Set<Integer> getCompletedTeamChallenges() {
+        if(sessionService.getParticipant().getTeam() == null) {
+            return Set.of();
+        }
+        return challengeService.findAllIdsCompletedByTeam(sessionService.getParticipant().getTeam());
     }
 
     @Override
@@ -130,9 +118,11 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
 
     private ComponentEventListener<ClickEvent<Button>> submitButtonListener() {
         return buttonClickEvent -> {
+            log.info("Submit button clicked");
             String insertedCode = codeField.getValue();
             if (isEmpty(insertedCode)) {
                 NotificationService.showWarning("Please insert code");
+                log.info("Code field is empty");
                 return;
             }
             List<CodeDto> codes = codeService.findAllByEvent(sessionService.getEvent());
@@ -141,15 +131,21 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
                     .findFirst()
                     .ifPresentOrElse(
                             this::tryCompleteChallenge,
-                            () -> NotificationService.showWarning("Wrong code")
+                            this::handleWrongCode
                     );
             codeField.clear();
         };
     }
 
+    private void handleWrongCode() {
+        NotificationService.showWarning("Wrong code");
+        log.info("Wrong code inserted [{}]", codeField.getValue());
+    }
+
     private void tryCompleteChallenge(CodeDto code) {
         if (!code.canBeUsed()) {
             NotificationService.showWarning("Code already used");
+            log.info("Submitted code already used [{}]", codeField.getValue());
             return;
         }
 
@@ -161,7 +157,13 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
             code.use();
             codeService.save(code);
             eventBus.push("my-points", new PointsCalculator().calculate(sessionService.getParticipant()));
-            NotificationService.showSuccess("Hurray! You got " + code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
+
+            NotificationService.showSuccess("Hurray! You got " +
+                    code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
+            log.info("Code used [{}]", codeField.getValue());
+            log.info("Got {} points for '{}' [{}]",
+                    code.getChallenge().getIndividualPoints(), code.getChallenge().getName(), codeField.getValue());
+
             populateGrid();
         } else {
             NotificationService.showWarning("You already completed " + code.getChallenge().getName());
@@ -171,7 +173,8 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     private void populateGrid() {
         grid.setColumns();
         grid.addColumn(ChallengeRenderer.create(
-                getCompletedIndividualChallenges(), getCompletedTeamChallenges()
+                getCompletedIndividualChallenges(),
+                getCompletedTeamChallenges()
         ));
     }
 

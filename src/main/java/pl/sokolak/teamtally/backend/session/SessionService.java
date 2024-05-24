@@ -1,6 +1,8 @@
 package pl.sokolak.teamtally.backend.session;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.event.EventService;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Log4j2
 public class SessionService {
 
     private final SessionContext sessionContext;
@@ -56,6 +59,8 @@ public class SessionService {
                             .map(Data::getId)
                             .orElse(null)));
         }
+
+        log.info("[{}] Init session service", authenticatedUser.getUsername());
     }
 
     public void reinit(EventDto event) {

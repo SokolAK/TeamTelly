@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-public class TeamDetailsRenderer {
+public class  TeamDetailsRenderer {
     public static ComponentRenderer<VerticalLayout, TeamWithPlace> create(Set<ParticipantWithPlace> participantsWithPlace) {
         return new ComponentRenderer<>(team -> {
 
@@ -28,9 +28,12 @@ public class TeamDetailsRenderer {
                 HorizontalLayout horizontalLayout = new HorizontalLayout();
                 horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
                 horizontalLayout.setWidthFull();
-                horizontalLayout.add(new Span(member.firstName() + " " + member.lastName()));
-                horizontalLayout.add(new Span(String.valueOf(member.points())));
+                horizontalLayout.add(new Span( "\uD83D\uDC64 " + member.firstName() + " " + member.lastName()));
+                Span points = new Span("⭐ " + member.points());
+                points.getStyle().set("white-space", "nowrap");
+                horizontalLayout.add(points);
                 verticalLayout.add(horizontalLayout);
+                verticalLayout.getStyle().set("padding", "0");
             }
 
             for (ChallengeDto completedChallenge : getChallengesCompletedByTeam(teamMembers)) {
@@ -38,9 +41,12 @@ public class TeamDetailsRenderer {
                     HorizontalLayout horizontalLayout = new HorizontalLayout();
                     horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
                     horizontalLayout.setWidthFull();
-                    horizontalLayout.add(new Span("[Team Bonus] " + completedChallenge.getName()));
-                    horizontalLayout.add(new Span(String.valueOf(completedChallenge.getTeamPoints())));
+                    horizontalLayout.add(new Span("\uD83D\uDC65 " + completedChallenge.getName()));
+                    Span points = new Span("⭐ " + completedChallenge.getTeamPoints());
+                    points.getStyle().set("white-space", "nowrap");
+                    horizontalLayout.add(points);
                     verticalLayout.add(horizontalLayout);
+                    verticalLayout.getStyle().set("padding", "0");
                 }
             }
 

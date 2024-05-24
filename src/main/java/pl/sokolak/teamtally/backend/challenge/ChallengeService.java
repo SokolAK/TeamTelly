@@ -7,8 +7,12 @@ import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
 import pl.sokolak.teamtally.backend.participant.ChallengeDataView;
+import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.team.TeamDto;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -87,8 +91,30 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Integer> findAllIdsCompletedByParticipant(ParticipantDto participant) {
+        if(participant == null) {
+            return Set.of();
+        }
+        return challengeRepository.findAllIdsCompletedByParticipant(participant.getId()).stream()
+                .map(c -> (Integer) c.get("id"))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> findAllIdsCompletedByTeam(TeamDto team) {
+//        int teamSize = Optional.ofNullable(team)
+//                .map(TeamDto::getParticipants)
+//                .orElse(Set.of())
+//                .size();
+        if(team == null) {
+            return Set.of();
+        }
+        return challengeRepository.findAllIdsCompletedByTeam(team.getId()).stream()
+                .map(c -> (Integer) c.get("id"))
+                .collect(Collectors.toSet());
+    }
+
     public void updateOrSave(ChallengeDto challenge) {
-        if(challenge.getId() == null) {
+        if (challenge.getId() == null) {
             save(challenge);
             return;
         }

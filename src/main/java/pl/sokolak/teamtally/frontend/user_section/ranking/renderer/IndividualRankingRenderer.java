@@ -42,7 +42,7 @@ public class IndividualRankingRenderer {
     }
 
     public static Renderer<ParticipantWithPlace> createPoints() {
-        return LitRenderer.<ParticipantWithPlace>of("<h4>⭐ ${item.points}</h4>")
+        return LitRenderer.<ParticipantWithPlace>of("<h5>⭐ ${item.points}</h5>")
                 .withProperty("points", ParticipantWithPlace::points);
     }
 }

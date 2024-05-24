@@ -17,8 +17,15 @@ public class IndividualDetailsRenderer {
                 horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
                 horizontalLayout.setWidthFull();
                 horizontalLayout.add(new Span(completedChallenge.getName()));
-                horizontalLayout.add(new Span(String.valueOf(completedChallenge.getIndividualPoints())));
+                Span points = new Span("⭐ " + completedChallenge.getIndividualPoints());
+                points.getStyle().set("white-space", "nowrap");
+                horizontalLayout.add(points);
                 verticalLayout.add(horizontalLayout);
+                verticalLayout.getStyle()
+                        .set("padding-top", "8px")
+                        .set("padding-left", "4px")
+                        .set("padding-right", "4px")
+                        .set("padding-bottom", "12px");
             }
             if (verticalLayout.getComponentCount() == 0) {
                 verticalLayout.add(new Span("No challenge completed"));

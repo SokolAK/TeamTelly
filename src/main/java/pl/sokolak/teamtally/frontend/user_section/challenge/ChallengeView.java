@@ -123,6 +123,11 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         return new ArrayList<>(((ChallengeService) service).findAllDataByEvent(sessionService.getEvent()));
     }
 
+    @Override
+    protected Comparator<ChallengeDto> getComparator() {
+        return Comparator.comparing(ChallengeDto::getName);
+    }
+
     private ComponentEventListener<ClickEvent<Button>> submitButtonListener() {
         return buttonClickEvent -> {
             String insertedCode = codeField.getValue();

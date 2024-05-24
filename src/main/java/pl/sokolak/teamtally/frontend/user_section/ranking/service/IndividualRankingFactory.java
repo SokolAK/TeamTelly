@@ -32,9 +32,12 @@ public class IndividualRankingFactory {
                     .filter(p -> Objects.equals(p.id(), participant.getId()))
                     .findFirst()
                     .ifPresent(participantWithPlace ->
-                            body.add(createTitle("Me"), createGrid(Set.of(participantWithPlace))));
+                            body.add(createTitle("Me"),
+                                    createGrid(Set.of(participantWithPlace)),
+                                    createTitle("Ranking"))
+                    );
         }
-        body.add(createTitle("Ranking"), gridRanking);
+        body.add(gridRanking);
         return body;
     }
 

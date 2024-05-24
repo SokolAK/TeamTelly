@@ -46,9 +46,8 @@ public class EventView extends AbstractViewWithSideForm<EventDto> {
 
     @Override
     protected void configureGrid() {
-        grid = new Grid<>(EventDto.class);
+        grid = new Grid<>(EventDto.class, false);
         grid.addClassNames("event-grid");
-        grid.setColumns();
         grid.addColumn(EventRenderer.create());
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editData(event.getValue()));

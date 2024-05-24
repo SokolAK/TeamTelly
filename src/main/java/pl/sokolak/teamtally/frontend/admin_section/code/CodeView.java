@@ -44,9 +44,8 @@ public class CodeView extends AbstractViewWithSideForm<CodeDto> {
 
     @Override
     protected void configureGrid() {
-        grid = new Grid<>(CodeDto.class);
+        grid = new Grid<>(CodeDto.class, false);
         grid.addClassNames("code-grid");
-        grid.setColumns();
         grid.addColumn("code").setAutoWidth(true);
         grid.addColumn("usages").setAutoWidth(true);
         grid.addColumn("maxUsages").setAutoWidth(true);

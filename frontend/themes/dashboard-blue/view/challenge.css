@@ -13,9 +13,6 @@
 }
 
 .challenge-grid vaadin-grid-cell-content {
-    margin-top: 6px;
-    margin-bottom: 6px;
-    margin-left: 4px;
-    margin-right: 6px;
+    margin: 6px 6px 6px 4px;
     padding: 0 !important;
 }

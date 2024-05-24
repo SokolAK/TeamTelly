@@ -12,6 +12,5 @@ import java.util.Objects;
 @NoArgsConstructor
 @EqualsAndHashCode
 public abstract class Data {
-
     protected Integer id;
 }

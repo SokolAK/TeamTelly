@@ -36,9 +36,8 @@ public class TeamView extends AbstractViewWithSideForm<TeamDto> {
 
     @Override
     protected void configureGrid() {
-        grid = new Grid<>(TeamDto.class);
+        grid = new Grid<>(TeamDto.class, false);
         grid.addClassNames("team-grid");
-        grid.setColumns();
         grid.addColumn(TeamRenderer.create()).setHeader("Teams");
         grid.asSingleSelect().addValueChangeListener(event -> editData(event.getValue()));
     }

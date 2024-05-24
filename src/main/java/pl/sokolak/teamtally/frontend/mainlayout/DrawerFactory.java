@@ -111,6 +111,7 @@ public class DrawerFactory {
             nav.addItem(new SideNavItem("Participants", ParticipantView.class, VaadinIcon.USER.create()));
             nav.addItem(new SideNavItem("Challenges", ChallengeView.class, VaadinIcon.ROCKET.create()));
             nav.addItem(new SideNavItem("Codes", CodeView.class, VaadinIcon.BARCODE.create()));
+            nav.addItem(new SideNavItem("Suggestions", pl.sokolak.teamtally.frontend.admin_section.suggestion.SuggestionView.class, VaadinIcon.LIGHTBULB.create()));
         }
     }
 

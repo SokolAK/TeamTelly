@@ -3,12 +3,11 @@ package pl.sokolak.teamtally.backend.suggestion;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
-import pl.sokolak.teamtally.backend.code.Code;
-import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -43,5 +42,16 @@ public class SuggestionService implements ServiceWithEvent<SuggestionDto> {
         return suggestionRepository.findAll().stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public Set<SuggestionDataView> findAllData() {
+        return suggestionRepository.findAllData().stream()
+                .map(s -> SuggestionDataView.builder()
+                        .id((Integer) s.get("id"))
+                        .userId((Integer) s.get("user_id"))
+                        .eventId((Integer) s.get("event_id"))
+                        .text(getStringField(s.get("text")))
+                        .build())
+                .collect(Collectors.toSet());
     }
 }

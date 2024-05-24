@@ -37,6 +37,14 @@ public class UserService implements Service<UserDto> {
                 .collect(Collectors.toList());
     }
 
+    public List<UserDto> findAllDataByIds(Set<Integer> ids) {
+        return userRepository.findAllById(ids).stream()
+                .map(u -> mapWithoutParticipantAndPhoto(u)
+                        .photo(u.getPhoto())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     public Set<UserDto> findAllUnassignedByEvent(EventDto event) {
         if(event == null) {
             return Set.of();

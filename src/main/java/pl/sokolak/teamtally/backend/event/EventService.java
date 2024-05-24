@@ -6,6 +6,7 @@ import pl.sokolak.teamtally.abstracts.Service;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -31,6 +32,18 @@ public class EventService implements Service<EventDto> {
 
     public List<EventDto> findAllData() {
         return eventRepository.findAll().stream()
+                .map(e -> EventDto.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .startDate(e.getStartDate())
+                        .endDate(e.getEndDate())
+                        .logo(e.getLogo())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public List<EventDto> findAllDataByIds(Set<Integer> ids) {
+        return eventRepository.findAllById(ids).stream()
                 .map(e -> EventDto.builder()
                         .id(e.getId())
                         .name(e.getName())

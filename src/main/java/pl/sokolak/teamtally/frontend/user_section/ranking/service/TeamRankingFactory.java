@@ -32,11 +32,10 @@ public class TeamRankingFactory {
     public Component create(Set<TeamWithPlace> teamsWithPlaces,
                             Set<ParticipantWithPlace> participantsWithPlace,
                             ParticipantDto participant) {
-        Grid<TeamWithPlace> grid = new Grid<>(TeamWithPlace.class);
+        Grid<TeamWithPlace> grid = new Grid<>(TeamWithPlace.class, false);
         grid.addClassNames("ranking-team-grid");
         grid.setAllRowsVisible(true);
 
-        grid.setColumns();
         grid.addColumn(TeamRankingRenderer.createPlaces())
                 .setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(TeamRankingRenderer.createTeams());

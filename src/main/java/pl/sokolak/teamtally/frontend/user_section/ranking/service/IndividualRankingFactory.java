@@ -51,11 +51,10 @@ public class IndividualRankingFactory {
     }
 
     private static Grid<ParticipantWithPlace> createGrid(Set<ParticipantWithPlace> participantsWithPlace) {
-        Grid<ParticipantWithPlace> gridRanking = new Grid<>(ParticipantWithPlace.class);
+        Grid<ParticipantWithPlace> gridRanking = new Grid<>(ParticipantWithPlace.class, false);
         gridRanking.addClassNames("ranking-individual-grid");
         gridRanking.setAllRowsVisible(true);
 
-        gridRanking.setColumns();
         gridRanking.addColumn(IndividualRankingRenderer.createPlaces())
                 .setTextAlign(ColumnTextAlign.CENTER).setAutoWidth(true).setFlexGrow(0).setClassNameGenerator(item -> "no-margin");
         gridRanking.addColumn(IndividualRankingRenderer.createParticipants());

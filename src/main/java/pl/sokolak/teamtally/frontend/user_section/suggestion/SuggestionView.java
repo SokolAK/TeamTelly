@@ -67,6 +67,7 @@ public class SuggestionView extends VerticalLayout {
             suggestionService.save(
                     SuggestionDto.builder()
                             .user(sessionService.getParticipant().getUser())
+                            .event(sessionService.getParticipant().getEvent())
                             .text(textArea.getValue())
                             .build()
             );

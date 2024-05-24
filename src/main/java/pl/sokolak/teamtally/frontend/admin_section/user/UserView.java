@@ -32,9 +32,8 @@ public class UserView extends AbstractViewWithSideForm<UserDto> {
 
     @Override
     protected void configureGrid() {
-        grid = new Grid<>(UserDto.class);
+        grid = new Grid<>(UserDto.class, false);
         grid.addClassNames("user-grid");
-        grid.setColumns();
         grid.addColumn(UserRenderer.create()).setAutoWidth(true);
         grid.asSingleSelect().addValueChangeListener(event -> editData(event.getValue()));
     }

@@ -40,9 +40,8 @@ public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
     @Override
     protected void configureGrid() {
-        grid = new Grid<>(ChallengeDto.class);
+        grid = new Grid<>(ChallengeDto.class, false);
         grid.addClassNames("challenge-grid");
-        grid.setColumns();
         grid.addColumn(ChallengeRenderer.create()).setHeader("Challenges");
         grid.asSingleSelect().addValueChangeListener(event -> editData(event.getValue()));
     }

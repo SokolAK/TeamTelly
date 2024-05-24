@@ -4,7 +4,7 @@ vaadin-grid::part(row) {
 }
 
 vaadin-grid::part(row):hover {
-    --vaadin-grid-cell-background: #DDE8F7;
+    --vaadin-grid-cell-background: var(--very-light-blue);
 }
 
 vaadin-grid::part(selected-row) {

@@ -12,6 +12,7 @@
 @import 'view/team.css';
 @import 'view/user.css';
 @import 'view/suggestion.css';
+@import 'view/suggestion-admin.css';
 @import 'view/ranking.css';
 @import 'photo.css';
 @import 'toolbar.css';
@@ -21,6 +22,7 @@
     /*--blue: #1a69a8;*/
     --blue: #1f6bcf;
     --light-blue: #4d8bbd;
+    --very-light-blue: #dde8f7;
     --very-light-grey: #eeeeee;
     --dim-grey: dimgrey;
 }
@@ -32,7 +34,8 @@
     .team-view.editing .team-grid,
     .user-view.editing .user-grid,
     .code-view.editing .code-grid,
-    .scoreboard-view.editing .scoreboard-grid
+    .scoreboard-view.editing .scoreboard-grid,
+    .suggestion-view.editing .suggestion-grid
     {
         display: none;
     }

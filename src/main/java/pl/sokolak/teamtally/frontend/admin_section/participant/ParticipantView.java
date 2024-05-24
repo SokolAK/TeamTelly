@@ -64,10 +64,9 @@ public class ParticipantView extends AbstractViewWithSideForm<ParticipantDto> {
         teams = fetchTeams(event);
 //        participants = fetchParticipants(event, teams);
 
-        grid = new Grid<>(ParticipantDto.class);
+        grid = new Grid<>(ParticipantDto.class, false);
         grid.addClassNames("participant-grid");
         grid.setAllRowsVisible(true);
-        grid.setColumns();
         grid.addColumn(new ActiveCheckboxRenderer(this::activateParticipant, this::deactivateParticipant).create()).setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(new ParticipantRenderer(teams, (ParticipantService) service, sessionService).create()).setAutoWidth(true);
         grid.addColumn(

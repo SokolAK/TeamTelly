@@ -49,7 +49,7 @@ public class PointsCalculator {
     }
 
     private int sumBonusPoints(TeamDto team) {
-        if(team.getParticipants() == null) {
+        if(team.getParticipants().isEmpty()) {
             return 0;
         }
         return team.getParticipants().stream()

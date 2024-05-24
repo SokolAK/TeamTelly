@@ -1,4 +1,4 @@
-.challenge-icon{
+.challenge-icon {
     width: 20px;
     height: 20px;
     /*color: var(--dim-grey);*/
@@ -6,4 +6,16 @@
 
 .challenge-grid::part(header-cell) {
     display: none;
+}
+
+.challenge-grid {
+    margin-bottom: 20px;
+}
+
+.challenge-grid vaadin-grid-cell-content {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    margin-left: 4px;
+    margin-right: 6px;
+    padding: 0 !important;
 }

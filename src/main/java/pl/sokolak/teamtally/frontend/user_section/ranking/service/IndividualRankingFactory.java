@@ -4,15 +4,12 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
-import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
-import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
@@ -20,7 +17,6 @@ import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRan
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -47,7 +43,7 @@ public class IndividualRankingFactory {
         title.setMaxWidth("600px");
         title.getStyle()
                 .set("text-align", "center")
-                .set("margin", "0");
+                .set("margin", "5px");
         return title;
     }
 
@@ -67,7 +63,7 @@ public class IndividualRankingFactory {
         gridRanking.setItemDetailsRenderer(IndividualDetailsRenderer.create());
 
         sort(gridRanking);
-        gridRanking.getStyle().set("margin-bottom", "20px");
+        gridRanking.addClassNames("ranking-grid");
         return gridRanking;
     }
 

@@ -16,8 +16,8 @@ public class UserRenderer {
                             </div>
                             <vaadin-vertical-layout style='margin-left: 10px'>
                                 <span><b>${item.username}</b> <span theme='badge ${item.roleColor}'>${item.role}</span></span>
-                                <span>${item.firstName} ${item.lastName}</span>
-                                <span>${item.jobTitle}</span>
+                                <span style='text-wrap:balance'>${item.firstName} ${item.lastName}</span>
+                                <span style='text-wrap:balance'>${item.jobTitle}</span>
                                 <span><i>${item.email}</i></span>
                             </vaadin-vertical-layout>
                             <div class='right-align-div'>

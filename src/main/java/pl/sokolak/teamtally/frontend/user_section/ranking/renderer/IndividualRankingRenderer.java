@@ -25,7 +25,7 @@ public class IndividualRankingRenderer {
                                 <img class='user-photo-medium' src=${item.photo} alt=${item.name}>
                             </div>
                             <vaadin-vertical-layout style='margin-left: 10px'>
-                                <span><b>${item.firstName} ${item.lastName}</b></span>
+                                <span style='text-wrap:balance'><b>${item.firstName} ${item.lastName}</b></span>
                                 <span style='text-wrap:balance'>${item.jobTitle}</span>
                                 <span style='color: ${item.teamColor}'>${item.teamIcon} ${item.teamName}</span>
                             </vaadin-vertical-layout>

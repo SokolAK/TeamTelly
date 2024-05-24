@@ -20,3 +20,11 @@ vaadin-grid::part(selected-row-cell) {
     outline: none;
 }
 
+.ranking-grid {
+    margin-bottom: 20px;
+}
+
+.ranking-grid vaadin-grid-cell-content {
+    margin: 0 !important;
+    padding: 4px !important;
+}

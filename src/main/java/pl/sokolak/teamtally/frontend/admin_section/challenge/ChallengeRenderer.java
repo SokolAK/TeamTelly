@@ -19,20 +19,24 @@ public class ChallengeRenderer {
         return LitRenderer.<ChallengeDto>of("""
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
-                                <span>${item.name}</span>
-                                <span style='margin-bottom:10px; white-space:pre-wrap; font-size:small'><i>${item.description}</i></span>
+                                <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
+                                <span style='margin-bottom:10px; white-space:wrap; font-size:small'><i>${item.description}</i></span>
                                 <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
-                                    <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
-                                    <span>${item.individualPoints}</span>
-                                    <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
-                                    <span>${item.teamPoints}</span>
+                                    <div style='display: inline-block;'>
+                                        <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
+                                        <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.individualPoints}</h6>
+                                    </div>
+                                    <div style='display: inline-block;'>
+                                        <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
+                                        <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.teamPoints}</h6>
+                                    </div>
                                 </vaadin-horizontal-layout>
-                                <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
+                                <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
                                     ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
                             </vaadin-vertical-layout>
                             <div class='right-align-div'>
-                                <span>Usages: ${item.usages}</span>
+                                <span style='font-size:small; text-align:center'>Codes<br>used:<br>${item.usages}</span>
                             </div>
                         </vaadin-horizontal-layout>
                         """)
@@ -52,22 +56,26 @@ public class ChallengeRenderer {
         return LitRenderer.<ChallengeDto>of("""
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
-                                <span style='width:100%; text-wrap:balance;'>${item.name}</span>
-                                <span style='margin-bottom:10px; white-space:pre-wrap; font-size:small'><i>${item.description}</i></span>
-                                <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
-                                    <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>
-                                    <span>${item.individualPoints}</span>
-                                    <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:${item.colorTeam}'></vaadin-icon>
-                                    <span>${item.teamPoints}</span>
+                                <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
+                                <span style='margin-bottom:5px; white-space:wrap; font-size:small'><i>${item.description}</i></span>
+                                <vaadin-horizontal-layout style='align-items: start;' theme='spacing'>
+                                    <div style='display: inline-block;'>
+                                        <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
+                                        <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.individualPoints}</h6>
+                                    </div>
+                                    <div style='display: inline-block;'>
+                                        <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
+                                        <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.teamPoints}</h6>
+                                    </div>
                                 </vaadin-horizontal-layout>
-                                <vaadin-horizontal-layout style='align-items:start' theme='spacing'>
+                                <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
                                     ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
                             </vaadin-vertical-layout>
                             <div style='margin-left:auto;'>
-                                <span style='display:${item.available?"block":"none"}'>Codes left: ${item.usagesLeft}</span>
-                                <vaadin-icon icon='vaadin:check-circle' style='color:#5DAD26; width:30px; height:30px; display:${item.completed?"block":"none"}'></vaadin-icon>
-                                <vaadin-icon icon='vaadin:close-circle' style='color:#FF0000; width:30px; height:30px; display:${item.unavailable?"block":"none"}'></vaadin-icon>
+                                <span style='display:${item.available?"block":"none"}; text-align:center; font-size:small'>Codes<br>left:<br>${item.usagesLeft}</span>
+                                <vaadin-icon icon='vaadin:check-circle' style='color:#5DAD26; width:25px; height:25px; display:${item.completed?"block":"none"}'></vaadin-icon>
+                                <vaadin-icon icon='vaadin:close-circle' style='color:#FF0000; width:25px; height:25px; display:${item.unavailable?"block":"none"}'></vaadin-icon>
                             </div>
                         </vaadin-horizontal-layout>
                         """)

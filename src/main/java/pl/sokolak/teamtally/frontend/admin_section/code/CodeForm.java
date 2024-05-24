@@ -26,7 +26,6 @@ class CodeForm extends SaveDeleteCancelAbstractForm {
     private final Checkbox active = new Checkbox("Active");
     private final ComboBox<ChallengeDto> challenge = new ComboBox<>("Challenge");
     private final Grid<ParticipantDataView> participants = new Grid<>(ParticipantDataView.class);
-
     private final ParticipantService participantService;
 
     public CodeForm(Set<ChallengeDto> challenges, ParticipantService participantService) {

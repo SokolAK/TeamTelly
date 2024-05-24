@@ -125,6 +125,18 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toSet());
     }
 
+    public Set<ParticipantDataView> findUsernamesByChallenge(ChallengeDto challenge) {
+        if(challenge.getId() == null) {
+            return Set.of();
+        }
+        return participantRepository.getAllUsernamesByChallenge(challenge.getId()).stream()
+                .map(p -> ParticipantDataView.builder()
+                        .id((Integer) p.get("id"))
+                        .username(getStringField(p.get("username")))
+                        .build())
+                .collect(Collectors.toSet());
+    }
+
     public void updateTeam(ParticipantDto participant, TeamDto team) {
         participantRepository.updateTeam(participant.getId(), Optional.ofNullable(team).map(TeamDto::getId).orElse(null));
     }

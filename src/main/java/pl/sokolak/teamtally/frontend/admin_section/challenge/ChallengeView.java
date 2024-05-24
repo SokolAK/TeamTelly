@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
+import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.tag.TagService;
 import pl.sokolak.teamtally.backend.util.LogService;
@@ -29,11 +30,12 @@ import java.util.List;
 @PageTitle("Challenges")
 public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
-    public ChallengeView(ChallengeService service, SessionService sessionService, TagService tagService, LogService log) {
+    public ChallengeView(ChallengeService service, ParticipantService participantService,
+                         SessionService sessionService, TagService tagService, LogService log) {
         super(log);
         this.sessionService = sessionService;
         this.service = service;
-        this.form = new ChallengeForm(new HashSet<>(tagService.findAll()));
+        this.form = new ChallengeForm(new HashSet<>(tagService.findAll()), participantService);
         addClassNames("challenge-view");
         init();
     }

@@ -46,6 +46,13 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
             "WHERE c.id = :codeId", nativeQuery = true)
     List<Map<String, Object>> getAllUsernamesByCode(@Param("codeId") int codeId);
 
+    @Query(value = "SELECT p.id, username " +
+            "FROM participant p " +
+            "JOIN participant_challenge pc ON pc.participant_id = p.id " +
+            "JOIN users u ON p.user_id = u.id " +
+            "WHERE pc.challenge_id = :challengeId", nativeQuery = true)
+    List<Map<String, Object>> getAllUsernamesByChallenge(@Param("challengeId") int challengeId);
+
     @Modifying
     @Query(value = "UPDATE Participant p SET team_id = :teamId WHERE id = :id", nativeQuery = true)
     void updateTeam(@Param("id") Integer id, @Param("teamId") Integer teamId);

@@ -13,10 +13,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.team.TeamDto;
-import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.TeamDetailsRenderer;
@@ -64,9 +62,19 @@ public class TeamRankingFactory {
         if(team == null) {
             return new Span();
         }
-        Span span = new Span(team.getIcon() + " " + team.getName());
-        span.getStyle().set("color", team.getColor());
-        return new Div(new Span("My team: "), span);
+
+        Span teamPrefix = new Span("My team: ");
+
+        Span teamName = new Span(team.getIcon() + " " + team.getName());
+        teamName.getStyle().set("color", team.getColor());
+
+        Div myTeam = new Div(teamPrefix, teamName);
+        myTeam.setMaxWidth("600px");
+        myTeam.getStyle()
+            .set("text-align", "center")
+            .set("margin", "5px");
+
+        return myTeam;
     }
 
     private static void sort(Grid<TeamWithPlace> grid) {

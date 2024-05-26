@@ -21,19 +21,21 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Integer> {
     List<Map<String, Object>> findAllByIdIn(@Param("ids") Set<Integer> ids);
 
 
-    @Query(value = "SELECT pc.challenge_id as id " +
-            "FROM participant_challenge pc " +
+    @Query(value = "SELECT c.challenge_id as id " +
+            "FROM participant_code pc " +
+            "JOIN code c ON c.id = pc.code_id " +
             "WHERE pc.participant_id = :id", nativeQuery = true)
     List<Map<String, Object>> findAllIdsCompletedByParticipant(@Param("id") Integer id);
 
 
-    @Query(value = "SELECT pc.challenge_id as id " +
-            "FROM participant_challenge pc " +
+    @Query(value = "SELECT c.challenge_id as id " +
+            "FROM participant_code pc " +
+            "         LEFT JOIN code c ON c.id = pc.code_id " +
             "         LEFT JOIN participant p ON p.id = pc.participant_id " +
             "         LEFT JOIN team t ON t.id = p.team_id " +
             "WHERE t.id = :teamId " +
-            "GROUP BY pc.challenge_id " +
-            "HAVING COUNT(pc.challenge_id) = " +
+            "GROUP BY c.challenge_id " +
+            "HAVING COUNT(c.challenge_id) = " +
             "   (SELECT COUNT(sp.id) " +
             "    FROM participant sp " +
             "    WHERE sp.team_id = :teamId)", nativeQuery = true)

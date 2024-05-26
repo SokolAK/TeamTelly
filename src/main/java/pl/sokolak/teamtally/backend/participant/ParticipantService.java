@@ -52,13 +52,6 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<ParticipantDto> findAllByEvent(EventDto event) {
-//        return participantRepository.findAllByEvent(mapper.toEntity(event)).stream()
-//                .map(mapper::toDto)
-//                .collect(Collectors.toList());
-//    }
-
     @Override
     public List<ParticipantDto> findAllByEvent(EventDto event) {
         return participantRepository.findAllByEvent(mapper.toEntity(event)).stream()
@@ -147,10 +140,6 @@ public class ParticipantService implements ServiceWithEvent<ParticipantDto> {
 
     public void updateCodeAndChallenge(ParticipantDto participant, CodeDto code, ChallengeDto challenge) {
         participantRepository.updateCode(participant.getId(), code.getId());
-        participantRepository.updateChallenge(participant.getId(), challenge.getId());
+//        participantRepository.updateChallenge(participant.getId(), challenge.getId());
     }
-
-//    public void updateCodeAndChallenge(ParticipantDto participant, CodeDto code, ChallengeDto challenge) {
-//        participantRepository.updateCodeAndChallenge(code.getId(), challenge.getId());
-//    }
 }

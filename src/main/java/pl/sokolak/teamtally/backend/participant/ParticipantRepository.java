@@ -32,9 +32,9 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
             "WHERE p.active = true AND p.event_id = :eventId", nativeQuery = true)
     List<Map<String, Object>> getAllActiveByEvent(@Param("eventId") int eventId);
 
-    @Query(value = "SELECT pc.participant_id AS participantId, pc.challenge_id AS challengeId FROM participant_challenge pc " +
+    @Query(value = "SELECT pc.participant_id AS participantId, cd.challenge_id AS challengeId FROM participant_code pc " +
+            "JOIN code cd ON cd.id = pc.code_id " +
             "JOIN participant p ON pc.participant_id = p.id " +
-            "JOIN challenge c ON pc.challenge_id = c.id " +
             "WHERE p.active = true AND p.event_id = :eventId", nativeQuery = true)
     List<Map<String, Integer>> getParticipantChallenges(@Param("eventId") int eventId);
 
@@ -48,9 +48,10 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
 
     @Query(value = "SELECT p.id, username " +
             "FROM participant p " +
-            "JOIN participant_challenge pc ON pc.participant_id = p.id " +
+            "JOIN participant_code pc ON pc.participant_id = p.id " +
+            "JOIN code c ON c.id = pc.code_id " +
             "JOIN users u ON p.user_id = u.id " +
-            "WHERE pc.challenge_id = :challengeId", nativeQuery = true)
+            "WHERE c.challenge_id = :challengeId", nativeQuery = true)
     List<Map<String, Object>> getAllUsernamesByChallenge(@Param("challengeId") int challengeId);
 
     @Modifying
@@ -65,7 +66,7 @@ public interface ParticipantRepository extends JpaRepository<Participant, Intege
     @Query(value = "INSERT INTO participant_code(participant_id, code_id) VALUES (:id, :codeId)", nativeQuery = true)
     void updateCode(@Param("id") Integer id, @Param("codeId") Integer codeId);
 
-    @Modifying
-    @Query(value = "INSERT INTO participant_challenge(participant_id, challenge_id) VALUES (:id, :challengeId)", nativeQuery = true)
-    void updateChallenge(@Param("id") Integer id, @Param("challengeId") Integer challengeId);
+//    @Modifying
+//    @Query(value = "INSERT INTO participant_challenge(participant_id, challenge_id) VALUES (:id, :challengeId)", nativeQuery = true)
+//    void updateChallenge(@Param("id") Integer id, @Param("challengeId") Integer challengeId);
 }

@@ -27,8 +27,6 @@ public class Challenge extends AbstractEntityWithEvent {
             joinColumns = @JoinColumn(name = "challenge_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
-    @ManyToMany(mappedBy = "completedChallenges", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    private Set<Participant> participants;
     @OneToMany(mappedBy = "challenge", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Set<Code> codes;
 }

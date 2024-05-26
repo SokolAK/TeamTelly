@@ -25,12 +25,6 @@ public class Participant extends AbstractEntityWithEvent {
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     private User user;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "participant_challenge",
-            joinColumns = @JoinColumn(name = "participant_id"),
-            inverseJoinColumns = @JoinColumn(name = "challenge_id"))
-    private Set<Challenge> completedChallenges;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "participant_code",

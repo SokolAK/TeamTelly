@@ -1,5 +1,6 @@
 package pl.sokolak.teamtally.frontend.admin_section.suggestion;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -32,13 +33,27 @@ public class SuggestionView extends VerticalLayout {
     private final SuggestionService suggestionService;
     private final UserService userService;
     private final EventService eventService;
+    private final Grid<SuggestionDto> grid;
+    private List<SuggestionDto> suggestions;
+    private boolean shownAll = false;
 
     public SuggestionView(SuggestionService suggestionService, UserService userService, EventService eventService) {
         this.suggestionService = suggestionService;
         this.userService = userService;
         this.eventService = eventService;
+        grid = createGrid();
         addClassName("suggestion-view");
-        add(createGrid());
+        add(createButtonShowAll(), grid);
+    }
+
+    private Button createButtonShowAll() {
+        Button button = new Button("Show all");
+        button.addClickListener(b -> {
+            shownAll = !shownAll;
+            button.setText(shownAll ? "Hide all" : "Show all");
+            suggestions.forEach(p -> grid.setDetailsVisible(p, shownAll));
+        });
+        return button;
     }
 
     private Grid<SuggestionDto> createGrid() {
@@ -53,7 +68,7 @@ public class SuggestionView extends VerticalLayout {
         List<UserDto> users = userService.findAllDataByIds(userIds);
         List<EventDto> events = eventService.findAllDataByIds(EventIds);
 
-        List<SuggestionDto> suggestions = suggestionsData.stream()
+        suggestions = suggestionsData.stream()
                 .map(s -> SuggestionDto.builder()
                         .id(s.getId())
                         .text(s.getText())
@@ -68,7 +83,7 @@ public class SuggestionView extends VerticalLayout {
         grid.addClassNames("suggestion-admin-grid");
         grid.addColumn(SuggestionRenderer.create());
         grid.setItemDetailsRenderer(SuggestionDetailsRenderer.create());
-        suggestions.forEach(p -> grid.setDetailsVisible(p, true));
+//        suggestions.forEach(p -> grid.setDetailsVisible(p, true));
         grid.setAllRowsVisible(true);
         grid.setItems(suggestions);
 

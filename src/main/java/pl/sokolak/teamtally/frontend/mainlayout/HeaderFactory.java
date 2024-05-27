@@ -74,7 +74,11 @@ public class HeaderFactory {
     }
 
     private Image createUserPhoto() {
-        return ImageUtil.createUserPhotoAsImageSmall(sessionService.getUser().getPhoto());
+        Image photo = ImageUtil.createUserPhotoAsImageSmall(sessionService.getUser().getPhoto());
+        photo.getStyle().set("cursor", "pointer");
+        photo.addClickListener(e -> photo.getUI().ifPresent(ui ->
+                ui.navigate("my-profile")));
+        return photo;
     }
 
     private Component createUserNameField() {

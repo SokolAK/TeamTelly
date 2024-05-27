@@ -18,6 +18,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "UPDATE Users u SET logged = true WHERE id = :id", nativeQuery = true)
     void updateLogged(@Param("id") Integer id);
 
+    @Modifying
+    @Query(value = "UPDATE Users u SET password = :password WHERE id = :id", nativeQuery = true)
+    void updatePassword(@Param("id") Integer id, @Param("password") String password);
+
     @Query(value = "SELECT u.id, u.username FROM users u " +
             "LEFT JOIN participant p ON p.user_id = u.id " +
             "WHERE NOT p.event_id = :eventId AND p.team_id IS NULL", nativeQuery = true)

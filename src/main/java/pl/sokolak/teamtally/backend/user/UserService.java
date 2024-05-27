@@ -124,4 +124,8 @@ public class UserService implements Service<UserDto> {
                 .map(p -> new BCryptPasswordEncoder().encode(p))
                 .orElse(null);
     }
+
+    public void updatePassword(UserDto user, String password) {
+        userRepository.updatePassword(user.getId(), password);
+    }
 }

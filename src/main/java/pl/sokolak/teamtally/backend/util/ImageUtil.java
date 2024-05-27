@@ -20,6 +20,12 @@ public class ImageUtil {
         return image;
     }
 
+    public static Image createUserPhotoAsImageLarge(byte[] photo) {
+        Image image = createUserPhotoAsImage(photo);
+        image.addClassName("user-photo-large");
+        return image;
+    }
+
     public static Image createUserPhotoAsImage(byte[] photo) {
         return photo != null ?
                 convertBase64ToImage(photo) :

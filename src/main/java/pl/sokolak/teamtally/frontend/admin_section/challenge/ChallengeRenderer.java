@@ -21,7 +21,7 @@ public class ChallengeRenderer {
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
-                                <span style='margin-bottom:10px; white-space:wrap; font-size:small'><i>${item.description}</i></span>
+                                <span style='margin-bottom:10px; text-wrap:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
                                 <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
                                     <div style='display: inline-block;'>
                                         <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
@@ -58,7 +58,7 @@ public class ChallengeRenderer {
                         <vaadin-horizontal-layout style='align-items:center;'>
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
-                                <span style='margin-bottom:5px; white-space:wrap; font-size:small'><i>${item.description}</i></span>
+                                <span style='margin-bottom:5px; white-space:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
                                 <vaadin-horizontal-layout style='align-items: start;' theme='spacing'>
                                     <div style='display: inline-block;'>
                                         <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>

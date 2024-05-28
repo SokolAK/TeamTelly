@@ -59,12 +59,12 @@ class CodeForm extends SaveDeleteCancelAbstractForm {
                 .orElse(Collections.emptySet());
         participants.setItems(participantDataViews);
         if(participantDataViews.isEmpty()) {
-            code.setReadOnly(false);
+//            code.setReadOnly(false);
             maxUsages.setReadOnly(false);
             challenge.setReadOnly(false);
             active.setReadOnly(false);
         } else {
-            code.setReadOnly(true);
+//            code.setReadOnly(true);
             maxUsages.setReadOnly(true);
             challenge.setReadOnly(true);
             active.setReadOnly(true);

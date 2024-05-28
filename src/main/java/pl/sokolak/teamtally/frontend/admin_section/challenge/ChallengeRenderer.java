@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class ChallengeRenderer {
     public static Renderer<ChallengeDto> create() {
         return LitRenderer.<ChallengeDto>of("""
-                        <vaadin-horizontal-layout style='align-items:center;'>
+                        <vaadin-horizontal-layout class='challenge-row'>
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
                                 <span style='margin-bottom:10px; text-wrap:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
@@ -55,7 +55,7 @@ public class ChallengeRenderer {
 
     public static Renderer<ChallengeDto> create(Set<Integer> completedPersonal, Set<Integer> completedTeam) {
         return LitRenderer.<ChallengeDto>of("""
-                        <vaadin-horizontal-layout style='align-items:center;'>
+                        <vaadin-horizontal-layout class='challenge-row' style='background-color:${item.completed?"#EFFFE5":item.unavailable?"#FFE5E5":"#FFFFFF"};'>
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
                                 <span style='margin-bottom:5px; white-space:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>

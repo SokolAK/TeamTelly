@@ -28,9 +28,12 @@ public class  TeamDetailsRenderer {
                 HorizontalLayout horizontalLayout = new HorizontalLayout();
                 horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
                 horizontalLayout.setWidthFull();
-                horizontalLayout.add(new Span( "\uD83D\uDC64 " + member.firstName() + " " + member.lastName()));
+                Span name = new Span("\uD83D\uDC64 " + member.firstName() + " " + member.lastName());
+                name.getStyle().set("font-size", "medium");
                 Span points = new Span("⭐ " + member.points());
+                points.getStyle().set("font-size", "medium");
                 points.getStyle().set("white-space", "nowrap");
+                horizontalLayout.add(name);
                 horizontalLayout.add(points);
                 verticalLayout.add(horizontalLayout);
                 verticalLayout.getStyle().set("padding", "0");
@@ -41,9 +44,12 @@ public class  TeamDetailsRenderer {
                     HorizontalLayout horizontalLayout = new HorizontalLayout();
                     horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
                     horizontalLayout.setWidthFull();
-                    horizontalLayout.add(new Span("\uD83D\uDC65 " + completedChallenge.getName()));
+                    Span bonusName = new Span("\uD83D\uDC65 " + completedChallenge.getName());
+                    bonusName.getStyle().set("font-size", "medium");
                     Span points = new Span("⭐ " + completedChallenge.getTeamPoints());
+                    points.getStyle().set("font-size", "medium");
                     points.getStyle().set("white-space", "nowrap");
+                    horizontalLayout.add(bonusName);
                     horizontalLayout.add(points);
                     verticalLayout.add(horizontalLayout);
                     verticalLayout.getStyle().set("padding", "0");

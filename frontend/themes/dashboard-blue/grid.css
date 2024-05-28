@@ -13,7 +13,8 @@ vaadin-grid::part(selected-row) {
 
 vaadin-grid {
     max-width: 600px;
-    border: 2px solid var(--very-light-grey)
+    border: 2px solid var(--very-light-grey);
+    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
 }
 
 /*vaadin-grid-cell-content {*/

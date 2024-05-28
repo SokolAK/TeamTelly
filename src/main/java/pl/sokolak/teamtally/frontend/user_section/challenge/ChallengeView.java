@@ -74,6 +74,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
         codeField.setPlaceholder("Insert code");
 
         Button submitButton = new Button("Submit", new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT));
+//        submitButton.addClassName("shadow");
         submitButton.addClickShortcut(Key.ENTER);
         submitButton.addClickListener(submitButtonListener());
 //        toolbar.setFlexGrow(1, codeField);
@@ -90,7 +91,7 @@ public class ChallengeView extends AbstractView<ChallengeDto> {
     protected void configureGrid() {
         grid = new Grid<>(ChallengeDto.class, false);
         grid.addClassNames("challenge-grid");
-        grid.setSizeFull();
+        grid.setAllRowsVisible(true);
         populateGrid();
         grid.sort(List.of(new GridSortOrder<>(grid.getColumns().get(0), SortDirection.ASCENDING)));
     }

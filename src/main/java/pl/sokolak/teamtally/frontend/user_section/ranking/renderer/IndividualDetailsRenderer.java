@@ -16,9 +16,12 @@ public class IndividualDetailsRenderer {
                 HorizontalLayout horizontalLayout = new HorizontalLayout();
                 horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
                 horizontalLayout.setWidthFull();
-                horizontalLayout.add(new Span(completedChallenge.getName()));
+                Span challengeName = new Span(completedChallenge.getName());
+                challengeName.getStyle().set("font-size", "medium");
                 Span points = new Span("⭐ " + completedChallenge.getIndividualPoints());
+                points.getStyle().set("font-size", "medium");
                 points.getStyle().set("white-space", "nowrap");
+                horizontalLayout.add(challengeName);
                 horizontalLayout.add(points);
                 verticalLayout.add(horizontalLayout);
                 verticalLayout.getStyle()

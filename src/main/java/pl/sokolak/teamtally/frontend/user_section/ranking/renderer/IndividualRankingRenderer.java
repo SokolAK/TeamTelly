@@ -25,9 +25,9 @@ public class IndividualRankingRenderer {
                                 <img class='user-photo-medium' src=${item.photo} alt=${item.name}>
                             </div>
                             <vaadin-vertical-layout style='margin-left: 10px'>
-                                <span style='text-wrap:balance'><b>${item.firstName} ${item.lastName}</b></span>
-                                <span style='text-wrap:balance'>${item.jobTitle}</span>
-                                <span style='color: ${item.teamColor}'>${item.teamIcon} ${item.teamName}</span>
+                                <span style='text-wrap:balance; font-size:15px'><b>${item.firstName} ${item.lastName}</b></span>
+                                <span style='text-wrap:balance; font-size:small'>${item.jobTitle}</span>
+                                <span style='color: ${item.teamColor}; font-size:small'>${item.teamIcon} ${item.teamName}</span>
                             </vaadin-vertical-layout>
                         </vaadin-horizontal-layout>
                         """)
@@ -42,7 +42,7 @@ public class IndividualRankingRenderer {
     }
 
     public static Renderer<ParticipantWithPlace> createPoints() {
-        return LitRenderer.<ParticipantWithPlace>of("<h5>⭐ ${item.points}</h5>")
+        return LitRenderer.<ParticipantWithPlace>of("<h6>⭐ ${item.points}</h6>")
                 .withProperty("points", ParticipantWithPlace::points);
     }
 }

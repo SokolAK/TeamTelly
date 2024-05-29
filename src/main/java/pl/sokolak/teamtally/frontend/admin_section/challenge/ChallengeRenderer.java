@@ -10,6 +10,7 @@ import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class ChallengeRenderer {
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
                                 <span style='margin-bottom:10px; text-wrap:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
-                                ${item.from!=="null"?html`<span theme='badge'>Code from: ${item.from}</span>`:""}
+                                ${item.from.length!==0?html`<span theme='badge'>Code from: ${item.from}</span>`:""}
                                 <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
                                     ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
@@ -50,7 +51,7 @@ public class ChallengeRenderer {
                         .map(TagDto::getName)
                         .map(name -> "#" + name)
                         .collect(Collectors.toList()))
-                .withProperty("from", ChallengeRenderer::createFromField)
+                .withProperty("from", createFromField())
                 ;
     }
 
@@ -60,7 +61,7 @@ public class ChallengeRenderer {
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
                                 <span style='margin-bottom:5px; white-space:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
-                                ${item.from!=="null"?html`<span theme='badge'>Code from: ${item.from}</span>`:""}
+                                ${item.from.length!==0?html`<span theme='badge'>Code from: ${item.from}</span>`:""}
                                 <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
                                     ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
@@ -101,13 +102,14 @@ public class ChallengeRenderer {
                 .withProperty("completed", checkIfCompleted(completedPersonal))
                 .withProperty("available", checkIfAvailable(completedPersonal))
                 .withProperty("unavailable", checkIfUnavailable(completedPersonal))
-                .withProperty("from", ChallengeRenderer::createFromField)
+                .withProperty("from", createFromField())
                 ;
     }
 
-    private static String createFromField(ChallengeDto c) {
-        return c.getCodes().stream()
+    private static ValueProvider<ChallengeDto, String> createFromField() {
+        return challenge -> challenge.getCodes().stream()
                 .map(CodeDto::getCodeFrom)
+                .filter(Objects::nonNull)
                 .distinct()
                 .collect(Collectors.joining(", "));
     }

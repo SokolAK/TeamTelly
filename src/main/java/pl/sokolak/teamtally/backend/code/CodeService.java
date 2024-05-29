@@ -47,6 +47,7 @@ public class CodeService implements ServiceWithEvent<CodeDto> {
                         .active((boolean) c.get("active"))
                         .usages((Integer) c.get("usages"))
                         .maxUsages((Integer) c.get("max_usages"))
+                        .codeFrom((String) c.get("code_from"))
                         .challenge(ChallengeDto.builder()
                                 .id((Integer) c.get("challenge_id"))
                                 .name(getStringField(c.get("name")))

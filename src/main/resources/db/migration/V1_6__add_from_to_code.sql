@@ -1,0 +1,2 @@
+ALTER TABLE code
+ADD code_from VARCHAR(31);

@@ -10,7 +10,6 @@ import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.tag.TagDto;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,7 +21,11 @@ public class ChallengeRenderer {
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
                                 <span style='margin-bottom:10px; text-wrap:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
-                                <vaadin-horizontal-layout style='align-items: start' theme='spacing'>
+                                ${item.from!=="null"?html`<span theme='badge'>Code from: ${item.from}</span>`:""}
+                                <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
+                                    ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
+                                </vaadin-horizontal-layout>
+                                <vaadin-horizontal-layout style='align-items: start; margin-top: 5px' theme='spacing'>
                                     <div style='display: inline-block;'>
                                         <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:#696969'></vaadin-icon>
                                         <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.individualPoints}</h6>
@@ -31,9 +34,6 @@ public class ChallengeRenderer {
                                         <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:#696969'></vaadin-icon>
                                         <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.teamPoints}</h6>
                                     </div>
-                                </vaadin-horizontal-layout>
-                                <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
-                                    ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
                             </vaadin-vertical-layout>
                             <div class='right-align-div'>
@@ -49,34 +49,36 @@ public class ChallengeRenderer {
                 .withProperty("tags", c -> c.getTags().stream()
                         .map(TagDto::getName)
                         .map(name -> "#" + name)
-                        .collect(Collectors.toList())
-                );
+                        .collect(Collectors.toList()))
+                .withProperty("from", ChallengeRenderer::createFromField)
+                ;
     }
 
     public static Renderer<ChallengeDto> create(Set<Integer> completedPersonal, Set<Integer> completedTeam) {
         return LitRenderer.<ChallengeDto>of("""
-                        <vaadin-horizontal-layout class='challenge-row' style='background-color:${item.completed?"#EFFFE5":item.unavailable?"#FFE5E5":"#FFFFFF"};'>
+                        <vaadin-horizontal-layout class='challenge-row' style='background-color:${item.completed?"#EFFFE5":item.unavailable?"#EEEEEE":"#FFFFFF"};'>
                             <vaadin-vertical-layout>
                                 <span style='width:100%; text-wrap:wrap;'>${item.name}</span>
                                 <span style='margin-bottom:5px; white-space:wrap; font-size:small; white-space: pre-line'><i>${item.description}</i></span>
-                                <vaadin-horizontal-layout style='align-items: start;' theme='spacing'>
+                                ${item.from!=="null"?html`<span theme='badge'>Code from: ${item.from}</span>`:""}
+                                <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
+                                    ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
+                                </vaadin-horizontal-layout>
+                                <vaadin-horizontal-layout style='align-items: start; margin-top: 5px' theme='spacing'>
                                     <div style='display: inline-block;'>
                                         <vaadin-icon class='challenge-icon' icon='vaadin:user' style='color:${item.colorPersonal}'></vaadin-icon>
                                         <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.individualPoints}</h6>
                                     </div>
                                     <div style='display: inline-block;'>
                                         <vaadin-icon class='challenge-icon' icon='vaadin:users' style='color:${item.colorTeam}'></vaadin-icon>
-                                        <h6 style='display:inline-block; margin:0; vertical-align:middle'>⭐ ${item.teamPoints}</h6>
+                                        <h6 style='display:inline-block; margin:5px; vertical-align:middle'>⭐ ${item.teamPoints}</h6>
                                     </div>
-                                </vaadin-horizontal-layout>
-                                <vaadin-horizontal-layout style='align-items:start; margin-top:5px' theme='spacing'>
-                                    ${item.tags.map(tag => html`<span theme='badge contrast'>${tag}</span>`)}
                                 </vaadin-horizontal-layout>
                             </vaadin-vertical-layout>
                             <div style='margin-left:auto;'>
                                 <span style='display:${item.available?"block":"none"}; text-align:center; font-size:small'>Codes<br>left:<br>${item.usagesLeft}</span>
                                 <vaadin-icon icon='vaadin:check-circle' style='color:#5DAD26; width:25px; height:25px; display:${item.completed?"block":"none"}'></vaadin-icon>
-                                <vaadin-icon icon='vaadin:close-circle' style='color:#FF0000; width:25px; height:25px; display:${item.unavailable?"block":"none"}'></vaadin-icon>
+                                <vaadin-icon icon='vaadin:close-circle' style='color:#A9A9A9; width:25px; height:25px; display:${item.unavailable?"block":"none"}'></vaadin-icon>
                             </div>
                         </vaadin-horizontal-layout>
                         """)
@@ -99,7 +101,15 @@ public class ChallengeRenderer {
                 .withProperty("completed", checkIfCompleted(completedPersonal))
                 .withProperty("available", checkIfAvailable(completedPersonal))
                 .withProperty("unavailable", checkIfUnavailable(completedPersonal))
+                .withProperty("from", ChallengeRenderer::createFromField)
                 ;
+    }
+
+    private static String createFromField(ChallengeDto c) {
+        return c.getCodes().stream()
+                .map(CodeDto::getCodeFrom)
+                .distinct()
+                .collect(Collectors.joining(", "));
     }
 
     private static ValueProvider<ChallengeDto, Boolean> checkIfCompleted(Set<Integer> completed) {

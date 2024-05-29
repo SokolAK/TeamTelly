@@ -13,7 +13,7 @@ import java.util.Map;
 public interface CodeRepository extends JpaRepository<Code, Integer> {
     List<Code> findAllByEvent(Event event);
 
-    @Query(value = "SELECT c.id AS code_id, c.code, c.active, c.usages, c.max_usages, " +
+    @Query(value = "SELECT c.id AS code_id, c.code, c.active, c.usages, c.max_usages, c.code_from, " +
             "ch.id as challenge_id, ch.name, ch.individual_points, ch.team_points " +
             "FROM code c " +
             "LEFT JOIN challenge ch ON ch.id = challenge_id " +

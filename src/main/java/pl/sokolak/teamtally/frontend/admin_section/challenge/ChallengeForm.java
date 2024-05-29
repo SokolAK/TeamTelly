@@ -1,18 +1,14 @@
 package pl.sokolak.teamtally.frontend.admin_section.challenge;
 
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
-import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantDataView;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.tag.TagDto;

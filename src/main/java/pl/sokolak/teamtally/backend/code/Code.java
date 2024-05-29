@@ -17,6 +17,7 @@ public class Code extends AbstractEntityWithEvent {
     private boolean active;
     private int usages;
     private Integer maxUsages;
+    private String codeFrom;
     @ManyToOne()
     private Challenge challenge;
 }

@@ -17,6 +17,7 @@ public class CodeDto extends Data {
     private boolean active;
     private int usages;
     private Integer maxUsages;
+    private String codeFrom;
     private EventDto event;
     private ChallengeDto challenge;
 

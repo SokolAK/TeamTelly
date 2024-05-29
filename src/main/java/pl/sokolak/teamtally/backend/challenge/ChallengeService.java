@@ -66,6 +66,7 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                                         .active(cc.isActive())
                                         .usages(cc.getUsages())
                                         .maxUsages(cc.getMaxUsages())
+                                        .codeFrom(cc.getCodeFrom())
 //                                        .event(EventDto.builder()
 //                                                .id(cc.getEvent().getId())
 //                                                .build())

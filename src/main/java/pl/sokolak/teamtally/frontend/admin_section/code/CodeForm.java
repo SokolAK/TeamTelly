@@ -25,6 +25,7 @@ class CodeForm extends SaveDeleteCancelAbstractForm {
     private final TextField maxUsages = new TextField("Max usages (∞ if empty)");
     private final Checkbox active = new Checkbox("Active");
     private final ComboBox<ChallengeDto> challenge = new ComboBox<>("Challenge");
+    private final TextField codeFrom = new TextField("Code from");
     private final Grid<ParticipantDataView> participants = new Grid<>(ParticipantDataView.class);
     private final ParticipantService participantService;
 
@@ -35,7 +36,7 @@ class CodeForm extends SaveDeleteCancelAbstractForm {
         challenge.setItems(sort(challenges));
         challenge.setItemLabelGenerator(ChallengeDto::getName);
 
-        addFields(code, maxUsages, challenge, active, createParticipantTable());
+        addFields(code, maxUsages, challenge, codeFrom, active, createParticipantTable());
     }
 
     private List<ChallengeDto> sort(Set<ChallengeDto> challenges) {

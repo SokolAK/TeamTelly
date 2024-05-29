@@ -6,25 +6,23 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import pl.sokolak.teamtally.abstracts.Data;
+import org.springframework.dao.DataIntegrityViolationException;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.code.CodeService;
-import pl.sokolak.teamtally.backend.participant.ParticipantDataView;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
-import pl.sokolak.teamtally.backend.team.TeamDto;
-import pl.sokolak.teamtally.backend.team.TeamService;
 import pl.sokolak.teamtally.frontend.MainView;
+import pl.sokolak.teamtally.frontend.admin_section.event.EventView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
-import pl.sokolak.teamtally.frontend.common.DtoMapper;
+import pl.sokolak.teamtally.frontend.common.NotificationService;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -75,6 +73,22 @@ public class CodeView extends AbstractViewWithSideForm<CodeDto> {
     @Override
     protected Comparator<CodeDto> getComparator() {
         return Comparator.comparing(c -> c.getChallenge().getName());
+    }
+
+    @Override
+    protected void configureFormCommon() {
+        form.addSaveListener(event -> {
+            try {
+                saveOrUpdateData(event);
+                NotificationService.showSuccess("Challenge saved");
+                closeEditorAndUpdateList();
+            } catch (DataIntegrityViolationException e) {
+                String code = ((CodeDto) event.getData()).getCode();
+                NotificationService.showError("Code " + code + " already exists!");
+            }
+        });
+        form.addDeleteListener(this::deleteData);
+        form.addCloseListener(e -> closeEditor());
     }
 
     @Override

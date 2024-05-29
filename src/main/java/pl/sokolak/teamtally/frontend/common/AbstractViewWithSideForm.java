@@ -44,7 +44,10 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
     protected abstract void configureGrid();
 
     protected void configureFormCommon() {
-        form.addSaveListener(this::saveOrUpdateData);
+        form.addSaveListener(e -> {
+            saveOrUpdateData(e);
+            closeEditorAndUpdateList();
+        });
         form.addDeleteListener(this::deleteData);
         form.addCloseListener(e -> closeEditor());
     }
@@ -115,9 +118,11 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
         } else {
             saveData(event);
         }
+    }
+
+    protected void closeEditorAndUpdateList() {
         updateList();
         closeEditor();
-
         if(shouldReloadAppLayoutOnSaveOrUpdate()) {
             ReloadService.reloadAppLayout();
         }

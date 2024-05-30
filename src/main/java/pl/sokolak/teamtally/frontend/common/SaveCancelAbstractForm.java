@@ -10,10 +10,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.abstracts.Data;
 import pl.sokolak.teamtally.frontend.common.event.CloseEvent;
-import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-public abstract class SaveCancelAbstractForm extends AbstractForm {
+public abstract class SaveCancelAbstractForm extends AbstractSideForm {
 
     private final Button save = new Button("Save");
     private final Button close = new Button("Cancel");
@@ -46,7 +45,7 @@ public abstract class SaveCancelAbstractForm extends AbstractForm {
         return new HorizontalLayout(save, close);
     }
 
-    protected void validateAndSave() {
+    public void validateAndSave() {
         if (binder.isValid()) {
             fireEvent(new SaveEvent(this, binder.getBean()));
         }

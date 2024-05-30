@@ -2,9 +2,11 @@ package pl.sokolak.teamtally.frontend.common;
 
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import pl.sokolak.teamtally.abstracts.Data;
@@ -12,7 +14,7 @@ import pl.sokolak.teamtally.frontend.common.event.CloseEvent;
 import pl.sokolak.teamtally.frontend.common.event.DeleteEvent;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-public abstract class SaveDeleteCancelAbstractForm extends AbstractSideForm {
+public abstract class AbstractSideForm extends AbstractForm {
 
     private final Button save = new Button("Save");
     private final Button delete = new Button("Delete");
@@ -20,7 +22,10 @@ public abstract class SaveDeleteCancelAbstractForm extends AbstractSideForm {
 
     protected Binder binder;
 
-    public SaveDeleteCancelAbstractForm() {
+    public AbstractSideForm() {
+    }
+
+    public void init() {
     }
 
     protected void setBinder(Binder<?> binder) {
@@ -58,4 +63,15 @@ public abstract class SaveDeleteCancelAbstractForm extends AbstractSideForm {
         binder.setBean(data);
     }
 
+    public void addDeleteListener(ComponentEventListener<DeleteEvent> listener) {
+        addListener(DeleteEvent.class, listener);
+    }
+
+    public void addSaveListener(ComponentEventListener<SaveEvent> listener) {
+        addListener(SaveEvent.class, listener);
+    }
+
+    public void addCloseListener(ComponentEventListener<CloseEvent> listener) {
+        addListener(CloseEvent.class, listener);
+    }
 }

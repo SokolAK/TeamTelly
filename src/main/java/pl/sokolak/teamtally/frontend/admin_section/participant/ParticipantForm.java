@@ -59,7 +59,7 @@ class ParticipantForm extends SaveCancelAbstractForm {
 //    }
 
     @Override
-    protected void validateAndSave() {
+    public void validateAndSave() {
         fireEvent(new SaveEvent(this, new ParticipantsToAdd(users.getSelectedItems(), getEmailSet())));
     }
 

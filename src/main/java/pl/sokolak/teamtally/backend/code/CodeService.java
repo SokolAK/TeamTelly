@@ -9,6 +9,7 @@ import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.user.UserDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -20,6 +21,21 @@ public class CodeService implements ServiceWithEvent<CodeDto> {
 
     @Override
     public CodeDto save(CodeDto code) {
+        Optional<Code> maybeCode = Optional.ofNullable(code.getId())
+                .map(codeRepository::findById)
+                .flatMap(c -> c);
+        if(maybeCode.isPresent()) {
+            Code entity = mapper.toEntity(code);
+            Code savedEntity = codeRepository.save(entity);
+            return mapper.toDto(savedEntity);
+        } else {
+            Code entity = mapper.toEntity(code);
+            Code savedEntity = codeRepository.save(entity);
+            return mapper.toDto(savedEntity);
+        }
+    }
+
+    private CodeDto persist(CodeDto code) {
         Code entity = mapper.toEntity(code);
         Code savedEntity = codeRepository.save(entity);
         return mapper.toDto(savedEntity);

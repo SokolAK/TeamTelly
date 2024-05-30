@@ -22,7 +22,7 @@ public abstract class AbstractViewWithSideForm<T extends Data> extends VerticalL
 
     protected Grid<T> grid;
     protected Service<T> service;
-    protected AbstractForm form;
+    protected AbstractSideForm form;
     protected SessionService sessionService;
     private LogService log = new LogService();
 

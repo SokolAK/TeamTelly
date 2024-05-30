@@ -1,56 +1,97 @@
 package pl.sokolak.teamtally.frontend.admin_section.code;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.DataIntegrityViolationException;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
+import pl.sokolak.teamtally.backend.code.Code;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.code.CodeService;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.frontend.MainView;
-import pl.sokolak.teamtally.frontend.admin_section.event.EventView;
-import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
-import pl.sokolak.teamtally.frontend.common.NotificationService;
-import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
+import pl.sokolak.teamtally.frontend.common.dialog.AbstractView;
+import pl.sokolak.teamtally.frontend.common.dialog.DialogForm;
 
 import java.util.*;
+
+import static pl.sokolak.teamtally.frontend.localization.Translator.t;
 
 @SpringComponent
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RolesAllowed("ADMIN")
 @Route(value = "codes", layout = MainView.class)
 @PageTitle("Codes")
-public class CodeView extends AbstractViewWithSideForm<CodeDto> {
+public class CodeView extends AbstractView {
+
+    private DialogForm<CodeDto> codeFormDialog;
+    private Grid<CodeDto> codesGrid;
+    private CodeService codeService;
+    private SessionService sessionService;
 
     public CodeView(CodeService codeService, ChallengeService challengeService, ParticipantService participantService, SessionService sessionService) {
         this.sessionService = sessionService;
-        this.service = codeService;
+        this.codeService = codeService;
         Set<ChallengeDto> challenges = challengeService.findAllDataByEvent(sessionService.getEvent());
-        this.form = new CodeForm(challenges, participantService);
+//        this.codeForm = new CodeForm(challenges, participantService);
         addClassName("code-view");
-        init();
+
+
+        Button addButton = createAddButton();
+        createGrid();
+        createCodeFormDialog(challenges, participantService);
+
+        add(addButton, codesGrid, codeFormDialog);
     }
 
-    @Override
-    protected void configureGrid() {
-        grid = new Grid<>(CodeDto.class, false);
-        grid.addClassNames("code-grid");
-        grid.addColumn("code").setAutoWidth(true);
-        grid.addColumn("usages").setAutoWidth(true);
-        grid.addColumn("maxUsages").setAutoWidth(true);
-        grid.addColumn("active").setAutoWidth(true);
-        grid.addColumn(getChallengeValueProvider()).setHeader("Challenge").setAutoWidth(true);
-        grid.setAllRowsVisible(true);
-        grid.asSingleSelect().addValueChangeListener(event -> editData(event.getValue()));
+    private Button createAddButton() {
+        Button addButton = new Button(t("Add"));
+        addButton.addClickListener(__ -> codeFormDialog.openDialog(new CodeDto()));
+        return addButton;
+    }
+
+    private void createCodeFormDialog(Set<ChallengeDto> challenges, ParticipantService participantService) {
+        CodeForm codeForm = new CodeForm(challenges, participantService);
+        codeFormDialog = new DialogForm<>(codeForm);
+        codeFormDialog.setDeleteCallback(this::handleDelete);
+        codeFormDialog.setSaveCallback(this::handleSave);
+    }
+
+    private void createGrid() {
+        codesGrid = new Grid<>(CodeDto.class, false);
+        codesGrid.addClassNames("code-grid");
+        codesGrid.addColumn("code").setAutoWidth(true);
+        codesGrid.addColumn("usages").setAutoWidth(true);
+        codesGrid.addColumn("maxUsages").setAutoWidth(true);
+        codesGrid.addColumn("active").setAutoWidth(true);
+        codesGrid.addColumn("codeFrom").setAutoWidth(true);
+        codesGrid.addColumn(getChallengeValueProvider()).setHeader("Challenge").setAutoWidth(true);
+        codesGrid.setAllRowsVisible(true);
+        codesGrid.asSingleSelect().addValueChangeListener(event -> codeFormDialog.openDialog(event.getValue()));
+        updateGridItems();
+    }
+
+    private void updateGridItems() {
+        codesGrid.setItems(codeService.findAllByEvent(sessionService.getEvent()));
+    }
+
+    private void handleSave(CodeDto code) {
+        code.setEvent(sessionService.getEvent());
+        codeService.save(code);
+        updateGridItems();
+    }
+
+    private void handleDelete(CodeDto code) {
+        codeService.delete(code);
+        updateGridItems();
     }
 
     private ValueProvider<CodeDto, String> getChallengeValueProvider() {
@@ -58,43 +99,5 @@ public class CodeView extends AbstractViewWithSideForm<CodeDto> {
                 .map(CodeDto::getChallenge)
                 .map(ChallengeDto::getName)
                 .orElse("---");
-    }
-
-    @Override
-    protected CodeDto emptyData() {
-        return CodeDto.builder().active(true).build();
-    }
-
-    @Override
-    protected List<CodeDto> fetchData() {
-        return new ArrayList<>(((CodeService) service).findAllByEvent(sessionService.getEvent()));
-    }
-
-    @Override
-    protected Comparator<CodeDto> getComparator() {
-        return Comparator.comparing(c -> c.getChallenge().getName());
-    }
-
-    @Override
-    protected void configureFormCommon() {
-        form.addSaveListener(event -> {
-            try {
-                saveOrUpdateData(event);
-                NotificationService.showSuccess("Challenge saved");
-                closeEditorAndUpdateList();
-            } catch (DataIntegrityViolationException e) {
-                String code = ((CodeDto) event.getData()).getCode();
-                NotificationService.showError("Code " + code + " already exists!");
-            }
-        });
-        form.addDeleteListener(this::deleteData);
-        form.addCloseListener(e -> closeEditor());
-    }
-
-    @Override
-    protected void saveData(SaveEvent event) {
-        CodeDto code = (CodeDto) event.getData();
-        code.setEvent(sessionService.getEvent());
-        service.save(code);
     }
 }

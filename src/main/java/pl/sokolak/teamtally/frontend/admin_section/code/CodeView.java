@@ -70,7 +70,7 @@ public class CodeView extends AbstractView {
         codeFormDialog = new DialogForm<>(codeForm);
         codeFormDialog.setDeleteCallback(this::handleDelete);
         codeFormDialog.setSaveCallback(this::handleSave);
-        codeFormDialog.addValidator(createUniqueCodeValidator());
+//        codeFormDialog.addValidator(createUniqueCodeValidator());
     }
 
     private void createGrid() {

@@ -62,15 +62,7 @@ class CodeForm extends AbstractForm<CodeDto> {
                 .map(participantService::findUsernamesByCode)
                 .orElse(Collections.emptySet());
         participants.setItems(participantDataViews);
-        if(participantDataViews.isEmpty()) {
-            maxUsages.setReadOnly(false);
-            challenge.setReadOnly(false);
-            active.setReadOnly(false);
-        } else {
-            maxUsages.setReadOnly(true);
-            challenge.setReadOnly(true);
-            active.setReadOnly(true);
-        }
+        challenge.setReadOnly(!participantDataViews.isEmpty());
     }
 
     private VerticalLayout createParticipantTable() {

@@ -16,7 +16,7 @@ import pl.sokolak.teamtally.frontend.mainlayout.HeaderFactory;
 
 public class MainView extends AppLayout {
 
-    private static final String APP_VERSION = "0.10.0";
+    private static final String APP_VERSION = "0.11.0";
     private final SecurityService securityService;
     private final SessionService sessionService;
     private final H4 viewTitle = new H4();

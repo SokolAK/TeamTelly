@@ -1,3 +1,9 @@
 .code-grid {
-    max-width: 1000px;
+    max-width: 1200px;
+}
+
+.code-grid::part(header-cell) {
+    --vaadin-grid-cell-background: #1F6BCF;
+    color: white;
+    font-weight: bold;
 }

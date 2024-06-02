@@ -109,7 +109,7 @@ public class CodeView extends AbstractView {
         codesGrid.addColumn("maxUsages").setAutoWidth(true);
         codesGrid.addColumn("active").setAutoWidth(true);
         codesGrid.addColumn("codeFrom").setAutoWidth(true);
-        codesGrid.addColumn(getChallengeValueProvider()).setHeader("Challenge").setAutoWidth(true);
+        codesGrid.addColumn(getChallengeValueProvider()).setHeader("Challenge").setAutoWidth(true).setSortable(true);
         codesGrid.setAllRowsVisible(true);
         codesGrid.addItemClickListener(event -> codeFormDialog.openDialog(event.getItem()));
         updateGridItems();

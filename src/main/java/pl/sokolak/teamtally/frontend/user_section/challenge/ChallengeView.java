@@ -23,6 +23,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.code.CodeService;
+import pl.sokolak.teamtally.backend.history.HistoryService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
@@ -48,6 +49,7 @@ public class ChallengeView extends VerticalLayout {
     private final ParticipantService participantService;
     private final CodeService codeService;
     private final SessionService sessionService;
+    private final HistoryService historyService;
     private final LogService log;
     private final EventBus eventBus;
 
@@ -60,12 +62,14 @@ public class ChallengeView extends VerticalLayout {
             ParticipantService participantService,
             CodeService codeService,
             SessionService sessionService,
+            HistoryService historyService,
             LogService logService,
             EventBus eventBus) {
         this.challengeService = challengeService;
         this.participantService = participantService;
         this.codeService = codeService;
         this.sessionService = sessionService;
+        this.historyService = historyService;
         this.log = logService;
         this.eventBus = eventBus;
         addClassName("challenge-view");
@@ -103,6 +107,7 @@ public class ChallengeView extends VerticalLayout {
 
     private ComponentEventListener<ClickEvent<Button>> submitButtonListener() {
         return buttonClickEvent -> {
+            historyService.save(sessionService.getUser(), "submit code " + codeField.getValue());
             log.info("Submit button clicked");
             String insertedCode = codeField.getValue();
             if (isEmpty(insertedCode)) {

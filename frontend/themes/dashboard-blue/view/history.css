@@ -1,0 +1,9 @@
+.history-grid {
+    max-width: 1200px;
+}
+
+.history-grid::part(header-cell) {
+    --vaadin-grid-cell-background: #1F6BCF;
+    color: white;
+    font-weight: bold;
+}

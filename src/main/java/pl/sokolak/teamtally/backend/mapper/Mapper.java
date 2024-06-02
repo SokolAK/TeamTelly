@@ -7,6 +7,8 @@ import pl.sokolak.teamtally.backend.code.Code;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.event.Event;
 import pl.sokolak.teamtally.backend.event.EventDto;
+import pl.sokolak.teamtally.backend.history.History;
+import pl.sokolak.teamtally.backend.history.HistoryDto;
 import pl.sokolak.teamtally.backend.participant.Participant;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.suggestion.Suggestion;
@@ -80,11 +82,20 @@ public interface Mapper {
     UserRoleDto toDto(UserRole entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
 
     @DoIgnore
+    default HistoryDto toDto(History entity) {
+        return toDto(entity, new CycleAvoidingMappingContext());
+    }
+
+    HistoryDto toDto(History entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+    @DoIgnore
     default SuggestionDto toDto(Suggestion entity) {
         return toDto(entity, new CycleAvoidingMappingContext());
     }
 
     SuggestionDto toDto(Suggestion entity, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+
+
 
 
     @DoIgnore

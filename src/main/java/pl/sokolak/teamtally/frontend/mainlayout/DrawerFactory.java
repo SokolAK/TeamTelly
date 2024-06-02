@@ -16,6 +16,7 @@ import pl.sokolak.teamtally.backend.util.ImageUtil;
 import pl.sokolak.teamtally.frontend.admin_section.challenge.ChallengeView;
 import pl.sokolak.teamtally.frontend.admin_section.code.CodeView;
 import pl.sokolak.teamtally.frontend.admin_section.event.EventView;
+import pl.sokolak.teamtally.frontend.admin_section.history.HistoryView;
 import pl.sokolak.teamtally.frontend.admin_section.participant.ParticipantView;
 import pl.sokolak.teamtally.frontend.admin_section.team.TeamView;
 import pl.sokolak.teamtally.frontend.admin_section.user.UserView;
@@ -120,5 +121,6 @@ public class DrawerFactory {
         label.addClassName("side-nav-label");
         nav.addItem(label);
         nav.addItem(new SideNavItem("Users", UserView.class, VaadinIcon.GROUP.create()));
+        nav.addItem(new SideNavItem("History", HistoryView.class, VaadinIcon.LINES_LIST.create()));
     }
 }

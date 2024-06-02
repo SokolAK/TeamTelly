@@ -35,18 +35,19 @@ public class DialogForm<T extends Data> extends Dialog {
                 close();
             }
         });
-        saveButton.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
 
         deleteButton = new Button("Delete", event -> {
             deleteCallback.accept(form.getData());
             NotificationService.showSuccess("Deleted");
             close();
         });
-        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
 
         cancelButton = new Button("Cancel", event -> {
             close();
         });
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
     }
 
     public void openDialog(T data) {

@@ -1,7 +1,11 @@
 package pl.sokolak.teamtally.frontend.admin_section.code;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -9,6 +13,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.vaadin.firitin.components.DynamicFileDownloader;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.code.CodeDto;
@@ -20,6 +25,7 @@ import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.dialog.AbstractView;
 import pl.sokolak.teamtally.frontend.common.dialog.DialogForm;
 
+import java.io.PrintWriter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -48,21 +54,43 @@ public class CodeView extends AbstractView {
         this.sessionService = sessionService;
         this.codeService = codeService;
         Set<ChallengeDto> challenges = challengeService.findAllDataByEvent(sessionService.getEvent());
-//        this.codeForm = new CodeForm(challenges, participantService);
         addClassName("code-view");
 
-
-        Button addButton = createAddButton();
         createGrid();
         createCodeFormDialog(challenges, participantService);
 
-        add(addButton, codesGrid, codeFormDialog);
+        add(new HorizontalLayout(createAddButton(), createCsvDownloader()), codesGrid, codeFormDialog);
     }
 
     private Button createAddButton() {
-        Button addButton = new Button(t("Add"));
+        Button addButton = new Button(t("Add"), new Icon(VaadinIcon.PLUS_CIRCLE));
+        addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addButton.addClickListener(__ -> codeFormDialog.openDialog(new CodeDto()));
         return addButton;
+    }
+
+    private DynamicFileDownloader createCsvDownloader() {
+        Button button = new Button("Export to file", new Icon(VaadinIcon.FILE_TABLE));
+        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        return new DynamicFileDownloader(button, "codes.csv", out -> {
+            PrintWriter writer = new PrintWriter(out);
+            writer.println("code,max usages,challenge,individual points,team points,from");
+            codes.forEach(c -> {
+                writer.println("%s,%s,%s,%s,%s,%s".formatted(
+                        getOrEmpty(c.getCode()),
+                        getOrEmpty(c.getMaxUsages()),
+                        getOrEmpty(c.getChallenge().getName()),
+                        getOrEmpty(c.getChallenge().getIndividualPoints()),
+                        getOrEmpty(getOrEmpty(c.getChallenge().getTeamPoints())),
+                        getOrEmpty(c.getCodeFrom())
+                ));
+            });
+            writer.close();
+        });
+    }
+
+    private String getOrEmpty(Object value) {
+        return value != null ? value.toString() : "";
     }
 
     private void createCodeFormDialog(Set<ChallengeDto> challenges, ParticipantService participantService) {

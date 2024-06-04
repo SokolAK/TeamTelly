@@ -11,3 +11,4 @@ target/
 *.ipr
 /src/main/resources/db/migration-ziflow/
 /ziflow/
+/example/

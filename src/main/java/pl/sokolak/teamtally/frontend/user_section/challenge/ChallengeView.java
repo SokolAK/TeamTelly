@@ -161,9 +161,18 @@ public class ChallengeView extends VerticalLayout {
     }
 
     private void populateGrids() {
+        long start = System.currentTimeMillis();
         Set<ChallengeDto> challenges = getChallengesForEvent();
+        long end = System.currentTimeMillis();
+        System.out.println("Getting challenges for event " + (end - start));
+        start = end;
         Set<Integer> completedIndividualChallengesIds = getCompletedIndividualChallenges();
+        end = System.currentTimeMillis();
+        System.out.println("Getting completed individual challenges " + (end - start));
+        start = end;
         Set<Integer> completedTeamChallengesIds = getCompletedTeamChallenges();
+        end = System.currentTimeMillis();
+        System.out.println("Getting completed by team challenges " + (end - start));
 
         Set<ChallengeDto> uncompletedIndividualChallenges = challenges.stream()
                 .filter(c -> !completedIndividualChallengesIds.contains(c.getId()))

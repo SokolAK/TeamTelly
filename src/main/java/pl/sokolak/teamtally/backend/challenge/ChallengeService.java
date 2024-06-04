@@ -58,7 +58,9 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                         .description(c.getDescription())
                         .individualPoints(c.getIndividualPoints())
                         .teamPoints(c.getTeamPoints())
-                        .event(event)
+                        .event(EventDto.builder()
+                                .id(c.getEvent().getId())
+                                .build())
                         .codes(c.getCodes().stream().map(
                                 cc -> CodeDto.builder()
                                         .id(cc.getId())

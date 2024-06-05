@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import pl.sokolak.teamtally.abstracts.ServiceWithEvent;
 import pl.sokolak.teamtally.backend.code.CodeDto;
+import pl.sokolak.teamtally.backend.code.CodeService;
 import pl.sokolak.teamtally.backend.event.EventDto;
 import pl.sokolak.teamtally.backend.mapper.Mapper;
 import pl.sokolak.teamtally.backend.participant.ChallengeDataView;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
 
     private final ChallengeRepository challengeRepository;
+    private final CodeService codeService;
     private final Mapper mapper;
 
     @Override
@@ -46,6 +48,19 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    public Set<ChallengeDto> findAllDataByEventFast(EventDto event) {
+        Set<ChallengeDto> challenges = findAllDataByEventId(event);
+        List<CodeDto> codes = codeService.findAllByEvent(event);
+        for (ChallengeDto challenge : challenges) {
+            Set<CodeDto> codesForChallenge = codes.stream()
+                    .filter(c -> c.getChallenge().getId().equals(challenge.getId()))
+                    .collect(Collectors.toSet());
+            challenge.getCodes().addAll(codesForChallenge);
+        }
+        return challenges;
+    }
+
 
     public Set<ChallengeDto> findAllDataByEvent(EventDto event) {
         return challengeRepository.findAllByEvent(mapper.toEntity(event)).stream()

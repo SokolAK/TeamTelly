@@ -202,15 +202,7 @@ public class ChallengeView extends VerticalLayout {
     }
 
     private Set<ChallengeDto> getChallengesForEvent() {
-        Set<ChallengeDto> challenges = challengeService.findAllDataByEventId(sessionService.getEvent());
-        List<CodeDto> codes = codeService.findAllByEvent(sessionService.getEvent());
-        for (ChallengeDto challenge : challenges) {
-            Set<CodeDto> codesForChallenge = codes.stream()
-                    .filter(c -> c.getChallenge().getId().equals(challenge.getId()))
-                    .collect(Collectors.toSet());
-            challenge.getCodes().addAll(codesForChallenge);
-        }
-        return challenges;
+        return challengeService.findAllDataByEventFast(sessionService.getEvent());
     }
 
     private Set<Integer> getCompletedIndividualChallenges() {

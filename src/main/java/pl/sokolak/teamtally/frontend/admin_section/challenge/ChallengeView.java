@@ -9,6 +9,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
+import pl.sokolak.teamtally.backend.code.CodeDto;
+import pl.sokolak.teamtally.backend.code.CodeService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
 import pl.sokolak.teamtally.backend.session.SessionService;
@@ -18,10 +20,8 @@ import pl.sokolak.teamtally.frontend.MainView;
 import pl.sokolak.teamtally.frontend.common.AbstractViewWithSideForm;
 import pl.sokolak.teamtally.frontend.common.event.SaveEvent;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SpringComponent(value = "challenge-view-admin")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -30,10 +30,13 @@ import java.util.List;
 @PageTitle("Challenges")
 public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
-    public ChallengeView(ChallengeService service, ParticipantService participantService,
+    private final CodeService codeService;
+
+    public ChallengeView(ChallengeService service, ParticipantService participantService, CodeService codeService,
                          SessionService sessionService, TagService tagService, LogService log) {
         super(log);
         this.sessionService = sessionService;
+        this.codeService = codeService;
         this.service = service;
         this.form = new ChallengeForm(new HashSet<>(tagService.findAll()), participantService);
         addClassNames("challenge-view");
@@ -55,7 +58,8 @@ public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
     @Override
     protected List<ChallengeDto> fetchData() {
-        return new ArrayList<>(((ChallengeService) service).findAllDataByEvent(sessionService.getEvent()));
+        Set<ChallengeDto> challenges = ((ChallengeService) service).findAllDataByEventFast(sessionService.getEvent());
+        return new ArrayList<>(challenges);
     }
 
     @Override

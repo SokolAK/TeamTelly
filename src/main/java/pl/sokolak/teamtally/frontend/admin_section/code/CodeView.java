@@ -53,7 +53,7 @@ public class CodeView extends AbstractView {
     public CodeView(CodeService codeService, ChallengeService challengeService, ParticipantService participantService, SessionService sessionService) {
         this.sessionService = sessionService;
         this.codeService = codeService;
-        Set<ChallengeDto> challenges = challengeService.findAllDataByEvent(sessionService.getEvent());
+        Set<ChallengeDto> challenges = challengeService.findAllDataByEventFast(sessionService.getEvent());
         addClassName("code-view");
 
         createGrid();

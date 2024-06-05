@@ -10,10 +10,7 @@ import pl.sokolak.teamtally.backend.participant.ChallengeDataView;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.team.TeamDto;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -78,6 +75,23 @@ public class ChallengeService implements ServiceWithEvent<ChallengeDto> {
                                         .build()
                         ).collect(Collectors.toSet()))
                         .tags(c.getTags().stream().map(mapper::toDto).collect(Collectors.toSet()))
+                        .build())
+                .collect(Collectors.toSet());
+    }
+
+    public Set<ChallengeDto> findAllDataByEventId(EventDto event) {
+        return challengeRepository.findAllByEventId(event.getId()).stream()
+                .map(c -> ChallengeDto.builder()
+                        .id((Integer) c.get("challenge_id"))
+                        .name(getStringField(c.get("challenge_name")))
+                        .description(getStringField(c.get("description")))
+                        .individualPoints((Integer) c.get("individual_points"))
+                        .teamPoints((Integer) c.get("team_points"))
+                        .event(EventDto.builder()
+                                .id(event.getId())
+                                .build())
+                        .codes(new HashSet<>())
+                        .tags(new HashSet<>())
                         .build())
                 .collect(Collectors.toSet());
     }

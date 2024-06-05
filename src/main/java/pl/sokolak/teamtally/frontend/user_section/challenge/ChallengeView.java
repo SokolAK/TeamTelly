@@ -6,7 +6,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -149,7 +148,7 @@ public class ChallengeView extends VerticalLayout {
             eventBus.push("my-points", new PointsCalculator().calculate(sessionService.getParticipant()));
 
             NotificationService.showSuccess("Hurray! You got " +
-                                            code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
+                    code.getChallenge().getIndividualPoints() + " points for " + code.getChallenge().getName());
             log.info("Code used [{}]", codeField.getValue());
             log.info("Got {} points for '{}' [{}]",
                     code.getChallenge().getIndividualPoints(), code.getChallenge().getName(), codeField.getValue());
@@ -203,7 +202,15 @@ public class ChallengeView extends VerticalLayout {
     }
 
     private Set<ChallengeDto> getChallengesForEvent() {
-        return challengeService.findAllDataByEvent(sessionService.getEvent());
+        Set<ChallengeDto> challenges = challengeService.findAllDataByEventId(sessionService.getEvent());
+        List<CodeDto> codes = codeService.findAllByEvent(sessionService.getEvent());
+        for (ChallengeDto challenge : challenges) {
+            Set<CodeDto> codesForChallenge = codes.stream()
+                    .filter(c -> c.getChallenge().getId().equals(challenge.getId()))
+                    .collect(Collectors.toSet());
+            challenge.getCodes().addAll(codesForChallenge);
+        }
+        return challenges;
     }
 
     private Set<Integer> getCompletedIndividualChallenges() {

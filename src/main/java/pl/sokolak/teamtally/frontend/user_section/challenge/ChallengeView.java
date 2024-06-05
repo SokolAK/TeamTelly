@@ -22,6 +22,7 @@ import pl.sokolak.teamtally.backend.challenge.ChallengeDto;
 import pl.sokolak.teamtally.backend.challenge.ChallengeService;
 import pl.sokolak.teamtally.backend.code.CodeDto;
 import pl.sokolak.teamtally.backend.code.CodeService;
+import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.history.HistoryService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.participant.ParticipantService;
@@ -49,6 +50,7 @@ public class ChallengeView extends VerticalLayout {
     private final CodeService codeService;
     private final SessionService sessionService;
     private final HistoryService historyService;
+    private final EventService eventService;
     private final LogService log;
     private final EventBus eventBus;
 
@@ -63,12 +65,14 @@ public class ChallengeView extends VerticalLayout {
             SessionService sessionService,
             HistoryService historyService,
             LogService logService,
+            EventService eventService,
             EventBus eventBus) {
         this.challengeService = challengeService;
         this.participantService = participantService;
         this.codeService = codeService;
         this.sessionService = sessionService;
         this.historyService = historyService;
+        this.eventService = eventService;
         this.log = logService;
         this.eventBus = eventBus;
         addClassName("challenge-view");
@@ -96,16 +100,30 @@ public class ChallengeView extends VerticalLayout {
         submitButton.addClickListener(submitButtonListener());
 //        toolbar.setFlexGrow(1, codeField);
 
+
         HorizontalLayout toolbar = new HorizontalLayout(codeField, submitButton);
         toolbar.setWidthFull();
         toolbar.setMaxWidth("600px");
         toolbar.setFlexGrow(1, codeField);
         toolbar.setJustifyContentMode(JustifyContentMode.BETWEEN);
+
+        boolean isEventOpened = eventService.isEventOpened(sessionService.getEvent());
+        submitButton.setEnabled(isEventOpened);
+        codeField.setEnabled(isEventOpened);
+        if(!isEventOpened) {
+            NotificationService.showWarning("The event has been closed");
+        }
+
         return toolbar;
     }
 
     private ComponentEventListener<ClickEvent<Button>> submitButtonListener() {
         return buttonClickEvent -> {
+            boolean isEventOpened = eventService.isEventOpened(sessionService.getEvent());
+            if (!isEventOpened) {
+                NotificationService.showWarning("The event has been closed");
+                return;
+            }
             historyService.save(sessionService.getUser(), "submit code " + codeField.getValue());
             log.info("Submit button clicked");
             String insertedCode = codeField.getValue();
@@ -160,18 +178,9 @@ public class ChallengeView extends VerticalLayout {
     }
 
     private void populateGrids() {
-        long start = System.currentTimeMillis();
         Set<ChallengeDto> challenges = getChallengesForEvent();
-        long end = System.currentTimeMillis();
-        System.out.println("Getting challenges for event " + (end - start));
-        start = end;
         Set<Integer> completedIndividualChallengesIds = getCompletedIndividualChallenges();
-        end = System.currentTimeMillis();
-        System.out.println("Getting completed individual challenges " + (end - start));
-        start = end;
         Set<Integer> completedTeamChallengesIds = getCompletedTeamChallenges();
-        end = System.currentTimeMillis();
-        System.out.println("Getting completed by team challenges " + (end - start));
 
         Set<ChallengeDto> uncompletedIndividualChallenges = challenges.stream()
                 .filter(c -> !completedIndividualChallengesIds.contains(c.getId()))

@@ -30,13 +30,11 @@ import java.util.stream.Collectors;
 @PageTitle("Challenges")
 public class ChallengeView extends AbstractViewWithSideForm<ChallengeDto> {
 
-    private final CodeService codeService;
 
-    public ChallengeView(ChallengeService service, ParticipantService participantService, CodeService codeService,
+    public ChallengeView(ChallengeService service, ParticipantService participantService,
                          SessionService sessionService, TagService tagService, LogService log) {
         super(log);
         this.sessionService = sessionService;
-        this.codeService = codeService;
         this.service = service;
         this.form = new ChallengeForm(new HashSet<>(tagService.findAll()), participantService);
         addClassNames("challenge-view");

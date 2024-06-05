@@ -16,6 +16,7 @@ public class EventDto extends Data {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean opened;
     private UserDto owner;
     Set<ParticipantDto> participants;
     private byte[] logo;

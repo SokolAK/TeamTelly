@@ -21,6 +21,7 @@ public class Event extends AbstractEntity {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean opened;
     @ManyToOne(fetch = FetchType.LAZY)
     private User owner;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

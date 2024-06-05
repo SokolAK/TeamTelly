@@ -59,4 +59,8 @@ public class EventService implements Service<EventDto> {
         Event entity = mapper.toEntity(event);
         eventRepository.delete(entity);
     }
+
+    public boolean isEventOpened(EventDto event) {
+        return eventRepository.isEventOpened(event.getId());
+    }
 }

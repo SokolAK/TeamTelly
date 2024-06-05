@@ -48,19 +48,20 @@ public class SessionService {
 //                .filter(e -> participantsEvents.stream()
 //                        .anyMatch(e::equals))
 //                .orElseGet(() -> getLast(participantsEvents));
-        Optional<EventDto> maybeEvent = eventService.findAllData().stream().findFirst();
-        if(maybeEvent.isPresent()) {
-            EventDto event = maybeEvent.get();
-            sessionContext.setEvent(event);
-            sessionContext.setEvents(List.of(event));
-            sessionContext.setParticipant(participantService.findById(
-                    authenticatedUser.getParticipants().stream()
-                            .findFirst()
-                            .map(Data::getId)
-                            .orElse(null)));
+        if(sessionContext.getParticipant() == null) {
+            log.info("[{}] Init session", authenticatedUser.getUsername());
+            Optional<EventDto> maybeEvent = eventService.findAllData().stream().findFirst();
+            if (maybeEvent.isPresent()) {
+                EventDto event = maybeEvent.get();
+                sessionContext.setEvent(event);
+                sessionContext.setEvents(List.of(event));
+                sessionContext.setParticipant(participantService.findById(
+                        authenticatedUser.getParticipants().stream()
+                                .findFirst()
+                                .map(Data::getId)
+                                .orElse(null)));
+            }
         }
-
-        log.info("[{}] Init session service", authenticatedUser.getUsername());
     }
 
     public void reinit(EventDto event) {

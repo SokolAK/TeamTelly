@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.team.TeamDto;
+import pl.sokolak.teamtally.frontend.common.Acknowledgment;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.TeamWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.TeamDetailsRenderer;
@@ -29,7 +30,11 @@ public class TeamRankingFactory {
 
     public Component create(Set<TeamWithPlace> teamsWithPlaces,
                             Set<ParticipantWithPlace> participantsWithPlace,
-                            ParticipantDto participant) {
+                            ParticipantDto participant,
+                            boolean isEventOpened) {
+
+        Div body = new Div();
+
         Grid<TeamWithPlace> grid = new Grid<>(TeamWithPlace.class, false);
         grid.addClassNames("ranking-team-grid");
         grid.setAllRowsVisible(true);
@@ -46,7 +51,13 @@ public class TeamRankingFactory {
         sort(grid);
 
         H5 myTeam = new H5(createMyTeam(participant));
-        return new Div(myTeam, grid);
+
+        if(!isEventOpened) {
+            body.add(Acknowledgment.create());
+        }
+        body.add(myTeam, grid);
+
+        return body;
     }
 
     private static HorizontalLayout createLegend() {

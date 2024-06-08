@@ -15,4 +15,5 @@ public class TeamTallyApplication implements AppShellConfigurator {
     public static void main(String[] args) {
         SpringApplication.run(TeamTallyApplication.class, args);
     }
+
 }

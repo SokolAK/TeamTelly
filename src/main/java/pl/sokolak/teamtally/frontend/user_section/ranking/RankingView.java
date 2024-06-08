@@ -11,7 +11,6 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.event.EventDto;
-import pl.sokolak.teamtally.backend.event.EventService;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
 import pl.sokolak.teamtally.backend.session.SessionService;
 import pl.sokolak.teamtally.backend.util.LogService;
@@ -32,27 +31,25 @@ import java.util.Set;
 public class RankingView extends Div implements BeforeEnterObserver {
 
     private final SessionService sessionService;
-    private final EventService eventService;
 //    private final Span myPointsField = new Span();
 
     public RankingView(RankingService rankingService,
                        IndividualRankingFactory individualRankingFactory,
                        TeamRankingFactory teamRankingFactory,
                        SessionService sessionService,
-                       LogService log, EventService eventService) {
+                       LogService log) {
 
         this.sessionService = sessionService;
         log.info("Show ranking view");
 
         EventDto event = sessionService.getEvent();
-        boolean isEventOpened = eventService.isEventOpened(sessionService.getEvent());
         ParticipantDto participant = sessionService.getParticipant();
         rankingService.init(event);
         Set<ParticipantWithPlace> participantsWithPlaces = rankingService.getParticipantsWithPlaces();
-        Component individualRanking = individualRankingFactory.create(participantsWithPlaces, participant, isEventOpened);
+        Component individualRanking = individualRankingFactory.create(participantsWithPlaces, participant);
 
         Set<TeamWithPlace> teamsWithPlaces = rankingService.getTeamsWithPlaces();
-        Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces, participant, isEventOpened);
+        Component teamRanking = teamRankingFactory.create(teamsWithPlaces, participantsWithPlaces, participant);
 
         TabSheet tabSheet = new TabSheet();
         tabSheet.add("\uD83D\uDC64 Individual", individualRanking);
@@ -62,7 +59,6 @@ public class RankingView extends Div implements BeforeEnterObserver {
 //        eventBus.addListener("my-points", points -> myPointsField.setText(printPoints((Integer) points)));
 
         add(tabSheet);
-        this.eventService = eventService;
     }
 
     private String createPoints() {

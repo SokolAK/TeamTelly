@@ -5,17 +5,12 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.SortDirection;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sokolak.teamtally.backend.calculator.PointsCalculator;
 import pl.sokolak.teamtally.backend.participant.ParticipantDto;
-import pl.sokolak.teamtally.frontend.common.Acknowledgment;
 import pl.sokolak.teamtally.frontend.user_section.ranking.dto.ParticipantWithPlace;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualDetailsRenderer;
 import pl.sokolak.teamtally.frontend.user_section.ranking.renderer.IndividualRankingRenderer;
@@ -28,14 +23,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class IndividualRankingFactory {
 
-    public Component create(Set<ParticipantWithPlace> participantsWithPlace, ParticipantDto participant, boolean isEventOpened) {
+    public Component create(Set<ParticipantWithPlace> participantsWithPlace, ParticipantDto participant) {
         Grid<ParticipantWithPlace> gridRanking = createGrid(participantsWithPlace);
+
         Div body = new Div();
-
-        if(!isEventOpened) {
-            body.add(Acknowledgment.create());
-        }
-
         if (participant.isActive()) {
             participantsWithPlace.stream()
                     .filter(p -> Objects.equals(p.id(), participant.getId()))
@@ -46,7 +37,6 @@ public class IndividualRankingFactory {
                                     createTitle("Ranking"))
                     );
         }
-
         body.add(gridRanking);
         return body;
     }

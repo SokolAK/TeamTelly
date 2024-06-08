@@ -6,9 +6,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -84,36 +81,7 @@ public class ChallengeView extends VerticalLayout {
         populateGrids();
         setSpacing(false);
         challengesGrid.getStyle().set("margin-bottom", "0").set("margin-top", "10px");
-
-        boolean isEventOpened = eventService.isEventOpened(sessionService.getEvent());
-        if(!isEventOpened) {
-            VerticalLayout layout = new VerticalLayout();
-            layout.setMaxWidth("600px");
-            layout.setSpacing(false);
-            layout.setAlignItems(Alignment.CENTER);
-
-            Component title = new H4("Great job Ziflow! \uD83D\uDC99");
-            title.getStyle().set("margin-bottom", "10px");
-            Span message1 = new Span("Thank you for your participation in the Ziflow Meetup 2024 Challenge! " +
-                    "Please leave any feedback you have in the suggestion tab so that next time the challenge can be even better.");
-            message1.getStyle().set("text-align", "center");
-
-            Span message2 = new Span("Travel safe!");
-            message2.getStyle().set("margin-top", "10px");
-            Span message3 = new Span("Iga & Adam");
-
-            layout.add(title);
-            layout.add(message1);
-            layout.add(message2);
-            layout.add(message3);
-
-            Div div = new Div(layout);
-            div.getStyle().set("border", "2px solid #cbe6ef");
-            div.getStyle().set("background", "#e9f5f8");
-            add(div);
-        }
-
-        add(createCodeSection(isEventOpened), challengesGrid, completedChallengesGrid);
+        add(createCodeSection(), challengesGrid, completedChallengesGrid);
     }
 
     private void configureGrids() {
@@ -123,7 +91,7 @@ public class ChallengeView extends VerticalLayout {
         completedChallengesGrid.setAllRowsVisible(true);
     }
 
-    private Component createCodeSection(boolean isEventOpened) {
+    private Component createCodeSection() {
         codeField.setPlaceholder("Insert code");
 
         Button submitButton = new Button("Submit", new Icon(VaadinIcon.ARROW_CIRCLE_RIGHT));
@@ -139,8 +107,12 @@ public class ChallengeView extends VerticalLayout {
         toolbar.setFlexGrow(1, codeField);
         toolbar.setJustifyContentMode(JustifyContentMode.BETWEEN);
 
+        boolean isEventOpened = eventService.isEventOpened(sessionService.getEvent());
         submitButton.setEnabled(isEventOpened);
         codeField.setEnabled(isEventOpened);
+        if(!isEventOpened) {
+            NotificationService.showWarning("The event has been closed");
+        }
 
         return toolbar;
     }
